@@ -1,0 +1,1756 @@
+{
+    "vlinks": [
+        {
+            "song_id": "lostcivilization",
+            "song_name": "Lost Civilization",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1F7411j7xe",
+            "rhyparse_video": "https://b23.tv/BV1LK4y1A7sM"
+        },
+        {
+            "song_id": "lostcivilization",
+            "song_name": "Lost Civilization",
+            "rating_class": 3,
+            "difficulty": "9+",
+            "play_video": "https://b23.tv/BV1hb4y1d7LF",
+            "rhyparse_video": "https://b23.tv/BV1Kg41137cR"
+        },
+        {
+            "song_id": "goodtek",
+            "song_name": "GOODTEK (Arcaea Edit)",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1zJ411S7ds",
+            "rhyparse_video": "https://b23.tv/BV1vb411e7kn"
+        },
+        {
+            "song_id": "goodtek",
+            "song_name": "GOODTEK (Arcaea Edit)",
+            "rating_class": 3,
+            "difficulty": "9+",
+            "play_video": "https://b23.tv/BV1qa4y1h79P",
+            "rhyparse_video": "https://b23.tv/BV1ZA411q7rZ"
+        },
+        {
+            "song_id": "fairytale",
+            "song_name": "Fairytale",
+            "rating_class": 3,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1Rz411i7pQ",
+            "rhyparse_video": "https://b23.tv/BV1sV411k73j"
+        },
+        {
+            "song_id": "essenceoftwilight",
+            "song_name": "Essence of Twilight",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1ME411y7EU",
+            "rhyparse_video": "https://b23.tv/BV14r4y127TW"
+        },
+        {
+            "song_id": "qualia",
+            "song_name": "qualia -ideaesthesia-",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1Lf4y1h7LP",
+            "rhyparse_video": "https://b23.tv/BV1ig411g7Up"
+        },
+        {
+            "song_id": "qualia",
+            "song_name": "qualia -ideaesthesia-",
+            "rating_class": 3,
+            "difficulty": "9+",
+            "play_video": "https://b23.tv/BV1wF411671w",
+            "rhyparse_video": "https://b23.tv/BV1Qb4y1v7b3"
+        },
+        {
+            "song_id": "pragmatism",
+            "song_name": "PRAGMATISM",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "https://b23.tv/BV1kE411i7fE",
+            "rhyparse_video": "https://b23.tv/BV1Vb4y1z7AD"
+        },
+        {
+            "song_id": "pragmatism",
+            "song_name": "PRAGMATISM",
+            "rating_class": 3,
+            "difficulty": "11",
+            "play_video": "https://b23.tv/BV1Fq4y1B74j",
+            "rhyparse_video": "https://b23.tv/BV1gU4y1K7ez"
+        },
+        {
+            "song_id": "sheriruth",
+            "song_name": "Sheriruth",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "https://b23.tv/BV1tE411t7bs",
+            "rhyparse_video": "https://b23.tv/BV1sa4y177AS"
+        },
+        {
+            "song_id": "lumia",
+            "song_name": "Lumia",
+            "rating_class": 3,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1PD4y1X7Pu",
+            "rhyparse_video": "https://b23.tv/BV1ny4y157wJ"
+        },
+        {
+            "song_id": "dement",
+            "song_name": "Dement ~after legend~",
+            "rating_class": 3,
+            "difficulty": "9+",
+            "play_video": "https://b23.tv/BV1Bb4y1p79S",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "anokumene",
+            "song_name": "Anökumene",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1iQ4y167Yu",
+            "rhyparse_video": "https://b23.tv/BV1ia4y1j7MT"
+        },
+        {
+            "song_id": "infinityheaven",
+            "song_name": "Infinity Heaven",
+            "rating_class": 3,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1bK4y1t7kq",
+            "rhyparse_video": "https://b23.tv/BV1ba4y1Y7Xk"
+        },
+        {
+            "song_id": "partyvinyl",
+            "song_name": "Party Vinyl",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV12E411D7sh",
+            "rhyparse_video": "https://b23.tv/BV1LT4y1G7ZD"
+        },
+        {
+            "song_id": "flyburg",
+            "song_name": "Flyburg and Endroll",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1sT4y1L7TP",
+            "rhyparse_video": "https://b23.tv/BV12h411n77F"
+        },
+        {
+            "song_id": "nirvluce",
+            "song_name": "Nirv lucE",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "https://b23.tv/BV1DJ411k7Bb",
+            "rhyparse_video": "https://b23.tv/BV1WA41157"
+        },
+        {
+            "song_id": "dataerror",
+            "song_name": "DataErr0r",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1oJ41127Bn",
+            "rhyparse_video": "https://b23.tv/BV1iQ4y1z7Gg"
+        },
+        {
+            "song_id": "crosssoul",
+            "song_name": "CROSS†SOUL",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1qJ41157rn",
+            "rhyparse_video": "https://b23.tv/BV1vP4y187he"
+        },
+        {
+            "song_id": "yourvoiceso",
+            "song_name": "Your voice so... feat. Such",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1g7411L7kt",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "chronostasis",
+            "song_name": "Chronostasis",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1fE411C7N4",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "kanagawa",
+            "song_name": "Kanagawa Cyber Culvert",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1ep4y117gG",
+            "rhyparse_video": "https://b23.tv/BV1TS4y1971w"
+        },
+        {
+            "song_id": "kanagawa",
+            "song_name": "Kanagawa Cyber Culvert",
+            "rating_class": 3,
+            "difficulty": "9+",
+            "play_video": "https://b23.tv/BV1B3411a7u7",
+            "rhyparse_video": "https://b23.tv/BV1gY411p7o8"
+        },
+        {
+            "song_id": "oracle",
+            "song_name": "Oracle",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1YJ411S7Ha",
+            "rhyparse_video": "https://b23.tv/BV1CP4y1A7eL"
+        },
+        {
+            "song_id": "aterlbus",
+            "song_name": "αterlβus",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "https://b23.tv/BV1wE411b7vF",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "impurebird",
+            "song_name": "Impure Bird",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1vi4y1g7Rx",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "ignotus",
+            "song_name": "Ignotus",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1rJ411G7z8",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "ignotus",
+            "song_name": "Ignotus",
+            "rating_class": 3,
+            "difficulty": "9+",
+            "play_video": "https://b23.tv/BV1tb4y1s75z",
+            "rhyparse_video": "https://b23.tv/BV1qi4y1C7dk"
+        },
+        {
+            "song_id": "lethaeus",
+            "song_name": "Lethaeus",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "https://b23.tv/BV1h441117mT",
+            "rhyparse_video": "https://b23.tv/BV1sz4y1f7Df"
+        },
+        {
+            "song_id": "moonheart",
+            "song_name": "Moonheart",
+            "rating_class": 3,
+            "difficulty": "9+",
+            "play_video": "https://b23.tv/BV11T4y1N7zk",
+            "rhyparse_video": "https://b23.tv/BV11h41127BP"
+        },
+        {
+            "song_id": "auxesia",
+            "song_name": "Auxesia",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1CJ41127y6",
+            "rhyparse_video": "https://b23.tv/BV1YM4y1G7vA"
+        },
+        {
+            "song_id": "modelista",
+            "song_name": "Modelista",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "https://b23.tv/BV1GA411Y7zt",
+            "rhyparse_video": "https://b23.tv/BV1Mt4y1U76g"
+        },
+        {
+            "song_id": "soundwitch",
+            "song_name": "SOUNDWiTCH",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "https://b23.tv/BV1BE411b7H3",
+            "rhyparse_video": "https://b23.tv/BV1hi4y187sJ"
+        },
+        {
+            "song_id": "trappola",
+            "song_name": "trappola bewitching",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "https://b23.tv/BV1xJ411Q7ko",
+            "rhyparse_video": "https://b23.tv/BV19v4y1o7Bk"
+        },
+        {
+            "song_id": "iconoclast",
+            "song_name": "Iconoclast",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1b44114763",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "conflict",
+            "song_name": "conflict",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "https://b23.tv/BV1UJ411k7Rn",
+            "rhyparse_video": "https://b23.tv/BV1Dz411B71G"
+        },
+        {
+            "song_id": "axiumcrisis",
+            "song_name": "Axium Crisis",
+            "rating_class": 2,
+            "difficulty": "10+",
+            "play_video": "https://b23.tv/BV1bK4y1s7Ly",
+            "rhyparse_video": "https://b23.tv/BV1S7411g7s7"
+        },
+        {
+            "song_id": "grievouslady",
+            "song_name": "Grievous Lady",
+            "rating_class": 1,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1bk4y117mR",
+            "rhyparse_video": "https://b23.tv/BV1hU4y1J7RW"
+        },
+        {
+            "song_id": "grievouslady",
+            "song_name": "Grievous Lady",
+            "rating_class": 2,
+            "difficulty": "11",
+            "play_video": "https://b23.tv/BV1W3411E7eB",
+            "rhyparse_video": "https://b23.tv/BV1hU4y1J7RW"
+        },
+        {
+            "song_id": "dreaminattraction",
+            "song_name": "Dreamin' Attraction!!",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1VJ411V7m5",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "redandblue",
+            "song_name": "Red and Blue",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1sE411e7ZS",
+            "rhyparse_video": "https://b23.tv/BV1tk4y1m7aD"
+        },
+        {
+            "song_id": "redandblue",
+            "song_name": "Red and Blue",
+            "rating_class": 3,
+            "difficulty": "10",
+            "play_video": "https://b23.tv/BV153411L7W6",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "yozakurafubuki",
+            "song_name": "Yosakura Fubuki",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1qW411Q78w",
+            "rhyparse_video": "https://b23.tv/BV1Ni4y1T7Jk"
+        },
+        {
+            "song_id": "cyanine",
+            "song_name": "cyanine",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "https://b23.tv/BV1NE411v7Dz",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "specta",
+            "song_name": "Specta",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1sp4y197Wa",
+            "rhyparse_video": "https://b23.tv/BV1sf4y1F75A"
+        },
+        {
+            "song_id": "quon",
+            "song_name": "Quon",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "https://b23.tv/BV1DJ41127sg",
+            "rhyparse_video": "https://b23.tv/BV1x54y1D7fA"
+        },
+        {
+            "song_id": "syro",
+            "song_name": "Syro",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1o3411j7o3",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "singularity",
+            "song_name": "Singularity",
+            "rating_class": 2,
+            "difficulty": "10+",
+            "play_video": "https://b23.tv/BV1mr4y1T7qy",
+            "rhyparse_video": "https://b23.tv/BV1yp4y1i7Q5"
+        },
+        {
+            "song_id": "singularity",
+            "song_name": "Singularity",
+            "rating_class": 3,
+            "difficulty": "10",
+            "play_video": "https://b23.tv/BV12Z4y1r7Xc",
+            "rhyparse_video": "https://b23.tv/BV1Dr4y1W7cU"
+        },
+        {
+            "song_id": "memoryforest",
+            "song_name": "Memory Forest",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "https://b23.tv/BV17441197cB",
+            "rhyparse_video": "https://b23.tv/BV1iw41197c5"
+        },
+        {
+            "song_id": "strongholds",
+            "song_name": "Strongholds",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1J441167rK",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "nexttoyou",
+            "song_name": "next to you",
+            "rating_class": 3,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "metallicpunisher",
+            "song_name": "Metallic Punisher",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "blaster",
+            "song_name": "Blaster",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "guardina",
+            "song_name": "γuarδina",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "carminescythe",
+            "song_name": "carmine:scythe",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "bethere",
+            "song_name": "Be There",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "cyberneciacatharsis",
+            "song_name": "Cybernecia Catharsis",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "themessage",
+            "song_name": "The Message",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "sulfur",
+            "song_name": "Sulfur",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "https://b23.tv/BV1RJ411U7ka",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "halcyon",
+            "song_name": "Halcyon",
+            "rating_class": 2,
+            "difficulty": "10+",
+            "play_video": "https://b23.tv/BV1bN411f7c4",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "etherstrike",
+            "song_name": "Ether Strike",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "https://b23.tv/BV1uh411U7we",
+            "rhyparse_video": "https://b23.tv/BV1Qb4y1k73N"
+        },
+        {
+            "song_id": "fractureray",
+            "song_name": "Fracture Ray",
+            "rating_class": 1,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1Uv411y7e6",
+            "rhyparse_video": "https://b23.tv/BV1Qz4y1z7iD"
+        },
+        {
+            "song_id": "fractureray",
+            "song_name": "Fracture Ray",
+            "rating_class": 2,
+            "difficulty": "11",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "bookmaker",
+            "song_name": "Bookmaker (2D Version)",
+            "rating_class": 3,
+            "difficulty": "10",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "darakunosono",
+            "song_name": "Illegal Paradise",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "dropdead",
+            "song_name": "dropdead",
+            "rating_class": 1,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "dropdead",
+            "song_name": "dropdead",
+            "rating_class": 3,
+            "difficulty": "10",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "fallensquare",
+            "song_name": "Fallensquare",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "nhelv",
+            "song_name": "Nhelv",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "espebranch",
+            "song_name": "LunarOrbit -believe in the Espebranch road-",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "purgatorium",
+            "song_name": "Purgatorium",
+            "rating_class": 3,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "stager",
+            "song_name": "STAGER (ALL STAGE CLEAR)",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "linearaccelerator",
+            "song_name": "Linear Accelerator",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "tiferet",
+            "song_name": "Tiferet",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "alexandrite",
+            "song_name": "Alexandrite",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "rugie",
+            "song_name": "Rugie",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "astraltale",
+            "song_name": "Astral tale",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "phantasia",
+            "song_name": "Phantasia",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "empireofwinter",
+            "song_name": "Empire of Winter",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "merlin",
+            "song_name": "MERLIN",
+            "rating_class": 3,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "dxfullmetal",
+            "song_name": "DX Choseinou Full Metal Shojo",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "omakeno",
+            "song_name": "OMAKENO Stroke",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "omakeno",
+            "song_name": "OMAKENO Stroke",
+            "rating_class": 3,
+            "difficulty": "10",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "scarletlance",
+            "song_name": "Scarlet Lance",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "ouroboros",
+            "song_name": "ouroboros -twin stroke of the end-",
+            "rating_class": 2,
+            "difficulty": "10+",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "libertas",
+            "song_name": "Libertas",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "antithese",
+            "song_name": "Antithese",
+            "rating_class": 3,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "corruption",
+            "song_name": "Corruption",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "blackterritory",
+            "song_name": "Black Territory",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "viciousheroism",
+            "song_name": "Vicious Heroism",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "cyaegha",
+            "song_name": "Cyaegha",
+            "rating_class": 2,
+            "difficulty": "10+",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "revixy",
+            "song_name": "ReviXy",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "vector",
+            "song_name": "VECTOЯ",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "supernova",
+            "song_name": "SUPERNOVA",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "garakuta",
+            "song_name": "Garakuta Doll Play",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "ikazuchi",
+            "song_name": "Ikazuchi",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "worldvanquisher",
+            "song_name": "World Vanquisher",
+            "rating_class": 2,
+            "difficulty": "10+",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "dreadnought",
+            "song_name": "Dreadnought",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "vindication",
+            "song_name": "Vindication",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "heavensdoor",
+            "song_name": "Heavensdoor",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "heavensdoor",
+            "song_name": "Heavensdoor",
+            "rating_class": 3,
+            "difficulty": "10+",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "ringedgenesis",
+            "song_name": "Ringed Genesis",
+            "rating_class": 2,
+            "difficulty": "10+",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "aiueoon",
+            "song_name": "AI[UE]OON",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "melodyoflove",
+            "song_name": "A Wandering Melody of Love",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "https://b23.tv/BV11441197YX",
+            "rhyparse_video": "https://b23.tv/BV1nP4y1s7Nq"
+        },
+        {
+            "song_id": "valhallazero",
+            "song_name": "Valhalla:0",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "https://b23.tv/BV1ME411q7CC",
+            "rhyparse_video": "https://b23.tv/BV1Vb4y1Q7dU"
+        },
+        {
+            "song_id": "mirzam",
+            "song_name": "Mirzam",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "https://b23.tv/BV1FE41177qi",
+            "rhyparse_video": "https://b23.tv/BV1p54y1B7ur"
+        },
+        {
+            "song_id": "gloryroad",
+            "song_name": "GLORY：ROAD",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "https://b23.tv/BV1pa4y1x7kK",
+            "rhyparse_video": "https://b23.tv/BV1HE411c7tb"
+        },
+        {
+            "song_id": "monochromeprincess",
+            "song_name": "Monochrome Princess",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV17E411t7Re",
+            "rhyparse_video": "https://b23.tv/BV1aa4y1L7nw"
+        },
+        {
+            "song_id": "heavenlycaress",
+            "song_name": "Heavenly caress",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "filament",
+            "song_name": "Filament",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "avantraze",
+            "song_name": "Avant Raze",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "battlenoone",
+            "song_name": "BATTLE NO.1",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "laqryma",
+            "song_name": "La'qryma of the Wasteland",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "laqryma",
+            "song_name": "La'qryma of the Wasteland",
+            "rating_class": 3,
+            "difficulty": "9+",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "einherjar",
+            "song_name": "Einherjar Joker",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "izana",
+            "song_name": "IZANA",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "saikyostronger",
+            "song_name": "SAIKYO STRONGER",
+            "rating_class": 1,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "saikyostronger",
+            "song_name": "SAIKYO STRONGER",
+            "rating_class": 2,
+            "difficulty": "11",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "blrink",
+            "song_name": "BLRINK",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "amygdata",
+            "song_name": "amygdata",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "corpssansorganes",
+            "song_name": "corps-sans-organes",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "equilibrium",
+            "song_name": "Equilibrium",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1GZ4y1p7R8",
+            "rhyparse_video": "https://b23.tv/BV1DK411H7PP"
+        },
+        {
+            "song_id": "antagonism",
+            "song_name": "Antagonism",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "https://b23.tv/BV1XT4y1u7wr",
+            "rhyparse_video": "https://b23.tv/BV1zg4y1i7BB"
+        },
+        {
+            "song_id": "lostdesire",
+            "song_name": "Lost Desire",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "https://b23.tv/BV1AZ4y1p7dt",
+            "rhyparse_video": "https://b23.tv/BV13t4y1y7ca"
+        },
+        {
+            "song_id": "dantalion",
+            "song_name": "Dantalion",
+            "rating_class": 2,
+            "difficulty": "10+",
+            "play_video": "https://b23.tv/BV14D4y1R72c",
+            "rhyparse_video": "https://b23.tv/BV1Dv411z76f"
+        },
+        {
+            "song_id": "ifi",
+            "song_name": "#1f1e33",
+            "rating_class": 1,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1Aa4y1E7PL",
+            "rhyparse_video": "https://b23.tv/BV1gf4y1R7Mn"
+        },
+        {
+            "song_id": "ifi",
+            "song_name": "#1f1e33",
+            "rating_class": 2,
+            "difficulty": "10+",
+            "play_video": "https://b23.tv/BV1hv41177Fm",
+            "rhyparse_video": "https://b23.tv/BV1ok4y167rb"
+        },
+        {
+            "song_id": "tempestissimo",
+            "song_name": "Tempestissimo",
+            "rating_class": 1,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1oV41117rq",
+            "rhyparse_video": "https://b23.tv/BV1gf4y1L7VZ"
+        },
+        {
+            "song_id": "tempestissimo",
+            "song_name": "Tempestissimo",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "https://b23.tv/BV1SK411K7i6",
+            "rhyparse_video": "https://b23.tv/BV1BL411n7Jx"
+        },
+        {
+            "song_id": "tempestissimo",
+            "song_name": "Tempestissimo",
+            "rating_class": 3,
+            "difficulty": "11",
+            "play_video": "https://b23.tv/BV1t54y1p7Qi",
+            "rhyparse_video": "https://b23.tv/BV1BL411n7Jx"
+        },
+        {
+            "song_id": "arcahv",
+            "song_name": "Arcahv",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "altale",
+            "song_name": "Altale",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "givemeanightmare",
+            "song_name": "Give Me a Nightmare",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "blacklotus",
+            "song_name": "Black Lotus",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "scarletcage",
+            "song_name": "Scarlet Cage",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "faintlight",
+            "song_name": "Faint Light (Arcaea Edit)",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "feelssoright",
+            "song_name": "Feels So Right feat. Renko",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "teriqma",
+            "song_name": "Teriqma",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "mahoroba",
+            "song_name": "MAHOROBA",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "badtek",
+            "song_name": "BADTEK",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "maliciousmischance",
+            "song_name": "Malicious Mischance",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "gothiveofra",
+            "song_name": "Got hive of Ra",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "buchigireberserker",
+            "song_name": "BUCHiGiRE Berserker",
+            "rating_class": 2,
+            "difficulty": "10+",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "galaxyfriends",
+            "song_name": "Galaxy Friends",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "crossover",
+            "song_name": "CROSS†OVER",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "xeraphinite",
+            "song_name": "Xeraphinite",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "lapis",
+            "song_name": "Lapis",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "xanatos",
+            "song_name": "Xanatos",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "purpleverse",
+            "song_name": "Purple Verse",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "alicealamode",
+            "song_name": "Alice à la mode",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "alicessuitcase",
+            "song_name": "Alice's Suitcase",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "jump",
+            "song_name": "Jump",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "felis",
+            "song_name": "Felis",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "https://b23.tv/BV1tZ4y1g7Px",
+            "rhyparse_video": "https://b23.tv/BV1j5411G7KE"
+        },
+        {
+            "song_id": "heartjackin",
+            "song_name": "Heart Jackin'",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "https://b23.tv/BV1nK4y177cK",
+            "rhyparse_video": "https://b23.tv/BV1if4y1r7yq"
+        },
+        {
+            "song_id": "toaliceliddell",
+            "song_name": "To: Alice Liddell",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "https://b23.tv/BV1zp4y1z7Gr",
+            "rhyparse_video": "https://b23.tv/BV1hf4y1V7kk"
+        },
+        {
+            "song_id": "lazyaddiction",
+            "song_name": "Lazy Addiction",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1U54y1479V",
+            "rhyparse_video": "https://b23.tv/BV14y4y1J7wq"
+        },
+        {
+            "song_id": "dazzlehop",
+            "song_name": "Dazzle hop",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "https://b23.tv/BV1Ny4y1i7Jy",
+            "rhyparse_video": "https://b23.tv/BV1dU4y1G7P8"
+        },
+        {
+            "song_id": "viyellastears",
+            "song_name": "Viyella's Tears",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "https://b23.tv/BV1Q54y147hn",
+            "rhyparse_video": "https://b23.tv/BV1LA411s7Hs"
+        },
+        {
+            "song_id": "omegafour",
+            "song_name": "ω4",
+            "rating_class": 2,
+            "difficulty": "10+",
+            "play_video": "https://b23.tv/BV1yT4y1K7UE",
+            "rhyparse_video": "https://b23.tv/BV1Nh411W7gN"
+        },
+        {
+            "song_id": "seventhsense",
+            "song_name": "7thSense",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "https://b23.tv/BV1SK411M7sC",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "oshamascramble",
+            "song_name": "Oshama Scramble!",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "https://b23.tv/BV12p4y1s79S",
+            "rhyparse_video": "https://b23.tv/BV1354y147Vf"
+        },
+        {
+            "song_id": "amazingmightyyyy",
+            "song_name": "AMAZING MIGHTYYYY!!!!",
+            "rating_class": 2,
+            "difficulty": "10+",
+            "play_video": "https://b23.tv/BV17r4y1T7EA",
+            "rhyparse_video": "https://b23.tv/BV1Ro4y1d7di"
+        },
+        {
+            "song_id": "climax",
+            "song_name": "Climax",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "https://b23.tv/BV1CX4y1P73d",
+            "rhyparse_video": "https://b23.tv/BV1sr4y1M7NC"
+        },
+        {
+            "song_id": "lastcelebration",
+            "song_name": "Last Celebration",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "gou",
+            "song_name": "Misdeed -la bonté de Dieu et l'origine du mal-",
+            "rating_class": 2,
+            "difficulty": "10+",
+            "play_video": "https://b23.tv/BV1zP4y1472x",
+            "rhyparse_video": "https://b23.tv/BV1eV411q7dD"
+        },
+        {
+            "song_id": "glow",
+            "song_name": "Glow",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1TT4y1P7AK",
+            "rhyparse_video": "https://b23.tv/BV1e34y1U7vN"
+        },
+        {
+            "song_id": "attraqtia",
+            "song_name": "AttraqtiA",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "https://b23.tv/BV1Dy4y1H7it",
+            "rhyparse_video": "https://b23.tv/BV1zp4y1W791"
+        },
+        {
+            "song_id": "take",
+            "song_name": "Bamboo",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "https://b23.tv/BV1Ph411W7SM",
+            "rhyparse_video": "https://b23.tv/BV1Tt4y1z78P"
+        },
+        {
+            "song_id": "gimmedablood",
+            "song_name": "GIMME DA BLOOD",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "https://b23.tv/BV1wi4y1K7Yj",
+            "rhyparse_video": "https://b23.tv/BV1Sy4y1a79q"
+        },
+        {
+            "song_id": "bassline",
+            "song_name": "Can I Friend You on Bassbook? Lol",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1j54y1b7VS",
+            "rhyparse_video": "https://b23.tv/BV1XV411E7EX"
+        },
+        {
+            "song_id": "lifeispiano",
+            "song_name": "Life is PIANO",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1s5411c7Fk",
+            "rhyparse_video": "https://b23.tv/BV1kb4y1D78x"
+        },
+        {
+            "song_id": "crystalgravity",
+            "song_name": "Crystal Gravity",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1wp4y1t7sw",
+            "rhyparse_video": "https://b23.tv/BV1cv411L7bE"
+        },
+        {
+            "song_id": "farawaylight",
+            "song_name": "Far Away Light",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "https://b23.tv/BV1e64y167Tf",
+            "rhyparse_video": "https://b23.tv/BV1264y1k7kM"
+        },
+        {
+            "song_id": "loschen",
+            "song_name": "Löschen",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "aegleseeker",
+            "song_name": "Aegleseeker",
+            "rating_class": 2,
+            "difficulty": "11",
+            "play_video": "https://b23.tv/BV16A411G7dx",
+            "rhyparse_video": "https://b23.tv/BV1N54y1L7Xa"
+        },
+        {
+            "song_id": "odysseia",
+            "song_name": "ΟΔΥΣΣΕΙΑ",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV19h411e78e",
+            "rhyparse_video": "https://b23.tv/BV1hb4y1f772"
+        },
+        {
+            "song_id": "overwhelm",
+            "song_name": "Overwhelm",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "https://b23.tv/BV1Ev41157i7",
+            "rhyparse_video": "https://b23.tv/BV1564y1m7xC"
+        },
+        {
+            "song_id": "vandalism",
+            "song_name": "Vandalism",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "https://b23.tv/BV12V411x7aL",
+            "rhyparse_video": "https://b23.tv/BV1A64y1C7rN"
+        },
+        {
+            "song_id": "theultimacy",
+            "song_name": "THE ULTIMACY",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "https://b23.tv/BV1Xq4y1s7xc",
+            "rhyparse_video": "https://b23.tv/BV1S44y1i7uV"
+        },
+        {
+            "song_id": "rekkaresonance",
+            "song_name": "REKKA RESONANCE",
+            "rating_class": 2,
+            "difficulty": "10+",
+            "play_video": "https://b23.tv/BV1xq4y1W79y",
+            "rhyparse_video": "https://b23.tv/BV1Rw411o7Jj"
+        },
+        {
+            "song_id": "kyogenkigo",
+            "song_name": "False Embellishment",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1364y167py",
+            "rhyparse_video": "https://b23.tv/BV16341187c6"
+        },
+        {
+            "song_id": "hivemind",
+            "song_name": "HIVEMIND",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "https://b23.tv/BV1TM4y1K75P",
+            "rhyparse_video": "https://b23.tv/BV1dM4y1K7PC"
+        },
+        {
+            "song_id": "seclusion",
+            "song_name": "Seclusion",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "https://b23.tv/BV1Pq4y1s7pG",
+            "rhyparse_video": "https://b23.tv/BV1D64y1s7QY"
+        },
+        {
+            "song_id": "smallcloud",
+            "song_name": "Small Cloud Sugar Candy",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1H54y1J7DY",
+            "rhyparse_video": "https://b23.tv/BV1m44y1e7ij"
+        },
+        {
+            "song_id": "alterale",
+            "song_name": "AlterAle",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "https://b23.tv/BV18f4y157E8",
+            "rhyparse_video": "https://b23.tv/BV1fL41177Rz"
+        },
+        {
+            "song_id": "divinelight",
+            "song_name": "Divine Light of Myriad",
+            "rating_class": 2,
+            "difficulty": "10+",
+            "play_video": "https://b23.tv/BV1Sb4y1j7uk",
+            "rhyparse_video": "https://b23.tv/BV1LX4y1c7Gc"
+        },
+        {
+            "song_id": "mazymetroplex",
+            "song_name": "Mazy Metroplex",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "https://b23.tv/BV1Xb4y1U793",
+            "rhyparse_video": "https://b23.tv/BV1c64y1e7J6"
+        },
+        {
+            "song_id": "quonwacca",
+            "song_name": "Quon",
+            "rating_class": 3,
+            "difficulty": "10",
+            "play_video": "https://b23.tv/BV11U4y1J7dG",
+            "rhyparse_video": "https://b23.tv/BV1xQ4y1q7wu"
+        },
+        {
+            "song_id": "withu",
+            "song_name": "with U",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1C3411r77Y",
+            "rhyparse_video": "https://b23.tv/BV1R3411q7vP"
+        },
+        {
+            "song_id": "genocider",
+            "song_name": "GENOCIDER",
+            "rating_class": 2,
+            "difficulty": "10+",
+            "play_video": "https://b23.tv/BV1Mq4y1H7Jb",
+            "rhyparse_video": "https://b23.tv/BV1HX4y1F7Su"
+        },
+        {
+            "song_id": "letyoudivermx",
+            "song_name": "Let you DIVE! (nitro rmx)",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1xM4y157vy",
+            "rhyparse_video": "https://b23.tv/BV1rA411w7n8"
+        },
+        {
+            "song_id": "sheriruthrmx",
+            "song_name": "Sheriruth (Laur Remix)",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "https://b23.tv/BV1X64y1W7DC",
+            "rhyparse_video": "https://b23.tv/BV1if4y1F7aX"
+        },
+        {
+            "song_id": "eveninginscarlet",
+            "song_name": "Evening in Scarlet",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1Y3411B7Bx",
+            "rhyparse_video": "https://b23.tv/BV1AU4y1N7Fo"
+        },
+        {
+            "song_id": "energysynergymatrix",
+            "song_name": "ENERGY SYNERGY MATRIX",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1u34y1Q7w9",
+            "rhyparse_video": "https://b23.tv/BV1ML4y187Kf"
+        },
+        {
+            "song_id": "gengaozo",
+            "song_name": "G e n g a o z o",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "https://b23.tv/BV1hR4y1n76q",
+            "rhyparse_video": "https://b23.tv/BV1xr4y1y7NF"
+        },
+        {
+            "song_id": "goldenslaughterer",
+            "song_name": "goldenslaughterer",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "https://b23.tv/BV1Zq4y1P7Gm",
+            "rhyparse_video": "https://b23.tv/BV1eT4y1Z7kz"
+        },
+        {
+            "song_id": "lastendconductor",
+            "song_name": "lastendconductor",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1644y1t7Ep",
+            "rhyparse_video": "https://b23.tv/BV1sP4y187Bp"
+        },
+        {
+            "song_id": "lastendconductor",
+            "song_name": "lastendconductor",
+            "rating_class": 3,
+            "difficulty": "10",
+            "play_video": "https://b23.tv/BV1g34y1S7mA",
+            "rhyparse_video": "https://b23.tv/BV1yU4y1F7d6"
+        },
+        {
+            "song_id": "redolentshape",
+            "song_name": "Redolent Shape",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "https://b23.tv/BV1dv411M7or",
+            "rhyparse_video": "https://b23.tv/BV1Gu411o7ZJ"
+        },
+        {
+            "song_id": "ascent",
+            "song_name": "Ascent",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "https://b23.tv/BV17F411Y7YE",
+            "rhyparse_video": "https://b23.tv/BV15S4y1R7yf"
+        },
+        {
+            "song_id": "livefastdieyoung",
+            "song_name": "Live Fast Die Young",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "https://b23.tv/BV1FQ4y1U7GJ",
+            "rhyparse_video": "https://b23.tv/BV1yF411b7H9"
+        },
+        {
+            "song_id": "summerfireworks",
+            "song_name": "Summer Fireworks of Love",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "https://b23.tv/BV1t3411b7RE",
+            "rhyparse_video": "https://b23.tv/BV1JL41177nx"
+        },
+        {
+            "song_id": "bluerose",
+            "song_name": "Blue Rose",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1Fb4y1W7F5",
+            "rhyparse_video": "https://b23.tv/BV1qF411q7WX"
+        },
+        {
+            "song_id": "blockedlibrary",
+            "song_name": "Blocked Library",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1k44y1E7FL",
+            "rhyparse_video": "https://b23.tv/BV1Pi4y1d7ee"
+        },
+        {
+            "song_id": "neokosmo",
+            "song_name": "nέο κόsmo",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "https://b23.tv/BV16P4y1n71T",
+            "rhyparse_video": "https://b23.tv/BV1Vi4y1o7xv"
+        },
+        {
+            "song_id": "lightningscrew",
+            "song_name": "Lightning Screw",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "finalstep",
+            "song_name": "Final Step!",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1Wm4y197kP",
+            "rhyparse_video": "https://b23.tv/BV1CY411H73t"
+        },
+        {
+            "song_id": "akinokagerou",
+            "song_name": "Haze of Autumn",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "https://b23.tv/BV1v3411x7gA",
+            "rhyparse_video": "https://b23.tv/BV1fZ4y1D7Eb"
+        },
+        {
+            "song_id": "medusa",
+            "song_name": "Medusa",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "https://b23.tv/BV1Wa411678q",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "init",
+            "song_name": "init()",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "https://b23.tv/BV1m44y1W7wE",
+            "rhyparse_video": "https://b23.tv/BV1Xu41197nJ"
+        },
+        {
+            "song_id": "sakurafubuki",
+            "song_name": "Sakura Fubuki",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https:/b23.tv/BV1i5411o79o",
+            "rhyparse_video": "https://b23.tv/BV1qq4y1x79C"
+        },
+        {
+            "song_id": "nulctrl",
+            "song_name": "NULCTRL",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV1Pa411C7Sh",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "macromod",
+            "song_name": "Macrocosmic Modulation",
+            "rating_class": 2,
+            "difficulty": "9+",
+            "play_video": "https://b23.tv/BV1Xa411878z",
+            "rhyparse_video": "https://b23.tv/BV1CY411V7mG"
+        },
+        {
+            "song_id": "neowings",
+            "song_name": "NEO WINGS",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "https://b23.tv/BV143411777o",
+            "rhyparse_video": "https://b23.tv/BV1Hb4y147Xr"
+        },
+        {
+            "song_id": "kissinglucifer",
+            "song_name": "Kissing Lucifer",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "https://b23.tv/BV1Ya41187Ks",
+            "rhyparse_video": "https://b23.tv/BV1Fr4y1B79K"
+        },
+        {
+            "song_id": "aurgelmir",
+            "song_name": "Aurgelmir",
+            "rating_class": 2,
+            "difficulty": "10",
+            "play_video": "https://b23.tv/BV13Y411H7ae",
+            "rhyparse_video": ""
+        },
+        {
+            "song_id": "headbonkache",
+            "song_name": "Head BONK ache",
+            "rating_class": 2,
+            "difficulty": "9",
+            "play_video": "https://b23.tv/BV15Y4y1q7it",
+            "rhyparse_video": "https://b23.tv/BV1Xu411q7HA"
+        }
+    ]
+}

@@ -1,0 +1,1852 @@
+{
+    "nicknames": [
+        {
+            "song_id": "sayonarahatsukoi",
+            "song_name": "Sayonara Hatsukoi",
+            "song_nicknames": [
+                "再见初恋"
+            ]
+        },
+        {
+            "song_id": "lostcivilization",
+            "song_name": "Lost Civilization",
+            "song_nicknames": [
+                "失落文明"
+            ]
+        },
+        {
+            "song_id": "goodtek",
+            "song_name": "GOODTEK (Arcaea Edit)",
+            "song_nicknames": [
+                "良锤"
+            ]
+        },
+        {
+            "song_id": "viyella",
+            "song_name": "cry of viyella",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "rise",
+            "song_name": "Rise",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "lucifer",
+            "song_name": "Lucifer",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "fairytale",
+            "song_name": "Fairytale",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "hearditsaid",
+            "song_name": "I've heard it said",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "babaroque",
+            "song_name": "Babaroque",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "memoryfactory",
+            "song_name": "memoryfactory.lzh",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "snowwhite",
+            "song_name": "Snow White",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "relentless",
+            "song_name": "Relentless",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "shadesoflight",
+            "song_name": "Shades of Light in a Transcendent Realm",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "vexaria",
+            "song_name": "Vexaria",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "essenceoftwilight",
+            "song_name": "Essence of Twilight",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "qualia",
+            "song_name": "qualia -ideaesthesia-",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "pragmatism",
+            "song_name": "PRAGMATISM",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "sheriruth",
+            "song_name": "Sheriruth",
+            "song_nicknames": [
+                "射日如桃花"
+            ]
+        },
+        {
+            "song_id": "lumia",
+            "song_name": "Lumia",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "dement",
+            "song_name": "Dement ~after legend~",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "dandelion",
+            "song_name": "Dandelion",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "anokumene",
+            "song_name": "Anökumene",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "infinityheaven",
+            "song_name": "Infinity Heaven",
+            "song_nicknames": [
+                "无尽天堂"
+            ]
+        },
+        {
+            "song_id": "partyvinyl",
+            "song_name": "Party Vinyl",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "flashback",
+            "song_name": "Flashback",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "flyburg",
+            "song_name": "Flyburg and Endroll",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "nirvluce",
+            "song_name": "Nirv lucE",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "paradise",
+            "song_name": "Paradise",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "brandnewworld",
+            "song_name": "Brand new world",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "dataerror",
+            "song_name": "DataErr0r",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "crosssoul",
+            "song_name": "CROSS†SOUL",
+            "song_nicknames": [
+                "穿魂"
+            ]
+        },
+        {
+            "song_id": "yourvoiceso",
+            "song_name": "Your voice so... feat. Such",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "chronostasis",
+            "song_name": "Chronostasis",
+            "song_nicknames": [
+                "黑皇帝", "时停"
+            ]
+        },
+        {
+            "song_id": "kanagawa",
+            "song_name": "Kanagawa Cyber Culvert",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "moonlightofsandcastle",
+            "song_name": "Moonlight of Sand Castle",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "reconstruction",
+            "song_name": "REconstruction",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "evoltex",
+            "song_name": "Evoltex (poppi'n mix)",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "oracle",
+            "song_name": "Oracle",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "aterlbus",
+            "song_name": "αterlβus",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "clotho",
+            "song_name": "Clotho and the stargazer",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "impurebird",
+            "song_name": "Impure Bird",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "ignotus",
+            "song_name": "Ignotus",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "lethaeus",
+            "song_name": "Lethaeus",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "romancewars",
+            "song_name": "Romance Wars",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "blossoms",
+            "song_name": "Blossoms",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "moonheart",
+            "song_name": "Moonheart",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "genesis",
+            "song_name": "Genesis",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "harutopia",
+            "song_name": "Harutopia ~Utopia of Spring~",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "auxesia",
+            "song_name": "Auxesia",
+            "song_nicknames": [
+                "夏光"
+            ]
+        },
+        {
+            "song_id": "rabbitintheblackroom",
+            "song_name": "Rabbit In The Black Room",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "modelista",
+            "song_name": "Modelista",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "soundwitch",
+            "song_name": "SOUNDWiTCH",
+            "song_nicknames": [
+                "音巫"
+            ]
+        },
+        {
+            "song_id": "trappola",
+            "song_name": "trappola bewitching",
+            "song_nicknames": [
+                "妖艳魔女"
+            ]
+        },
+        {
+            "song_id": "iconoclast",
+            "song_name": "Iconoclast",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "conflict",
+            "song_name": "conflict",
+            "song_nicknames": [
+                "对立", "冲突"
+            ]
+        },
+        {
+            "song_id": "axiumcrisis",
+            "song_name": "Axium Crisis",
+            "song_nicknames": [
+                "轴心危机"
+            ]
+        },
+        {
+            "song_id": "grievouslady",
+            "song_name": "Grievous Lady",
+            "song_nicknames": [
+                "病女", "GL", "对立拉窗帘"
+            ]
+        },
+        {
+            "song_id": "dreaminattraction",
+            "song_name": "Dreamin' Attraction!!",
+            "song_nicknames": [
+                "美年达"
+            ]
+        },
+        {
+            "song_id": "redandblue",
+            "song_name": "Red and Blue",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "onelastdrive",
+            "song_name": "One Last Drive",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "surrender",
+            "song_name": "Surrender",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "yozakurafubuki",
+            "song_name": "Yosakura Fubuki",
+            "song_nicknames": [
+                "夜樱吹雪"
+            ]
+        },
+        {
+            "song_id": "cyanine",
+            "song_name": "cyanine",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "dreamgoeson",
+            "song_name": "Dream goes on",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "journey",
+            "song_name": "Journey",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "specta",
+            "song_name": "Specta",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "quon",
+            "song_name": "Quon",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "syro",
+            "song_name": "Syro",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "reinvent",
+            "song_name": "Reinvent",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "silentrush",
+            "song_name": "Silent Rush",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "singularity",
+            "song_name": "Singularity",
+            "song_nicknames": [
+                "奇点"
+            ]
+        },
+        {
+            "song_id": "memoryforest",
+            "song_name": "Memory Forest",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "strongholds",
+            "song_name": "Strongholds",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "nexttoyou",
+            "song_name": "next to you",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "metallicpunisher",
+            "song_name": "Metallic Punisher",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "blaster",
+            "song_name": "Blaster",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "guardina",
+            "song_name": "γuarδina",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "carminescythe",
+            "song_name": "carmine:scythe",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "bethere",
+            "song_name": "Be There",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "cyberneciacatharsis",
+            "song_name": "Cybernecia Catharsis",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "callmyname",
+            "song_name": "Call My Name feat. Yukacco",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "inkarusi",
+            "song_name": "inkar-usi",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "mazenine",
+            "song_name": "Maze No.9",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "themessage",
+            "song_name": "The Message",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "sulfur",
+            "song_name": "Sulfur",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "halcyon",
+            "song_name": "Halcyon",
+            "song_nicknames": [
+                "翡翠鸡"
+            ]
+        },
+        {
+            "song_id": "etherstrike",
+            "song_name": "Ether Strike",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "fractureray",
+            "song_name": "Fracture Ray",
+            "song_nicknames": [
+                "骨折光"
+            ]
+        },
+        {
+            "song_id": "suomi",
+            "song_name": "Suomi",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "bookmaker",
+            "song_name": "Bookmaker (2D Version)",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "darakunosono",
+            "song_name": "Illegal Paradise",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "dropdead",
+            "song_name": "dropdead",
+            "song_nicknames": [
+                "摔死"
+            ]
+        },
+        {
+            "song_id": "fallensquare",
+            "song_name": "Fallensquare",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "nhelv",
+            "song_name": "Nhelv",
+            "song_nicknames": [
+                "你和驴"
+            ]
+        },
+        {
+            "song_id": "espebranch",
+            "song_name": "LunarOrbit -believe in the Espebranch road-",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "purgatorium",
+            "song_name": "Purgatorium",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "hikari",
+            "song_name": "Hikari",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "stager",
+            "song_name": "STAGER (ALL STAGE CLEAR)",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "hallofmirrors",
+            "song_name": "Hall of Mirrors",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "linearaccelerator",
+            "song_name": "Linear Accelerator",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "tiferet",
+            "song_name": "Tiferet",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "alexandrite",
+            "song_name": "Alexandrite",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "rugie",
+            "song_name": "Rugie",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "astraltale",
+            "song_name": "Astral tale",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "phantasia",
+            "song_name": "Phantasia",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "empireofwinter",
+            "song_name": "Empire of Winter",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "merlin",
+            "song_name": "MERLIN",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "dxfullmetal",
+            "song_name": "DX Choseinou Full Metal Shojo",
+            "song_nicknames": [
+                "DX超性能少女"
+            ]
+        },
+        {
+            "song_id": "omakeno",
+            "song_name": "OMAKENO Stroke",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "scarletlance",
+            "song_name": "Scarlet Lance",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "ouroboros",
+            "song_name": "ouroboros -twin stroke of the end-",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "libertas",
+            "song_name": "Libertas",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "solitarydream",
+            "song_name": "Solitary Dream",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "antithese",
+            "song_name": "Antithese",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "corruption",
+            "song_name": "Corruption",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "blackterritory",
+            "song_name": "Black Territory",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "viciousheroism",
+            "song_name": "Vicious Heroism",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "cyaegha",
+            "song_name": "Cyaegha",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "revixy",
+            "song_name": "ReviXy",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "grimheart",
+            "song_name": "Grimheart",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "vector",
+            "song_name": "VECTOЯ",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "supernova",
+            "song_name": "SUPERNOVA",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "dottodot",
+            "song_name": "Dot to Dot feat. shully",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "garakuta",
+            "song_name": "Garakuta Doll Play",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "ikazuchi",
+            "song_name": "Ikazuchi",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "worldvanquisher",
+            "song_name": "World Vanquisher",
+            "song_nicknames": [
+                "世征"
+            ]
+        },
+        {
+            "song_id": "dreadnought",
+            "song_name": "Dreadnought",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "particlearts",
+            "song_name": "Particle Arts",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "vindication",
+            "song_name": "Vindication",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "heavensdoor",
+            "song_name": "Heavensdoor",
+            "song_nicknames": [
+                "黑蚊子多", "天堂门"
+            ]
+        },
+        {
+            "song_id": "ringedgenesis",
+            "song_name": "Ringed Genesis",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "chelsea",
+            "song_name": "Chelsea",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "aiueoon",
+            "song_name": "AI[UE]OON",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "melodyoflove",
+            "song_name": "A Wandering Melody of Love",
+            "song_nicknames": [
+                "恋歌"
+            ]
+        },
+        {
+            "song_id": "tiemedowngently",
+            "song_name": "Tie me down gently",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "valhallazero",
+            "song_name": "Valhalla:0",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "mirzam",
+            "song_name": "Mirzam",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "diode",
+            "song_name": "Diode",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "freefall",
+            "song_name": "FREEF4LL",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "gloryroad",
+            "song_name": "GLORY：ROAD",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "monochromeprincess",
+            "song_name": "Monochrome Princess",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "heavenlycaress",
+            "song_name": "Heavenly caress",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "senkyou",
+            "song_name": "Senkyou",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "filament",
+            "song_name": "Filament",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "avantraze",
+            "song_name": "Avant Raze",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "battlenoone",
+            "song_name": "BATTLE NO.1",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "laqryma",
+            "song_name": "La'qryma of the Wasteland",
+            "song_nicknames": [
+                "垃圾岛"
+            ]
+        },
+        {
+            "song_id": "einherjar",
+            "song_name": "Einherjar Joker",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "izana",
+            "song_name": "IZANA",
+            "song_nicknames": [
+                "哪里功夫高"
+            ]
+        },
+        {
+            "song_id": "saikyostronger",
+            "song_name": "SAIKYO STRONGER",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "worldexecuteme",
+            "song_name": "world.execute(me);",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "blrink",
+            "song_name": "BLRINK",
+            "song_nicknames": [
+                "对立醉酒"
+            ]
+        },
+        {
+            "song_id": "oblivia",
+            "song_name": "Oblivia",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "amygdata",
+            "song_name": "amygdata",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "corpssansorganes",
+            "song_name": "corps-sans-organes",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "equilibrium",
+            "song_name": "Equilibrium",
+            "song_nicknames": [
+                "平衡"
+            ]
+        },
+        {
+            "song_id": "antagonism",
+            "song_name": "Antagonism",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "lostdesire",
+            "song_name": "Lost Desire",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "dantalion",
+            "song_name": "Dantalion",
+            "song_nicknames": [
+                "蛋挞林"
+            ]
+        },
+        {
+            "song_id": "ifi",
+            "song_name": "#1f1e33",
+            "song_nicknames": [
+                "色号"
+            ]
+        },
+        {
+            "song_id": "tempestissimo",
+            "song_name": "Tempestissimo",
+            "song_nicknames": [
+                "风暴", "风暴对立", "猫对立"
+            ]
+        },
+        {
+            "song_id": "arcahv",
+            "song_name": "Arcahv",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "altale",
+            "song_name": "Altale",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "givemeanightmare",
+            "song_name": "Give Me a Nightmare",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "blacklotus",
+            "song_name": "Black Lotus",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "gekka",
+            "song_name": "Gekka (Short Version)",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "vividtheory",
+            "song_name": "Vivid Theory",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "onefr",
+            "song_name": "1F√",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "scarletcage",
+            "song_name": "Scarlet Cage",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "faintlight",
+            "song_name": "Faint Light (Arcaea Edit)",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "feelssoright",
+            "song_name": "Feels So Right feat. Renko",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "teriqma",
+            "song_name": "Teriqma",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "mahoroba",
+            "song_name": "MAHOROBA",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "badtek",
+            "song_name": "BADTEK",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "maliciousmischance",
+            "song_name": "Malicious Mischance",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "gothiveofra",
+            "song_name": "Got hive of Ra",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "buchigireberserker",
+            "song_name": "BUCHiGiRE Berserker",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "galaxyfriends",
+            "song_name": "Galaxy Friends",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "crossover",
+            "song_name": "CROSS†OVER",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "xeraphinite",
+            "song_name": "Xeraphinite",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "lapis",
+            "song_name": "Lapis",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "xanatos",
+            "song_name": "Xanatos",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "purpleverse",
+            "song_name": "Purple Verse",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "alicealamode",
+            "song_name": "Alice à la mode",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "eccentrictale",
+            "song_name": "Eccentric Tale",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "alicessuitcase",
+            "song_name": "Alice's Suitcase",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "jump",
+            "song_name": "Jump",
+            "song_nicknames": [
+                "跳"
+            ]
+        },
+        {
+            "song_id": "felis",
+            "song_name": "Felis",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "besideyou",
+            "song_name": "Beside You",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "heartjackin",
+            "song_name": "Heart Jackin'",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "toaliceliddell",
+            "song_name": "To: Alice Liddell",
+            "song_nicknames": [
+                "致爱丽丝"
+            ]
+        },
+        {
+            "song_id": "lazyaddiction",
+            "song_name": "Lazy Addiction",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "dazzlehop",
+            "song_name": "Dazzle hop",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "viyellastears",
+            "song_name": "Viyella's Tears",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "omegafour",
+            "song_name": "ω4",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "aprilshowers",
+            "song_name": "April showers",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "seventhsense",
+            "song_name": "7thSense",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "oshamascramble",
+            "song_name": "Oshama Scramble!",
+            "song_nicknames": [
+                "牛乳"
+            ]
+        },
+        {
+            "song_id": "amazingmightyyyy",
+            "song_name": "AMAZING MIGHTYYYY!!!!",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "climax",
+            "song_name": "Climax",
+            "song_nicknames": [
+                "高潮"
+            ]
+        },
+        {
+            "song_id": "lastcelebration",
+            "song_name": "Last Celebration",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "gou",
+            "song_name": "Misdeed -la bonté de Dieu et l'origine du mal-",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "glow",
+            "song_name": "Glow",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "attraqtia",
+            "song_name": "AttraqtiA",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "enchantedlove",
+            "song_name": "enchanted love",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "take",
+            "song_name": "Bamboo",
+            "song_nicknames": [
+                "竹", "竹子"
+            ]
+        },
+        {
+            "song_id": "gimmedablood",
+            "song_name": "GIMME DA BLOOD",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "bassline",
+            "song_name": "Can I Friend You on Bassbook? Lol",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "lifeispiano",
+            "song_name": "Life is PIANO",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "paperwitch",
+            "song_name": "Paper Witch",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "crystalgravity",
+            "song_name": "Crystal Gravity",
+            "song_nicknames": [
+                "水晶重力"
+            ]
+        },
+        {
+            "song_id": "farawaylight",
+            "song_name": "Far Away Light",
+            "song_nicknames": [
+                "远光"
+            ]
+        },
+        {
+            "song_id": "loschen",
+            "song_name": "Löschen",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "aegleseeker",
+            "song_name": "Aegleseeker",
+            "song_nicknames": [
+                "光追"
+            ]
+        },
+        {
+            "song_id": "coastalhighway",
+            "song_name": "Coastal Highway",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "odysseia",
+            "song_name": "ΟΔΥΣΣΕΙΑ",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "overwhelm",
+            "song_name": "Overwhelm",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "vandalism",
+            "song_name": "Vandalism",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "turbocharger",
+            "song_name": "Turbocharger",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "theultimacy",
+            "song_name": "THE ULTIMACY",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "rekkaresonance",
+            "song_name": "REKKA RESONANCE",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "kyogenkigo",
+            "song_name": "False Embellishment",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "hivemind",
+            "song_name": "HIVEMIND",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "seclusion",
+            "song_name": "Seclusion",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "smallcloud",
+            "song_name": "Small Cloud Sugar Candy",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "alterale",
+            "song_name": "AlterAle",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "divinelight",
+            "song_name": "Divine Light of Myriad",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "mazymetroplex",
+            "song_name": "Mazy Metroplex",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "quonwacca",
+            "song_name": "Quon",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "withu",
+            "song_name": "with U",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "genocider",
+            "song_name": "GENOCIDER",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "letyoudivermx",
+            "song_name": "Let you DIVE! (nitro rmx)",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "sheriruthrmx",
+            "song_name": "Sheriruth (Laur Remix)",
+            "song_nicknames": [
+                "墨绿魔王"
+            ]
+        },
+        {
+            "song_id": "eveninginscarlet",
+            "song_name": "Evening in Scarlet",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "bluecomet",
+            "song_name": "blue comet",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "energysynergymatrix",
+            "song_name": "ENERGY SYNERGY MATRIX",
+            "song_nicknames": [
+                "ESM", "ESM跑"
+            ]
+        },
+        {
+            "song_id": "gengaozo",
+            "song_name": "G e n g a o z o",
+            "song_nicknames": [
+                "跟高走", "跟高总"
+            ]
+        },
+        {
+            "song_id": "goldenslaughterer",
+            "song_name": "goldenslaughterer",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "lastendconductor",
+            "song_name": "lastendconductor",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "redolentshape",
+            "song_name": "Redolent Shape",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "cosmica",
+            "song_name": "Cosmica",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "ascent",
+            "song_name": "Ascent",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "livefastdieyoung",
+            "song_name": "Live Fast Die Young",
+            "song_nicknames": [
+                "活得快死得早"
+            ]
+        },
+        {
+            "song_id": "summerfireworks",
+            "song_name": "Summer Fireworks of Love",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "firstsnow",
+            "song_name": "First Snow",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "bluerose",
+            "song_name": "Blue Rose",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "blockedlibrary",
+            "song_name": "Blocked Library",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "neokosmo",
+            "song_name": "nέο κόsmo",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "lightningscrew",
+            "song_name": "Lightning Screw",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "lightsofmuse",
+            "song_name": "Lights of Muse",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "finalstep",
+            "song_name": "Final Step!",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "akinokagerou",
+            "song_name": "Haze of Autumn",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "medusa",
+            "song_name": "Medusa",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "init",
+            "song_name": "init()",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "internetoverdose",
+            "song_name": "INTERNET OVERDOSE",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "sakurafubuki",
+            "song_name": "Sakura Fubuki",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "nulctrl",
+            "song_name": "NULCTRL",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "macromod",
+            "song_name": "Macrocosmic Modulation",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "neowings",
+            "song_name": "NEO WINGS",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "kissinglucifer",
+            "song_name": "Kissing Lucifer",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "avril",
+            "song_name": "Ävril -Flicka i krans-",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "aurgelmir",
+            "song_name": "Aurgelmir",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "headbonkache",
+            "song_name": "Head BONK ache",
+            "song_nicknames": [
+                ""
+            ]
+        },
+        {
+            "song_id": "ddd",
+            "song_name": "DDD",
+            "song_nicknames": [
+                ""
+            ]
+        }
+    ]
+}

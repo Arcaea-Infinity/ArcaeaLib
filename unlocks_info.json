@@ -1,0 +1,49 @@
+{
+	"unlocks": [
+		{
+			"songId": "曲目id",
+			"ratingClass": "难度",
+			"conditions": [
+				{
+					"type": 0,
+					"credit": "解锁需要的残片数"
+				},
+				{
+					"type": 1,
+					"song_id": "要通关的前置曲id",
+					"song_difficulty": "前置曲难度",
+					"grade": "通关的最低要求等级,0=无限制,1=C,2=B,3=A,4=AA,5=EX,6=EX+"
+				},
+				{
+					"type": 2,
+					"song_id": "要游玩的前置曲id",
+					"song_difficulty": "前置曲难度"
+				},
+				{
+					"type": 3,
+					"song_id": "要多次通关的前置曲id",
+					"song_difficulty": "前置曲难度",
+					"grade": "每次通关的最低要求等级,0=无限制,1=C,2=B,3=A,4=AA,5=EX,6=EX+",
+					"times": "通关次数"
+				},
+				{
+					"type": 4,
+					"conditions": ["多选一条件集合"]
+				},
+				{
+					"type": 5,
+					"rating": "解锁所需的最低潜力值*100"
+				},
+				{
+					"type": 101,
+					"min": "异象解锁失败时获得的最少解锁进度(百分比)",
+					"max": "异象解锁失败时获得的最多解锁进度(百分比)"
+				},
+				{
+					"type": 103,
+					"id": "解锁时需要使用的搭档id(-1为任意搭档(存疑))"
+				}
+			]
+		}
+	]
+}
