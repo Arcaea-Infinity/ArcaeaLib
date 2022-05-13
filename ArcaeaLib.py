@@ -121,48 +121,24 @@ class Log:
             file.write(output + '\n\n')
             file.close()
 
-class StringParser:
-    def __init__(self, filepath, encoding='utf-8') -> None:
-        self.file = open(filepath, 'r', encoding=encoding)
-    
-    def ReadString(self, stop: str) -> str:
-        pass
-    
-    def ReadInt(self, stop: str) -> int:
-        pass
-    
-    def ReadFloat(self, stop: str) -> float:
-        pass
-    
-    def ReadBool(self, stop: str) -> bool: #included non-capital bool: true, false
-        pass
-    
-    def ReadLine(self) -> str:
-        pass
-
-    def Skip(self, skip_size) -> None:
-        pass
-
 def compare(inp: str, target: str):
-    if len(inp) > len(target) / 2:
-        return False
-    if inp == target:
+    if inp.lower() == target.lower():
         return True
-    target = ''.join(char for char in target if char.isalnum())
-    inp = inp.lower()
-    target = target.lower()
-    if inp == target:
+    def abbr(inp):
+        abbrev = ''
+        for i in inp.split(' '):
+            if len(i) == 1:
+                return ''
+            abbrev += i[0]
+        return abbrev
+    if inp.lower() == abbr(target).lower():
         return True
-    linp = inp.replace(' ', '')
-    ltarget = target.replace(' ', '')
-    if linp == ltarget or linp in ltarget:
+    target = ''.join([char for char in target if char.isalnum() or char == ' '])
+    if inp.lower() == abbr(target).lower() or inp.lower() == target.lower():
         return True
-    abbrev = ''
-    for i in target.split(' '):
-        abbrev += i[0]
-    if inp == abbrev:
+    if len(inp) > (len(target) / 3) and inp in target:
         return True
-
+    return False
 
 class ThreadsDownload:
     # TODO
@@ -1167,17 +1143,32 @@ class Aff:
 '''
 Phigros Chart Reader(Beta)
 '''
-class Phi:
+class BPMGroup:
+    def __init__(self, BPM: float, Beat: float, Time: float) -> None:
+        self.BPM = BPM
+        self.Beat = Beat
+        self.Time = Time
+
+class SpeedEvent:
+    def __init__(self, StartTime: float, EndTime: float, Value: float) -> None:
+        self.StartTime = StartTime
+        self.EndTime = EndTime
+        self.Value = Value
+
+class PhiChart:
     def __init__(self) -> None:
-        self.IsLoaded = None
+        self.IsLoaded = False
     
     def Load(self, file: str or TextIOWrapper, format: str):
+        if isinstance(file, TextIOWrapper):
+            file = file.read()
+        if format == 'offical':
+            self.format = format
+            self.raw = file
+            self.jsonraw = json.dumps(file)
         pass
     
     def ToOffical(self):
-        pass
-    
-    def ToRPE(self):
         pass
 
 '''
@@ -1267,6 +1258,3 @@ class BotMessageBuilder:
     
     def ToDataSegment(self):
         pass
-
-
-IsArcAPKValid(r'C:\Users\Player01\Downloads\arcaea_3.5.3c.apk')
