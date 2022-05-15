@@ -911,7 +911,7 @@ class ArcaeaSongs:
             sinfo = Song(i['id'], i['title_localized'], i['artist'], charters, i['bpm'], i['bpm_base'], i.get('remote_dl', False), len(i['difficulties']) - 1, diffs)
             self.slist.append(sinfo) #(song_id, song_name, artist, charter_list, bpm, bpm_base, is_remote_dl, difficulties, diff_list)
         time2 = time.time()
-        log.log('info', 'songlist parsed, time spent: %sms' % ((time2 - time1)), 'ArcaeaSongs.__init__()')
+        log.log('info', 'songlist parsed, time spent: %sms' % ((time2 - time1) * 1000), 'ArcaeaSongs.__init__()')
         log.log('info', 'parsing characters list', 'ArcaeaSongs.__init__()')
         time1 = time.time()
         self.chardict = {}
@@ -921,7 +921,7 @@ class ArcaeaSongs:
             value = i[len(str(key)) + 1:]
             self.chardict[key] = value
         time2 = time.time()
-        log.log('info', 'characters parsed, time spent: %sms' % ((time2 - time1)), 'ArcaeaSongs.__init__()')
+        log.log('info', 'characters parsed, time spent: %sms' % ((time2 - time1) * 1000), 'ArcaeaSongs.__init__()')
         log.log('info', 'parsing packlist', 'ArcaeaSongs.__init__()')
         time1 = time.time()
         self.plist_json = json.loads(open(res_path + 'songs\\packlist', 'r', encoding='utf-8').read())
@@ -929,7 +929,7 @@ class ArcaeaSongs:
         for i in self.plist_json['packs']:
             self.plist.append([i['id'], i['plus_character'], i['name_localized']['en'], i.get('description_localized').get('zh-Hans', i['description_localized']['en'])])
         time2 = time.time()
-        log.log('info', 'packlist parsed, time spent: %sms' % ((time2 - time1)), 'ArcaeaSongs.__init__()')
+        log.log('info', 'packlist parsed, time spent: %sms' % ((time2 - time1) * 1000), 'ArcaeaSongs.__init__()')
         log.log('info', 'parsing unlocks', 'ArcaeaSongs.__init__()')
         time1 = time.time()
         self.ulks_json = json.loads(open(res_path + 'songs\\unlocks', 'r', encoding='utf-8').read())
@@ -958,8 +958,7 @@ class ArcaeaSongs:
                         elif int(n['type']) == 3:
                             selection.append([3, n['song_id'], n['song_difficulty'], n['grade'], n['times']])
                         else:
-                            print(int(c['type']))
-                            raise ResError('Unknown Unlocks type', 'unlocks')
+                            raise ResError('Unknown Unlocks type ' + str(c['type']), 'unlocks')
                     value.append([4, selection])
                 elif int(c['type']) == 5:
                     value.append([5, c['rating']])
@@ -968,11 +967,10 @@ class ArcaeaSongs:
                 elif int(c['type']) == 103:
                     value.append([103, c['id']])
                 else:
-                    print(int(c['type']))
-                    raise ResError('Unknown Unlocks type', 'unlocks')
+                    raise ResError('Unknown Unlocks type ' + str(c['type']), 'unlocks')
             self.ulks[key] = value
         time2 = time.time()
-        log.log('info', 'unlocks parsed, time spent: %sms' % ((time2 - time1)), 'ArcaeaSongs.__init__()')
+        log.log('info', 'unlocks parsed, time spent: %sms' % ((time2 - time1) * 1000), 'ArcaeaSongs.__init__()')
         log.log('info', 'loding vlinks and nicknames', 'ArcaeaSongs.__init__()')
         self.vlinks = json.load(open(self.res_path + 'vlinks.json', 'r', encoding='utf-8'))
         self.nicknames = json.load(open(self.res_path + 'nicknames.json', 'r', encoding='utf-8'))
@@ -1280,11 +1278,11 @@ for i in a.slist:
             except:
                 diff = int(n[1:].split('.')[0][-1:])
             if z.CountNotes()[0] != query_in_arcsong(j, i.SongId)['difficulties'][diff]['totalNotes']:
-                text += i.SongName['en'] + '「' + a.diff_dict[diff][0] + '」' + ': {0} -> {1}'.format(z.CountNotes(), query_in_arcsong(j, i.SongId)['difficulties'][diff]['totalNotes']) + '\n'
+                text += i.SongName['en'] + '「' + a.diff_dict[diff][0] + '」' + ': {0} -> {1}'.format(z.CountNotes()[0], query_in_arcsong(j, i.SongId)['difficulties'][diff]['totalNotes']) + '\n'
     except:
         pass
 print(text)
 t2 = time.time()
-print(str(t2-t1)+'ms')
+print('%sms' % ((t2 - t1) * 1000))
 f = open('errors.txt', 'w', encoding='utf-8')
 f.write(text)
