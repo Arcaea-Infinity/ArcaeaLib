@@ -12,12 +12,14 @@
 '''
 TODO List:
 
-Song Name Comparing System
-Arc & Hold Note Count
-i18n system
-Arc Coordinate Calc
-RemoteDL Challenge Calc
-Phigros chart and Arcaea chart converter
+Arcaea Nickname system                                0%
+Song Name Comparing System                            30%
+Arc & Hold Note Count                                 90%
+Arc Coordinate Calc                                   30%
+Arcaea autoplay                                       1%
+RemoteDL Challenge Calc                               0%
+Phigros chart reader                                  1%
+Phigros chart and Arcaea chart converter              1%
 '''
 
 '''
@@ -61,7 +63,7 @@ class ResError(Exception):
 '''
 Draw pic for best30 and recent record card
 '''
-def whiteblur(image, white_ratio, radius):
+def whiteblur(image: Image, white_ratio, radius):
     image = image.convert('RGBA')
     for x in range(image.size[0]):
         for y in range(image.size[1]):
@@ -73,19 +75,22 @@ def whiteblur(image, white_ratio, radius):
     image = image.convert('RGB')
     return image.filter(ImageFilter.GaussianBlur(radius))
 
+# Standard Arcaea Song Pic: 512*512
+# Resize to 1024*1024
+
 def best30_horizontal():
     pass
 
 def best30_vertical():
     pass
 
-def recent_v1():
+def recent_v1(back, char, result):
     pass
 
-def recent_v2():
+def recent_v2(back, char, result):
     pass
 
-def recent_v3():
+def recent_v3(back, char, result):
     pass
 
 
@@ -153,7 +158,7 @@ class MultiprocessDownload:
         self.head = requests.head(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko'}).headers
         self.length = int(self.head.get('Content-Length', False))
         self.proc = self.lock = [None for _ in range(self.thread_num)]
-        if self.length < self.thread_num: raise ValueError('File length is bigger than thread_num')
+        if self.length < self.thread_num: raise ValueError('File length is smaller than thread_num')
         if self.thread_num >= 64: self.thread_num = 64
         if self.length == False: raise Exception('This file does not support multiprocess download')
         num = self.length // self.thread_num
@@ -220,243 +225,6 @@ def formatScore(score: int) -> int:
         raise ValueError('Score must be under 8 digits')
     score = score.zfill(8)
     return "'".join([score[:2], score[2:5], score[5:8]])
-
-
-'''
-ArcaeaSongs: Parse packlist, songlist, unlocks from Arcaea APK file
-'''
-class Song:
-    def __init__(self, song_id, song_name, artist, charter_list, bpm, bpm_base, is_remote_dl, difficulties, diff_list) -> None:
-        self.SongId = song_id
-        self.SongName = song_name
-        self.Artist = artist
-        self.CharterList = charter_list
-        self.BPM = bpm
-        self.BPM_Base = bpm_base
-        self.IsRemoteDl = is_remote_dl
-        self.Difficulties = difficulties
-        self.DiffList = diff_list
-
-class ArcaeaSongs:
-    def __init__(self, res_path, log: Log = Log(True, 'log.txt')) -> None:
-        if res_path[-1:] != '\\' or not os.path.exists(res_path):
-            log.log('warning', 'Path not valid', 'ArcaeaSongs.__init__()')
-            res_path += '\\'
-            if not os.path.exists(res_path):
-                raise ValueError('Path not found')
-        self.res_path = res_path
-        log.log('info', 'parsing songlist', 'ArcaeaSongs.__init__()')
-        time1 = time.time()
-        self.slist_json = json.loads(open(res_path + 'songs\\songlist', 'r', encoding='utf-8').read())
-        self.slist = []
-        for i in self.slist_json['songs']:
-            diffs = []
-            charters = []
-            for n in i['difficulties']:
-                charters.append(n['chartDesigner'])
-                if n.get('ratingPlus', False):
-                    diffs.append(str(n['rating']) + '+')
-                    continue
-                diffs.append(str(n['rating']))
-            sinfo = Song(i['id'], i['title_localized'], i['artist'], charters, i['bpm'], i['bpm_base'], i.get('remote_dl', False), len(i['difficulties']) - 1, diffs)
-            self.slist.append(sinfo) #(song_id, song_name, artist, charter_list, bpm, bpm_base, is_remote_dl, difficulties, diff_list)
-        time2 = time.time()
-        log.log('info', 'songlist parsed, time spent: %sms' % ((time2 - time1)), 'ArcaeaSongs.__init__()')
-        log.log('info', 'parsing characters list', 'ArcaeaSongs.__init__()')
-        time1 = time.time()
-        self.chardict = {}
-        chars = open(res_path + 'chars_formated.txt', 'r', encoding='utf-8')
-        for i in chars.readlines():
-            key = int(i[:i.find(' ')])
-            value = i[len(str(key)) + 1:]
-            self.chardict[key] = value
-        time2 = time.time()
-        log.log('info', 'characters parsed, time spent: %sms' % ((time2 - time1)), 'ArcaeaSongs.__init__()')
-        log.log('info', 'parsing packlist', 'ArcaeaSongs.__init__()')
-        time1 = time.time()
-        self.plist_json = json.loads(open(res_path + 'songs\\packlist', 'r', encoding='utf-8').read())
-        self.plist = []
-        for i in self.plist_json['packs']:
-            self.plist.append([i['id'], i['plus_character'], i['name_localized']['en'], i.get('description_localized').get('zh-Hans', i['description_localized']['en'])])
-        time2 = time.time()
-        log.log('info', 'packlist parsed, time spent: %sms' % ((time2 - time1)), 'ArcaeaSongs.__init__()')
-        log.log('info', 'parsing unlocks', 'ArcaeaSongs.__init__()')
-        time1 = time.time()
-        self.ulks_json = json.loads(open(res_path + 'songs\\unlocks', 'r', encoding='utf-8').read())
-        self.ulks = {}
-        for i in self.ulks_json['unlocks']:
-            key = i['songId'] + str(i['ratingClass'])
-            value = []                            #[type0 :int,    type1 :list,            type2 :list,            type3 :list,                               type4 :list,                      type5 :int,             type101 :list,    type103 :int]
-            for c in i['conditions']:             # frag           grade on early chart    play on early charts    multiple grade on early charts multiple    multiple selectable conditions    reaching a potential    anomaly           character id
-                if int(c['type']) == 0:
-                    value.append([0, c['credit']])
-                elif int(c['type']) == 1:
-                    value.append([1, c['song_id'], c['song_difficulty'], c['grade']])
-                elif int(c['type']) == 2:
-                    value.append([2, c['song_id'], c['song_difficulty']])
-                elif int(c['type']) == 3:
-                    value.append([1, c['song_id'], c['song_difficulty'], c['grade'], c['times']])
-                elif int(c['type']) == 4:
-                    selection = []
-                    for n in c['conditions']:
-                        if int(n['type']) == 0:
-                            selection.append([0, n['credit']])
-                        elif int(n['type']) == 1:
-                            selection.append([1, n['song_id'], n['song_difficulty'], n['grade']])
-                        elif int(n['type']) == 2:
-                            selection.append([2, n['song_id'], n['song_difficulty']])
-                        elif int(n['type']) == 3:
-                            selection.append([3, n['song_id'], n['song_difficulty'], n['grade'], n['times']])
-                        else:
-                            print(int(c['type']))
-                            raise ResError('Unknown Unlocks type', 'unlocks')
-                    value.append([4, selection])
-                elif int(c['type']) == 5:
-                    value.append([5, c['rating']])
-                elif int(c['type']) == 101:
-                    value.append([101, c['min'], c['max']])
-                elif int(c['type']) == 103:
-                    value.append([103, c['id']])
-                else:
-                    print(int(c['type']))
-                    raise ResError('Unknown Unlocks type', 'unlocks')
-            self.ulks[key] = value
-        time2 = time.time()
-        log.log('info', 'unlocks parsed, time spent: %sms' % ((time2 - time1)), 'ArcaeaSongs.__init__()')
-        log.log('info', 'loding vlinks and nicknames', 'ArcaeaSongs.__init__()')
-        self.vlinks = json.load(open(self.res_path + 'vlinks.json', 'r', encoding='utf-8'))
-        self.nicknames = json.load(open(self.res_path + 'nicknames.json', 'r', encoding='utf-8'))
-
-    def fetchSinfoById(self, song_id):
-        for i in self.slist:
-            if i.SongId == song_id: return i
-        return 0
-
-    def fetchSinfoByName(self, song_name):
-        for i in self.slist:
-            if i.SongName['en'] == song_name or i.SongName['ja'] == song_name: return i
-        return 0
-
-    def songRes(self, song_id):
-        song = self.fetchSinfoById(song_id)
-        folder_name = song.SongId
-        if song.IsRemoteDl:
-            folder_name = 'dl_' + folder_name
-        pic_list = [self.res_path + 'songs\\' + folder_name + '\\base.jpg']
-        for i in range(song.Difficulties + 1):
-            if os.path.exists(self.res_path + 'songs\\' + folder_name + '\\' + str(i) + '.jpg'): pic_list.append(self.res_path + 'songs\\' + folder_name + '\\' + str(i) + '.jpg')
-            else: pass
-        aud_path = self.res_path + 'songs\\' + folder_name + '\\base.ogg'
-        if song.IsRemoteDl:
-            aud_path = self.res_path + 'songs\\' + 'dl\\' + song.SongId
-        aff_path_list = [self.res_path + 'songs\\' + folder_name + '\\' + str(x) + '.aff' for x in range(0, int(song.Difficulties) + 1)]
-        if song.IsRemoteDl:
-            aff_path_list = [self.res_path + 'songs\\' + 'dl' + '\\' + song.SongId + '_' + str(x) for x in range(0, int(song.Difficulties) + 1)]
-        return pic_list, aud_path, aff_path_list
-
-    def songs_id(self) -> list:
-        return [i.SongId for i in self.slist]
-
-    def songs(self) -> list:
-        return [i.SongName['en'] for i in self.slist]
-
-    def count(self) -> list:
-        return len(self.slist)
-
-    def fetchUnlocks(self, song_id: str, song_difficulty: int, tab_size: int = 2) -> list:
-        tab_size *= ' '
-        key = song_id + str(song_difficulty)
-        value = self.ulks.get(key, False)
-        if not value: return ''
-        ulksInfo = []
-        for i in value:
-            if i[0] == 0:
-                ulksInfo.append(str(i[1]) + ' 残片')
-            elif i[0] == 1:
-                ulksInfo.append('以 「' + self.grade_dict[i[3]] + '」 或以上成绩通关 ' + self.fetchSinfoById(i[1]).SongName['en'] + ' [' + self.diff_dict.get(i[2])[0] + '] ')
-            elif i[0] == 2:
-                ulksInfo.append('游玩 ' + self.fetchSinfoById(i[1]).SongName['en'] + ' [' + self.diff_dict.get(i[2])[0] + ']')
-            elif i[0] == 3:
-                ulksInfo.append('以 「' + self.grade_dict[i[3]] + '」 或以上成绩通关 ' + self.fetchSinfoById(i[1]).SongName['en'] + ' [' + self.diff_dict.get(i[2])[0] + '] ' + str(i[4]) + '回')
-            elif i[0] == 4:
-                fo = tab_size + '或 '
-                t = 0
-                for n in i[1]:
-                    t += 1
-                    if t == 1:
-                        if n[0] == 0:
-                            ulksInfo.append(str(n[1]) + ' 残片')
-                        elif n[0] == 1:
-                            ulksInfo.append('以 「' + self.grade_dict[n[3]] + '」 或以上成绩通关 ' + self.fetchSinfoById(n[1]).SongName['en'] + ' [' + self.diff_dict.get(n[2])[0] + '] ')
-                        elif n[0] == 2:
-                            ulksInfo.append('游玩 ' + self.fetchSinfoById(n[1]).SongName['en'] + ' [' + self.diff_dict.get(n[2])[0] + '] ')
-                        elif n[0] == 3:
-                            ulksInfo.append('以 「' + self.grade_dict[n[3]] + '」 或以上成绩通关 ' + self.fetchSinfoById(n[1]).SongName['en'] + ' [' + self.diff_dict.get(n[2])[0] + '] ' + str(n[4]) + '回')
-                    else:
-                        if n[0] == 0:
-                            ulksInfo.append(fo + str(n[1]) + ' 残片')
-                        elif n[0] == 1:
-                            ulksInfo.append(fo + '以 「' + self.grade_dict[n[3]] + '」 或以上成绩通关 ' + self.fetchSinfoById(n[1]).SongName['en'] + ' [' + self.diff_dict.get(n[2])[0] + '] ')
-                        elif n[0] == 2:
-                            ulksInfo.append(fo + '游玩 ' + self.fetchSinfoById(n[1]).SongName['en'] + ' [' + self.diff_dict.get(n[2])[0] + '] ')
-                        elif n[0] == 3:
-                            ulksInfo.append(fo + '以 「' + self.grade_dict[n[3]] + '」 或以上成绩通关 ' + self.fetchSinfoById(n[1]).SongName['en'] + ' [' + self.diff_dict.get(n[2])[0] + '] ' + str(n[4]) + '回')
-            if i[0] == 5:
-                potential = i[1] / 100
-                ulksInfo.append('个人游玩潜力值 ' + '%.2f'% potential + ' 或以上')
-            if i[0] == 101:
-                ulksInfo.append('通过异象解锁，失败时最少获得' + str(i[1]) + '%，最多获得' + str(i[2]) + '%')
-            if i[0] == 103:
-                ulksInfo.append('解锁时需使用 ' + self.chardict.get(i[1]) + ' 搭档')
-        ulks = ''
-        for i in ulksInfo:
-            ulks += str(i) + '\n'
-        return ulks
-
-    def genVlinksJson(self, difficulty, file):
-        json_data = []
-        for i in self.slist:
-            index = -1
-            for n in i.DiffList:
-                song_vlinks = {}
-                index += 1
-                if int(n.replace('+', '')) >= difficulty:
-                    song_vlinks['song_id'] = i.SongId
-                    song_vlinks['song_name'] = i.SongName['en']
-                    song_vlinks['rating_class'] = index
-                    song_vlinks['difficulty'] = n
-                    song_vlinks['play_video'] = ''          #手元
-                    song_vlinks['rhyparse_video'] = ''      #节奏解析/节奏谱
-                    json_data.append(song_vlinks)
-        f = open(file, 'w', encoding='utf-8')
-        json.dump({'vids': json_data}, f, ensure_ascii=False, indent = 4)
-        f.close()
-
-    def genNickNamesJson(self, file):
-        json_data = []
-        for i in self.slist:
-            song_nicknames = {}
-            song_nicknames['song_id'] = i.SongId
-            song_nicknames['song_name'] = i.SongName['en']
-            song_nicknames['song_nicknames'] = ['']
-            json_data.append(song_nicknames)
-        f = open(file, 'w', encoding='utf-8')
-        json.dump({'nicknames': json_data}, f, ensure_ascii=False, indent = 4)
-        f.close()
-
-    def songDetails(self, song_id):
-        song = self.fetchSinfoById(song_id)
-        def f(str1: str, str2: str):
-            if str1 + str2 != str1 and str1 + str2 != str1: return str1 + str2
-            return ''
-        return [song.SongName['en'], botres(self.songRes(song_id)[0][0], 'image')] + [self.diff_dict[i][0] + ': ' + song.DiffList[i] + '，共 ' + str(Aff(self.songRes(song_id)[2][i]).CountNotes()[0]) + ' Notes' for i in range(song.Difficulties + 1)] + [x for x in [f(song.SongName['en'] + ' 「' + self.diff_dict.get(i)[0] + '」 的解锁条件：\n', self.fetchUnlocks(song_id, i)) for i in range(song.Difficulties + 1)] if x != '']
-
-    grade_dict = {0: 'No Limit', 1: 'C', 2: 'B', 3: 'A', 4: 'AA', 5: 'EX', 6: 'EX+'}
-    diff_dict = {0: ['PST', ['pst'], 'Past'], 
-                1: ['PRS', ['prs', 'pre'], 'Present'],
-                2: ['FTR', ['ftr'], 'Future'],
-                3: ['BYD', ['byd', 'byn'], 'Beyond']}
-
 
 '''
 Aff(Beta): Parse aff file and calc Arc & Hold's JugdeTimings and NotesCount
@@ -600,7 +368,6 @@ class Tap:
         self.Count = 0
         if not self.NoInput: self.Count = 1
         else: pass
-
 
 class Hold:
     def __init__(self, StartTime: int, EndTime: int, Lane: int, BPM: int, TimingPointDensityFactor: float, NoInput: bool, FadingHolds: bool, TiminggroupId: int) -> None:
@@ -822,7 +589,7 @@ class Aff:
                 aff = file.read().splitlines()
             except:
                 pass
-        if type(file) == TextIOWrapper:
+        elif type(file) == TextIOWrapper:
             aff = file.read().splitlines()
         s = aff.index('-')
         aff = [aff[:s]] + [aff[s + 1:]]
@@ -1101,6 +868,252 @@ class Aff:
     def AddEvent(self, Event):
         self.Events.append(Event)
         self.Refresh()
+
+'''
+ArcaeaSongs: Parse packlist, songlist, unlocks from Arcaea APK file
+'''
+
+class Song:
+    def __init__(self, song_id, song_name, artist, charter_list, bpm, bpm_base, is_remote_dl, difficulties, diff_list) -> None:
+        self.SongId = song_id
+        self.SongName = song_name
+        self.Artist = artist
+        self.CharterList = charter_list
+        self.BPM = bpm
+        self.BPM_Base = bpm_base
+        self.IsRemoteDl = is_remote_dl
+        self.Difficulties = difficulties
+        self.DiffList = diff_list
+
+class ArcaeaSongs:
+    def __init__(self, res_path, log: Log = Log(True, 'log.txt')) -> None:
+        # if res_path[-1:] != '\\' or not os.path.exists(res_path):
+        #     log.log('warning', 'Path not valid', 'ArcaeaSongs.__init__()')
+        #     res_path += '\\'
+        #     if not os.path.exists(res_path):
+        #         raise ValueError('Path not found')
+        self.res_path = res_path
+        log.log('info', 'parsing songlist', 'ArcaeaSongs.__init__()')
+        time1 = time.time()
+        self.slist_json = json.loads(open(res_path + 'songs\\songlist', 'r', encoding='utf-8').read())
+        self.slist = []
+        for i in self.slist_json['songs']:
+            diffs = []
+            charters = []
+            for n in i['difficulties']:
+                charters.append(n['chartDesigner'])
+                if n.get('ratingPlus', False):
+                    diffs.append(str(n['rating']) + '+')
+                    continue
+                diffs.append(str(n['rating']))
+            sinfo = Song(i['id'], i['title_localized'], i['artist'], charters, i['bpm'], i['bpm_base'], i.get('remote_dl', False), len(i['difficulties']) - 1, diffs)
+            self.slist.append(sinfo) #(song_id, song_name, artist, charter_list, bpm, bpm_base, is_remote_dl, difficulties, diff_list)
+        time2 = time.time()
+        log.log('info', 'songlist parsed, time spent: %sms' % ((time2 - time1)), 'ArcaeaSongs.__init__()')
+        log.log('info', 'parsing characters list', 'ArcaeaSongs.__init__()')
+        time1 = time.time()
+        self.chardict = {}
+        chars = open(res_path + 'chars_formated.txt', 'r', encoding='utf-8')
+        for i in chars.readlines():
+            key = int(i[:i.find(' ')])
+            value = i[len(str(key)) + 1:]
+            self.chardict[key] = value
+        time2 = time.time()
+        log.log('info', 'characters parsed, time spent: %sms' % ((time2 - time1)), 'ArcaeaSongs.__init__()')
+        log.log('info', 'parsing packlist', 'ArcaeaSongs.__init__()')
+        time1 = time.time()
+        self.plist_json = json.loads(open(res_path + 'songs\\packlist', 'r', encoding='utf-8').read())
+        self.plist = []
+        for i in self.plist_json['packs']:
+            self.plist.append([i['id'], i['plus_character'], i['name_localized']['en'], i.get('description_localized').get('zh-Hans', i['description_localized']['en'])])
+        time2 = time.time()
+        log.log('info', 'packlist parsed, time spent: %sms' % ((time2 - time1)), 'ArcaeaSongs.__init__()')
+        log.log('info', 'parsing unlocks', 'ArcaeaSongs.__init__()')
+        time1 = time.time()
+        self.ulks_json = json.loads(open(res_path + 'songs\\unlocks', 'r', encoding='utf-8').read())
+        self.ulks = {}
+        for i in self.ulks_json['unlocks']:
+            key = i['songId'] + str(i['ratingClass'])
+            value = []                            #[type0 :int,    type1 :list,            type2 :list,            type3 :list,                               type4 :list,                      type5 :int,             type101 :list,    type103 :int]
+            for c in i['conditions']:             # frag           grade on early chart    play on early charts    multiple grade on early charts multiple    multiple selectable conditions    reaching a potential    anomaly           character id
+                if int(c['type']) == 0:
+                    value.append([0, c['credit']])
+                elif int(c['type']) == 1:
+                    value.append([1, c['song_id'], c['song_difficulty'], c['grade']])
+                elif int(c['type']) == 2:
+                    value.append([2, c['song_id'], c['song_difficulty']])
+                elif int(c['type']) == 3:
+                    value.append([1, c['song_id'], c['song_difficulty'], c['grade'], c['times']])
+                elif int(c['type']) == 4:
+                    selection = []
+                    for n in c['conditions']:
+                        if int(n['type']) == 0:
+                            selection.append([0, n['credit']])
+                        elif int(n['type']) == 1:
+                            selection.append([1, n['song_id'], n['song_difficulty'], n['grade']])
+                        elif int(n['type']) == 2:
+                            selection.append([2, n['song_id'], n['song_difficulty']])
+                        elif int(n['type']) == 3:
+                            selection.append([3, n['song_id'], n['song_difficulty'], n['grade'], n['times']])
+                        else:
+                            print(int(c['type']))
+                            raise ResError('Unknown Unlocks type', 'unlocks')
+                    value.append([4, selection])
+                elif int(c['type']) == 5:
+                    value.append([5, c['rating']])
+                elif int(c['type']) == 101:
+                    value.append([101, c['min'], c['max']])
+                elif int(c['type']) == 103:
+                    value.append([103, c['id']])
+                else:
+                    print(int(c['type']))
+                    raise ResError('Unknown Unlocks type', 'unlocks')
+            self.ulks[key] = value
+        time2 = time.time()
+        log.log('info', 'unlocks parsed, time spent: %sms' % ((time2 - time1)), 'ArcaeaSongs.__init__()')
+        log.log('info', 'loding vlinks and nicknames', 'ArcaeaSongs.__init__()')
+        self.vlinks = json.load(open(self.res_path + 'vlinks.json', 'r', encoding='utf-8'))
+        self.nicknames = json.load(open(self.res_path + 'nicknames.json', 'r', encoding='utf-8'))
+
+    def fetchSinfoById(self, song_id):
+        for i in self.slist:
+            if i.SongId == song_id: return i
+        return 0
+
+    def fetchSinfoByName(self, song_name):
+        for i in self.slist:
+            if i.SongName['en'] == song_name or i.SongName['ja'] == song_name: return i
+        return 0
+
+    def songRes(self, song_id):
+        print(self.res_path)
+        song = self.fetchSinfoById(song_id)
+        folder_name = song.SongId
+        if song.IsRemoteDl:
+            folder_name = 'dl_' + folder_name
+        pic_list = [self.res_path + 'songs\\' + folder_name + '\\base.jpg']
+        for i in range(song.Difficulties + 1):
+            if os.path.exists(self.res_path + 'songs\\' + folder_name + '\\' + str(i) + '.jpg'): pic_list.append(self.res_path + 'songs\\' + folder_name + '\\' + str(i) + '.jpg')
+            else: pass
+        aud_path = self.res_path + 'songs\\' + folder_name + '\\base.ogg'
+        if song.IsRemoteDl:
+            aud_path = self.res_path + 'songs\\' + 'dl\\' + song.SongId
+        aff_path_list = [self.res_path + 'songs\\' + folder_name + '\\' + str(x) + '.aff' for x in range(0, int(song.Difficulties) + 1)]
+        if song.IsRemoteDl:
+            aff_path_list = [self.res_path + 'songs\\' + 'dl' + '\\' + song.SongId + '_' + str(x) for x in range(0, int(song.Difficulties) + 1)]
+        print(pic_list, aud_path, aff_path_list)
+        return pic_list, aud_path, aff_path_list
+
+    def songs_id(self) -> list:
+        return [i.SongId for i in self.slist]
+
+    def songs(self) -> list:
+        return [i.SongName['en'] for i in self.slist]
+
+    def count(self) -> list:
+        return len(self.slist)
+
+    def fetchUnlocks(self, song_id: str, song_difficulty: int, tab_size: int = 2) -> list:
+        tab_size *= ' '
+        key = song_id + str(song_difficulty)
+        value = self.ulks.get(key, False)
+        if not value: return ''
+        ulksInfo = []
+        for i in value:
+            if i[0] == 0:
+                ulksInfo.append(str(i[1]) + ' 残片')
+            elif i[0] == 1:
+                ulksInfo.append('以 「' + self.grade_dict[i[3]] + '」 或以上成绩通关 ' + self.fetchSinfoById(i[1]).SongName['en'] + ' [' + self.diff_dict.get(i[2])[0] + '] ')
+            elif i[0] == 2:
+                ulksInfo.append('游玩 ' + self.fetchSinfoById(i[1]).SongName['en'] + ' [' + self.diff_dict.get(i[2])[0] + ']')
+            elif i[0] == 3:
+                ulksInfo.append('以 「' + self.grade_dict[i[3]] + '」 或以上成绩通关 ' + self.fetchSinfoById(i[1]).SongName['en'] + ' [' + self.diff_dict.get(i[2])[0] + '] ' + str(i[4]) + '回')
+            elif i[0] == 4:
+                fo = tab_size + '或 '
+                t = 0
+                for n in i[1]:
+                    t += 1
+                    if t == 1:
+                        if n[0] == 0:
+                            ulksInfo.append(str(n[1]) + ' 残片')
+                        elif n[0] == 1:
+                            ulksInfo.append('以 「' + self.grade_dict[n[3]] + '」 或以上成绩通关 ' + self.fetchSinfoById(n[1]).SongName['en'] + ' [' + self.diff_dict.get(n[2])[0] + '] ')
+                        elif n[0] == 2:
+                            ulksInfo.append('游玩 ' + self.fetchSinfoById(n[1]).SongName['en'] + ' [' + self.diff_dict.get(n[2])[0] + '] ')
+                        elif n[0] == 3:
+                            ulksInfo.append('以 「' + self.grade_dict[n[3]] + '」 或以上成绩通关 ' + self.fetchSinfoById(n[1]).SongName['en'] + ' [' + self.diff_dict.get(n[2])[0] + '] ' + str(n[4]) + '回')
+                    else:
+                        if n[0] == 0:
+                            ulksInfo.append(fo + str(n[1]) + ' 残片')
+                        elif n[0] == 1:
+                            ulksInfo.append(fo + '以 「' + self.grade_dict[n[3]] + '」 或以上成绩通关 ' + self.fetchSinfoById(n[1]).SongName['en'] + ' [' + self.diff_dict.get(n[2])[0] + '] ')
+                        elif n[0] == 2:
+                            ulksInfo.append(fo + '游玩 ' + self.fetchSinfoById(n[1]).SongName['en'] + ' [' + self.diff_dict.get(n[2])[0] + '] ')
+                        elif n[0] == 3:
+                            ulksInfo.append(fo + '以 「' + self.grade_dict[n[3]] + '」 或以上成绩通关 ' + self.fetchSinfoById(n[1]).SongName['en'] + ' [' + self.diff_dict.get(n[2])[0] + '] ' + str(n[4]) + '回')
+            if i[0] == 5:
+                potential = i[1] / 100
+                ulksInfo.append('个人游玩潜力值 ' + '%.2f'% potential + ' 或以上')
+            if i[0] == 101:
+                ulksInfo.append('通过异象解锁，失败时最少获得' + str(i[1]) + '%，最多获得' + str(i[2]) + '%')
+            if i[0] == 103:
+                ulksInfo.append('解锁时需使用 ' + self.chardict.get(i[1]) + ' 搭档')
+        ulks = ''
+        for i in ulksInfo:
+            ulks += str(i) + '\n'
+        return ulks
+
+    def genVlinksJson(self, difficulty, file):
+        json_data = []
+        for i in self.slist:
+            index = -1
+            for n in i.DiffList:
+                song_vlinks = {}
+                index += 1
+                if int(n.replace('+', '')) >= difficulty:
+                    song_vlinks['song_id'] = i.SongId
+                    song_vlinks['song_name'] = i.SongName['en']
+                    song_vlinks['rating_class'] = index
+                    song_vlinks['difficulty'] = n
+                    song_vlinks['play_video'] = ''          #手元
+                    song_vlinks['rhyparse_video'] = ''      #节奏解析/节奏谱
+                    json_data.append(song_vlinks)
+        f = open(file, 'w', encoding='utf-8')
+        json.dump({'vids': json_data}, f, ensure_ascii=False, indent = 4)
+        f.close()
+
+    def genNickNamesJson(self, file):
+        json_data = []
+        for i in self.slist:
+            song_nicknames = {}
+            song_nicknames['song_id'] = i.SongId
+            song_nicknames['song_name'] = i.SongName['en']
+            song_nicknames['song_nicknames'] = ['']
+            json_data.append(song_nicknames)
+        f = open(file, 'w', encoding='utf-8')
+        json.dump({'nicknames': json_data}, f, ensure_ascii=False, indent = 4)
+        f.close()
+
+    def songDetails(self, song_id):
+        song = self.fetchSinfoById(song_id)
+        def Count(aff_path):
+            aff = Aff()
+            aff.Load(aff_path)
+            return aff.CountNotes()
+        def f(str1: str, str2: str):
+            if str1 + str2 != str1 and str1 + str2 != str1: return str1 + str2
+            return ''
+        return [song.SongName['en'], botres(self.songRes(song_id)[0][0], 'image')] + [self.diff_dict[i][0] + ': ' + song.DiffList[i] + '，共 ' + str(Count(self.songRes(song_id)[2][i])[0]) + ' Notes' for i in range(song.Difficulties + 1)] + [x for x in [f(song.SongName['en'] + ' 「' + self.diff_dict.get(i)[0] + '」 的解锁条件：\n', self.fetchUnlocks(song_id, i)) for i in range(song.Difficulties + 1)] if x != '']
+
+    grade_dict = {0: 'No Limit', 1: 'C', 2: 'B', 3: 'A', 4: 'AA', 5: 'EX', 6: 'EX+'}
+    diff_dict = {0: ['PST', ['pst'], 'Past'], 
+                1: ['PRS', ['prs', 'pre'], 'Present'],
+                2: ['FTR', ['ftr'], 'Future'],
+                3: ['BYD', ['byd', 'byn'], 'Beyond']}
+
+a = ArcaeaSongs('')
+print(a.songDetails('tempestissimo'))
+
 
 '''
 Phigros Chart Reader(Beta)
