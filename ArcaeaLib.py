@@ -1261,29 +1261,32 @@ def ArcAutoplayGenerator(aff_path, Width = 1920, Height = 1080):
     aff = Aff()
     aff.Load(aff_path)
 
-t1 = time.time()
-a = ArcaeaSongs('.\\')
-j = json.loads(open('arcsong.json', 'r', encoding='utf-8').read())
-def query_in_arcsong(j, id):
-    for i in j['content']['songs']:
-        if i['id'] == id: return i
-text = ''
-for i in a.slist:
-    try:
-        for n in a.songRes(i.SongId)[2]:
-            z = Aff()
-            z.Load(n)
-            try:
-                diff = int(n[-1:])
-            except:
-                diff = int(n[1:].split('.')[0][-1:])
-            if z.CountNotes()[0] != query_in_arcsong(j, i.SongId)['difficulties'][diff]['totalNotes']:
-                text += i.SongName['en'] + '「' + a.diff_dict[diff][0] + '」' + ': {0} -> {1}'.format(z.CountNotes()[0], query_in_arcsong(j, i.SongId)['difficulties'][diff]['totalNotes']) + '\n'
-    except:
-        pass
-print(text)
-t2 = time.time()
-print('%sms' % ((t2 - t1) * 1000))
-f = open('errors.txt', 'w', encoding='utf-8')
-f.write(text)
-f.close()
+
+# Code for Test 
+
+# t1 = time.time()
+# a = ArcaeaSongs('.\\')
+# j = json.loads(open('arcsong.json', 'r', encoding='utf-8').read())
+# def query_in_arcsong(j, id):
+#     for i in j['content']['songs']:
+#         if i['id'] == id: return i
+# text = ''
+# for i in a.slist:
+#     try:
+#         for n in a.songRes(i.SongId)[2]:
+#             z = Aff()
+#             z.Load(n)
+#             try:
+#                 diff = int(n[-1:])
+#             except:
+#                 diff = int(n[1:].split('.')[0][-1:])
+#             if z.CountNotes()[0] != query_in_arcsong(j, i.SongId)['difficulties'][diff]['totalNotes']:
+#                 text += i.SongName['en'] + '「' + a.diff_dict[diff][0] + '」' + ': {0} -> {1}'.format(z.CountNotes()[0], query_in_arcsong(j, i.SongId)['difficulties'][diff]['totalNotes']) + '\n'
+#     except:
+#         pass
+# print(text)
+# t2 = time.time()
+# print('%sms' % ((t2 - t1) * 1000))
+# f = open('errors.txt', 'w', encoding='utf-8')
+# f.write(text)
+# f.close()
