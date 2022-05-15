@@ -45,7 +45,7 @@ class AffError(Exception):
     def __init__(self, error: str, line: int = None) -> None:
         self.error = error
         self.line = line
-    
+
     def __str__(self) -> str:
         if self.line == None: return self.error
         return self.error + ', in line ' + str(self.line)
@@ -54,7 +54,7 @@ class ResError(Exception):
     def __init__(self, error: str, file: str) -> None:
         self.error = error
         self.file = file
-    
+
     def __str__(self) -> str:
         return self.error + ' in file ' + self.file
 
@@ -96,8 +96,8 @@ class botres:
     def __init__(self, path, filetype) -> None:
         self.path = path
         self.type = filetype
-    
-    def getCode(self):
+
+    def GetCode(self):
         pass
 
 class Log:
@@ -108,7 +108,7 @@ class Log:
     def log(self, level, info, part=None): #level: Info, Output, Warning, Error
         color_dict = {'info': 37, 'output': 34, 'warning': 33, 'error': 31}
         if level.lower() not in color_dict.keys():
-            self.log('warning', 'Unkown log level: ' + level, 'Log()')
+            self.log('warning', 'Unknown log level: ' + level, 'Log()')
             level = 'info'
         before_color = '\033[0;{0}m'.format(color_dict.get(level.lower()))
         fore_color = '\033[0m'
@@ -140,52 +140,18 @@ def compare(inp: str, target: str):
         return True
     return False
 
-class ThreadsDownload:
-    # TODO
-    # Download a list of urls in threads
-    def __init__(self, urls: list, path: str, filenames: list, thread_num: int, log: Log = Log(True, 'log.txt')) -> None:
-        self.urls = urls
-        self.path = path
-        self.filenames = filenames
-        self.thread_num = thread_num
-        self.log = log
-        self.dldict = {}
-        self.header = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko'}
-        if len(self.urls) != len(self.filenames): raise ValueError("Urls and filenames' length conflict")
-        self.dldict = dict(zip(urls, filenames))
-        self.lock = [None for _ in range(self.thread_num)]
-
-    def thread(self, num: int, url: str, file: str):
-        self.lock[num] = _thread.allocate_lock()
-        with self.lock[num]:
-            self.log.log('info', 'Thread ' + str(num) + ' start downloading   ' + url, 'ThreadsDownload')
-            req = requests.get(self.url, headers=self.header, stream = True)
-            file = open(file, 'wb')
-            for chunk in req.iter_content(chunk_size=512):
-                if chunk:
-                    file.write(chunk)
-            file.close()
-        return 0
-    
-    def run(self):
-        keys = self.dldict.keys()
-        for i in range(keys):
-            _thread.start_new_thread(self.thread, (i, keys[i], self.dldict[keys[i]]))
-
 
 class MultiprocessDownload:
     # TODO
     # Download ane file with multithreads
-    def __init__(self, url: str, path: str, filename: str, thread_num: int, log: Log = Log(True, 'log.txt')) -> None:
+    def __init__(self, url: str, path: str, filename: str, thread_num: int) -> None:
         self.url = url
         self.path = path
-        self.log = log
         self.filename = filename
         self.thread_num = thread_num
         self.threads = []
         self.head = requests.head(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko'}).headers
         self.length = int(self.head.get('Content-Length', False))
-        log.log('info', self.length, 'MultiprocessDownload.__init__()')
         self.proc = self.lock = [None for _ in range(self.thread_num)]
         if self.length < self.thread_num: raise ValueError('File length is bigger than thread_num')
         if self.thread_num >= 64: self.thread_num = 64
@@ -196,8 +162,7 @@ class MultiprocessDownload:
             self.threads.append([last + 1, num * i])
             last = num * i
         self.threads[-1:][0][1] += self.length % self.thread_num
-        log.log('output', self.threads, 'MultiprocessDownload.__init__()')
-    
+
     def thread(self, num) -> int:
         self.lock[num] = _thread.allocate_lock()
         with self.lock[num]:
@@ -215,7 +180,7 @@ class MultiprocessDownload:
                     self.proc[num] = i * 512 / blk_size
             file.close()
         return 0
-    
+
     def getDownloadInfo(self) -> list:
         info = []
         total = 0
@@ -225,10 +190,9 @@ class MultiprocessDownload:
             total += self.proc[i]
         info.append(str(total / self.thread_num * 100) + '%') #[*threads_info, total_info]
         return info
-    
+
     def run(self):
         for i in range(self.thread_num):
-            self.log.log('info', 'thread ' + str(i) + ' started', 'MultiprocessDownload.run()')
             _thread.start_new_thread(self.thread, (i,))
         time.sleep(10)
         locked = 1
@@ -248,7 +212,7 @@ class MultiprocessDownload:
             blk.close()
             os.remove('dl_block_' + str(num))
         target.close()
-        self.log.log('info', 'file downloaded as ' + self.path + self.filename, 'MultiprocessDownload.run()')
+        print('File download as', self.path + self.filename)
 
 def formatScore(score: int) -> int:
     score = str(score)
@@ -256,9 +220,6 @@ def formatScore(score: int) -> int:
         raise ValueError('Score must be under 8 digits')
     score = score.zfill(8)
     return "'".join([score[:2], score[2:5], score[5:8]])
-
-
-# log = Log(True, 'log.txt')
 
 
 '''
@@ -365,15 +326,15 @@ class ArcaeaSongs:
         log.log('info', 'loding vlinks and nicknames', 'ArcaeaSongs.__init__()')
         self.vlinks = json.load(open(self.res_path + 'vlinks.json', 'r', encoding='utf-8'))
         self.nicknames = json.load(open(self.res_path + 'nicknames.json', 'r', encoding='utf-8'))
-    
+
     def fetchSinfoById(self, song_id):
         for i in self.slist:
             if i.SongId == song_id: return i
         return 0
-    
+
     def fetchSinfoByName(self, song_name):
         for i in self.slist:
-            if song_name in i.values(): return i
+            if i.SongName['en'] == song_name or i.SongName['ja'] == song_name: return i
         return 0
 
     def songRes(self, song_id):
@@ -395,13 +356,13 @@ class ArcaeaSongs:
 
     def songs_id(self) -> list:
         return [i.SongId for i in self.slist]
-    
+
     def songs(self) -> list:
         return [i.SongName['en'] for i in self.slist]
 
     def count(self) -> list:
         return len(self.slist)
-    
+
     def fetchUnlocks(self, song_id: str, song_difficulty: int, tab_size: int = 2) -> list:
         tab_size *= ' '
         key = song_id + str(song_difficulty)
@@ -470,7 +431,7 @@ class ArcaeaSongs:
         f = open(file, 'w', encoding='utf-8')
         json.dump({'vids': json_data}, f, ensure_ascii=False, indent = 4)
         f.close()
-    
+
     def genNickNamesJson(self, file):
         json_data = []
         for i in self.slist:
@@ -482,7 +443,7 @@ class ArcaeaSongs:
         f = open(file, 'w', encoding='utf-8')
         json.dump({'nicknames': json_data}, f, ensure_ascii=False, indent = 4)
         f.close()
-    
+
     def songDetails(self, song_id):
         song = self.fetchSinfoById(song_id)
         def f(str1: str, str2: str):
@@ -517,13 +478,13 @@ class Arctap:
         self.StartTime = Time
         self.count = 1
         self.Enabled = True
-    
+
     def Instantiate(self, arc: Arc):
         self.Arc = arc
-    
+
     def Destroy(self):
         self.Enabled = False
-    
+
     def Clone(self):
         return Arctap(self.StartTime)
 
@@ -605,7 +566,7 @@ class Arc:
             JudgeTiming = int(self.StartTime + Judge * PartitionIndex)
             if JudgeTiming < self.EndTime: self.JudgeTimings.append(JudgeTiming)
         print("Arc JudgeTimings:", self.JudgeTimings)
-    
+
     def Update(self):
         if not self.NoInput:
             if len(self.Arctaps): #ArcTaps, Skyline
@@ -613,7 +574,7 @@ class Arc:
             elif not self.IsSkyLine: #Arc
                 self.Count = len(self.JudgeTimings)
         else: self.Count = 0
-    
+
     def GetXAtTiming(self, t: int):
         t2 = (t - self.StartTime) / (self.EndTime - self.StartTime)
         return ArcXToWorld(X(self.XStart, self.XEnd, t2, self.EasingType))
@@ -621,7 +582,7 @@ class Arc:
     def GetYAtTiming(self, t: int):
         t2 = (t - self.StartTime) / (self.EndTime - self.StartTime)
         return ArcXToWorld(Y(self.YStart, self.YEnd, t2, self.EasingType)) 
-    
+
     def AddArcTap(self, arctap: Arctap):
         if arctap.StartTime > self.EndTime or arctap.StartTime < self.StartTime:
             raise AffError("Arctap Time Invalid")
@@ -704,7 +665,7 @@ class Hold:
             JudgeTiming = int(self.StartTime + Judge * PartitionIndex)
             if JudgeTiming < self.EndTime: self.JudgeTimings.append(JudgeTiming)
         print("Hold JudgeTimings:", self.JudgeTimings)
-    
+
     def Clone(self):
         return Hold(self.StartTime, self.EndTime, self.Lane, self.TiminggroupId)
 
@@ -771,6 +732,7 @@ S = lambda start,end,t:(1 - t) * start + end * t
 O = lambda start,end,t:start + (end - start) * (1 - math.cos(1.57079625 * t))
 I = lambda start,end,t:start + (end - start) * math.sin(1.57079625 * t)
 B = lambda start,end,t:math.pow((1 - t), 3) * start + 3 * math.pow((1 - t), 2) * t * start + 3 * (1 - t) * math.pow(t, 2) * end + math.pow(t, 3) * end
+
 def X(start: float, end: float, t: float, ArcEasingType: str):
     if ArcEasingType == 'b':
         return B(start, end, t)
@@ -976,7 +938,7 @@ class Aff:
             return Tap(args[0], args[1], NoInput, TiminggroupId)
         else:
             raise AffError('Unknow aff command', line=line)
-    
+
     def CountNotes(self) -> list:
         tap = 0
         hold = 0
@@ -1123,19 +1085,19 @@ class Aff:
             if isinstance(i, Arc):
                 i.CalcJudgeTimings()
                 i.Update()
-    
+
     def Refresh(self):
         self.Events.sort(key = lambda x:x.StartTime)
         self.CalcArcRelationship()
-    
+
     def SetTimingPointDensityFactor(self, TimingPointDensityFactor: float):
         self.TimingPointDensityFactor = TimingPointDensityFactor
         self.Refresh()
-    
+
     def SetAudioOffset(self, AudioOffset: float):
         self.AudioOffset = AudioOffset
         self.Refresh()
-    
+
     def AddEvent(self, Event):
         self.Events.append(Event)
         self.Refresh()
@@ -1158,7 +1120,7 @@ class SpeedEvent:
 class PhiChart:
     def __init__(self) -> None:
         self.IsLoaded = False
-    
+
     def Load(self, file: str or TextIOWrapper, format: str):
         if isinstance(file, TextIOWrapper):
             file = file.read()
@@ -1167,7 +1129,7 @@ class PhiChart:
             self.raw = file
             self.jsonraw = json.dumps(file)
         pass
-    
+
     def ToOffical(self):
         pass
 
@@ -1209,7 +1171,7 @@ def autoDlRes(res_path, log: Log = Log(True, 'log.txt')) -> int:
     res = zipfile.ZipFile(res_path + 'arcApk.zip')
     res.extractall(res_path + content['value']['version'])
     for i in ['char', 'songs']:
-        shutil.move(res_path + content['value']['version'] +'\\assets\\' + i, res_path)
+        shutil.move(res_path + content['value']['version'] + '\\assets\\' + i, res_path)
     ver_file = open(res_path + 'version', 'w')
     ver_file.write(content['value']['version'])
     log.log('info', 'Download to ' + content['value']['version'], 'autoDlRes()')
@@ -1233,7 +1195,7 @@ class GuessPic:
         self.guess_type = guess_type
         self.pic = Image.open(self.pic_path)
         self.res = res
-    
+
     def GeneratePic(self, save_path: str):
         if self.guess_type == 'easy': length = self.pic.size[0] // 3
         if self.guess_type == 'hard': length = self.pic.size[0] // 4
@@ -1243,18 +1205,50 @@ class GuessPic:
         ystart = random.randint(0, self.pic.size[1] - length)
         yend = ystart + length
         self.pic.crop((xstart, ystart, xend, yend)).save(save_path)
-    
+
     def Guess(self, msg, qq):
-        if msg.split().lower() in [self.song.SongId, self.song.SongName['en'].lower(), self.song.SongName['ja'].lower(), self.res.nicknames[self.song.SongId]]: win = True
+        if compare(msg.split().lower(), self.song.SongId) or compare(msg.split().lower(), self.song.SongName['en']) or compare(msg.split().lower(), self.song.SongName['ja']): win = True
         self.winner = qq
         return True if win else False
 
 class BotMessageBuilder:
     def __init__(self):
         self.Message = []
-    
+
     def Add(self, *args):
         pass
-    
+
     def ToDataSegment(self):
         pass
+
+'''
+Autoplay script generator
+'''
+
+class SlotEvent:
+    def __init__(self, SlotId, Time, Type, X, Y):
+        self.SlotId = SlotId
+        self.Time = Time
+        self.Type = Type
+        self.X = X
+        self.Y = Y
+
+class Slots:
+    def __init__(self):
+        self.Events = []
+
+    def AddEvent(self, SlotId, Time, Type, X, Y):
+        self.Events.append(SlotEvent(SlotId, Time, Type, X, Y))
+
+    def SortEventByTime(self):
+        self.Events.sort(key = lambda slot:slot.Time)
+
+    def ToSlotsCode(self):
+        pass
+
+def ArcAutoplayGenerator(aff_path, Width = 1920, Height = 1080):
+    CanvasW = [Width * 0.33, Width * 0.71]
+    CanvasH = [Height * 0.81, Height * 0.37]
+    JudgeArea = [CanvasW[1] - CanvasW[0], CanvasH[0] - CanvasH[1]]
+    aff = Aff()
+    aff.Load(aff_path)
