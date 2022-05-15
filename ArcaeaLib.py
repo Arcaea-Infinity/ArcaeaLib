@@ -239,6 +239,7 @@ class Timing:
         self.TiminggroupId = TiminggroupId
         self.Count = 0
 
+class Arc: pass
 
 class Arctap:
     def __init__(self, Time: int):
