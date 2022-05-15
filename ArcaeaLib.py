@@ -97,12 +97,25 @@ def recent_v3(back, char, result):
 '''
 Utils
 '''
-class botres:
+
+class BotRes:
     def __init__(self, path, filetype) -> None:
         self.path = path
         self.type = filetype
 
     def GetCode(self):
+        pass
+
+
+class BotMessageBuilder:
+    def __init__(self, *args):
+        self.Message = []
+        self.Add(x for x in args)
+
+    def Add(self, *args):
+        pass
+
+    def ToDataSegment(self):
         pass
 
 class Log:
@@ -255,6 +268,40 @@ class Arctap:
 
     def Clone(self):
         return Arctap(self.StartTime)
+
+# ArcAlgorithm
+ArcXToWorld = lambda x:-8.5 * x + 4.25
+ArcYToWorld = lambda y:1 + 4.5 * y
+WorldXToArc = lambda x:(x - 4.25) / -8.5
+WorldYToArc = lambda y:(y - 1) / 4.5
+S = lambda start,end,t:(1 - t) * start + end * t
+O = lambda start,end,t:start + (end - start) * (1 - math.cos(1.57079625 * t))
+I = lambda start,end,t:start + (end - start) * math.sin(1.57079625 * t)
+B = lambda start,end,t:math.pow((1 - t), 3) * start + 3 * math.pow((1 - t), 2) * t * start + 3 * (1 - t) * math.pow(t, 2) * end + math.pow(t, 3) * end
+
+def X(start: float, end: float, t: float, ArcEasingType: str):
+    if ArcEasingType == 'b':
+        return B(start, end, t)
+    if ArcEasingType == 'siso':
+        return I(start, end, t)
+    if ArcEasingType == 'soso':
+        return O(start, end, t)
+    return S(start, end, t)
+
+def Y(start: float, end: float, t: float, ArcEasingType: str):
+    if ArcEasingType == 'b':
+        return B(start, end, t)
+    if ArcEasingType == 'sosi':
+        return I(start, end, t)
+    if ArcEasingType == 'soso':
+        return O(start, end, t)
+    return S(start, end, t)
+
+def Qi(value: float):
+    return value * value * value
+
+def Qo(value: float):
+    return (value - 1) * (value - 1) * (value - 1) + 1
 
 class Arc:
     def __init__(self, StartTime: int, EndTime: int, XStart: float, XEnd: float, EasingType: str, YStart: float, YEnd: float, Color: int, FX: str, IsSkyline: bool, ArcTaps: list, BPM: int, TimingPointDensityFactor: float, NoInput: bool, AngleX: int, AngleY: int, TiminggroupId: int) -> None:
@@ -490,39 +537,6 @@ class Flick:
         self.Count = 0 if NoInput else 1
         self.TiminggroupId = TiminggroupId
 
-# ArcAlgorithm
-ArcXToWorld = lambda x:-8.5 * x + 4.25
-ArcYToWorld = lambda y:1 + 4.5 * y
-WorldXToArc = lambda x:(x - 4.25) / -8.5
-WorldYToArc = lambda y:(y - 1) / 4.5
-S = lambda start,end,t:(1 - t) * start + end * t
-O = lambda start,end,t:start + (end - start) * (1 - math.cos(1.57079625 * t))
-I = lambda start,end,t:start + (end - start) * math.sin(1.57079625 * t)
-B = lambda start,end,t:math.pow((1 - t), 3) * start + 3 * math.pow((1 - t), 2) * t * start + 3 * (1 - t) * math.pow(t, 2) * end + math.pow(t, 3) * end
-
-def X(start: float, end: float, t: float, ArcEasingType: str):
-    if ArcEasingType == 'b':
-        return B(start, end, t)
-    if ArcEasingType == 'siso':
-        return I(start, end, t)
-    if ArcEasingType == 'soso':
-        return O(start, end, t)
-    return S(start, end, t)
-
-def Y(start: float, end: float, t: float, ArcEasingType: str):
-    if ArcEasingType == 'b':
-        return B(start, end, t)
-    if ArcEasingType == 'sosi':
-        return I(start, end, t)
-    if ArcEasingType == 'soso':
-        return O(start, end, t)
-    return S(start, end, t)
-
-def Qi(value: float):
-    return value * value * value
-
-def Qo(value: float):
-    return (value - 1) * (value - 1) * (value - 1) + 1
 
 def formatAffCmd(cmd):
     cmd = cmd.strip('(')
@@ -550,6 +564,7 @@ class Aff:
     def __init__(self) -> None:
         self.IsLoaded = False
 
+    @staticmethod
     def IsValidAff(aff_text: str):
         aff_text = aff_text.splitlines()
         s = aff.index('-')
@@ -1021,11 +1036,11 @@ class ArcaeaSongs:
             if i[0] == 0:
                 ulksInfo.append(str(i[1]) + ' 残片')
             elif i[0] == 1:
-                ulksInfo.append('以 「' + self.grade_dict[i[3]] + '」 或以上成绩通关 ' + self.fetchSinfoById(i[1]).SongName['en'] + ' [' + self.diff_dict.get(i[2])[0] + '] ')
+                ulksInfo.append('以 「' + ArcaeaSongs.grade_dict[i[3]] + '」 或以上成绩通关 ' + self.fetchSinfoById(i[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(i[2])[0] + '] ')
             elif i[0] == 2:
-                ulksInfo.append('游玩 ' + self.fetchSinfoById(i[1]).SongName['en'] + ' [' + self.diff_dict.get(i[2])[0] + ']')
+                ulksInfo.append('游玩 ' + self.fetchSinfoById(i[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(i[2])[0] + ']')
             elif i[0] == 3:
-                ulksInfo.append('以 「' + self.grade_dict[i[3]] + '」 或以上成绩通关 ' + self.fetchSinfoById(i[1]).SongName['en'] + ' [' + self.diff_dict.get(i[2])[0] + '] ' + str(i[4]) + '回')
+                ulksInfo.append('以 「' + ArcaeaSongs.grade_dict[i[3]] + '」 或以上成绩通关 ' + self.fetchSinfoById(i[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(i[2])[0] + '] ' + str(i[4]) + '回')
             elif i[0] == 4:
                 fo = tab_size + '或 '
                 t = 0
@@ -1035,20 +1050,20 @@ class ArcaeaSongs:
                         if n[0] == 0:
                             ulksInfo.append(str(n[1]) + ' 残片')
                         elif n[0] == 1:
-                            ulksInfo.append('以 「' + self.grade_dict[n[3]] + '」 或以上成绩通关 ' + self.fetchSinfoById(n[1]).SongName['en'] + ' [' + self.diff_dict.get(n[2])[0] + '] ')
+                            ulksInfo.append('以 「' + ArcaeaSongs.grade_dict[n[3]] + '」 或以上成绩通关 ' + self.fetchSinfoById(n[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(n[2])[0] + '] ')
                         elif n[0] == 2:
-                            ulksInfo.append('游玩 ' + self.fetchSinfoById(n[1]).SongName['en'] + ' [' + self.diff_dict.get(n[2])[0] + '] ')
+                            ulksInfo.append('游玩 ' + self.fetchSinfoById(n[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(n[2])[0] + '] ')
                         elif n[0] == 3:
-                            ulksInfo.append('以 「' + self.grade_dict[n[3]] + '」 或以上成绩通关 ' + self.fetchSinfoById(n[1]).SongName['en'] + ' [' + self.diff_dict.get(n[2])[0] + '] ' + str(n[4]) + '回')
+                            ulksInfo.append('以 「' + ArcaeaSongs.grade_dict[n[3]] + '」 或以上成绩通关 ' + self.fetchSinfoById(n[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(n[2])[0] + '] ' + str(n[4]) + '回')
                     else:
                         if n[0] == 0:
                             ulksInfo.append(fo + str(n[1]) + ' 残片')
                         elif n[0] == 1:
-                            ulksInfo.append(fo + '以 「' + self.grade_dict[n[3]] + '」 或以上成绩通关 ' + self.fetchSinfoById(n[1]).SongName['en'] + ' [' + self.diff_dict.get(n[2])[0] + '] ')
+                            ulksInfo.append(fo + '以 「' + ArcaeaSongs.grade_dict[n[3]] + '」 或以上成绩通关 ' + self.fetchSinfoById(n[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(n[2])[0] + '] ')
                         elif n[0] == 2:
-                            ulksInfo.append(fo + '游玩 ' + self.fetchSinfoById(n[1]).SongName['en'] + ' [' + self.diff_dict.get(n[2])[0] + '] ')
+                            ulksInfo.append(fo + '游玩 ' + self.fetchSinfoById(n[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(n[2])[0] + '] ')
                         elif n[0] == 3:
-                            ulksInfo.append(fo + '以 「' + self.grade_dict[n[3]] + '」 或以上成绩通关 ' + self.fetchSinfoById(n[1]).SongName['en'] + ' [' + self.diff_dict.get(n[2])[0] + '] ' + str(n[4]) + '回')
+                            ulksInfo.append(fo + '以 「' + ArcaeaSongs.grade_dict[n[3]] + '」 或以上成绩通关 ' + self.fetchSinfoById(n[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(n[2])[0] + '] ' + str(n[4]) + '回')
             if i[0] == 5:
                 potential = i[1] / 100
                 ulksInfo.append('个人游玩潜力值 ' + '%.2f'% potential + ' 或以上')
@@ -1101,7 +1116,7 @@ class ArcaeaSongs:
         def f(str1: str, str2: str):
             if str1 + str2 != str1 and str1 + str2 != str1: return str1 + str2
             return ''
-        return [song.SongName['en'], botres(self.songRes(song_id)[0][0], 'image')] + [self.diff_dict[i][0] + ': ' + song.DiffList[i] + '，共 ' + str(Count(self.songRes(song_id)[2][i])[0]) + ' Notes' for i in range(song.Difficulties + 1)] + [x for x in [f(song.SongName['en'] + ' 「' + self.diff_dict.get(i)[0] + '」 的解锁条件：\n', self.fetchUnlocks(song_id, i)) for i in range(song.Difficulties + 1)] if x != '']
+        return [song.SongName['en'], BotRes(self.songRes(song_id)[0][0], 'image')] + [ArcaeaSongs.diff_dict[i][0] + ': ' + song.DiffList[i] + '，共 ' + str(Count(self.songRes(song_id)[2][i])[0]) + ' Notes' for i in range(song.Difficulties + 1)] + [x for x in [f(song.SongName['en'] + ' 「' + ArcaeaSongs.diff_dict.get(i)[0] + '」 的解锁条件：\n', self.fetchUnlocks(song_id, i)) for i in range(song.Difficulties + 1)] if x != '']
 
     grade_dict = {0: 'No Limit', 1: 'C', 2: 'B', 3: 'A', 4: 'AA', 5: 'EX', 6: 'EX+'}
     diff_dict = {0: ['PST', ['pst'], 'Past'], 
@@ -1219,15 +1234,6 @@ class GuessPic:
         self.winner = qq
         return True if win else False
 
-class BotMessageBuilder:
-    def __init__(self):
-        self.Message = []
-
-    def Add(self, *args):
-        pass
-
-    def ToDataSegment(self):
-        pass
 
 '''
 Autoplay script generator
