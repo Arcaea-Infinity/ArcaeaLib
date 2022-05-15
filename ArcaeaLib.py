@@ -12,14 +12,14 @@
 '''
 TODO List:
 
-Arcaea Nickname system                                0%
-Song Name Comparing System                            30%
-Arc & Hold Note Count                                 90%
-Arc Coordinate Calc                                   30%
-Arcaea autoplay                                       1%
-RemoteDL Challenge Calc                               0%
-Phigros chart reader                                  1%
-Phigros chart and Arcaea chart converter              1%
+Arcaea Nickname system									0%
+Song Name Comparing System								30%
+Arc & Hold Note Count									90%
+Arc Coordinate Calc										30%
+Arcaea autoplay											1%
+RemoteDL Challenge Calc									0%
+Phigros chart reader									1%
+Phigros chart and Arcaea chart converter				1%
 '''
 
 '''
@@ -75,7 +75,7 @@ def whiteblur(image: Image, white_ratio, radius):
     image = image.convert('RGB')
     return image.filter(ImageFilter.GaussianBlur(radius))
 
-# Standard Arcaea Song Pic: 512*512
+# Standard Arcaea Song Picture pixel: 512*512
 # Resize to 1024*1024
 
 def best30_horizontal():
@@ -333,7 +333,7 @@ class Arc:
             Judge += 1
             JudgeTiming = int(self.StartTime + Judge * PartitionIndex)
             if JudgeTiming < self.EndTime: self.JudgeTimings.append(JudgeTiming)
-        print("Arc JudgeTimings:", self.JudgeTimings)
+        # print("Arc JudgeTimings:", self.JudgeTimings)
 
     def Update(self):
         if not self.NoInput:
@@ -431,7 +431,7 @@ class Hold:
             Judge += 1
             JudgeTiming = int(self.StartTime + Judge * PartitionIndex)
             if JudgeTiming < self.EndTime: self.JudgeTimings.append(JudgeTiming)
-        print("Hold JudgeTimings:", self.JudgeTimings)
+        # print("Hold JudgeTimings:", self.JudgeTimings)
 
     def Clone(self):
         return Hold(self.StartTime, self.EndTime, self.Lane, self.TiminggroupId)
@@ -578,11 +578,12 @@ class Aff:
         self.TimingPointDensityFactor = 1.0
         self.IsLoaded = True
 
-    def Load(self, file: str or TextIOWrapper, log: Log = Log(True, 'log.txt')) -> None:
+    def Load(self, file: str or TextIOWrapper) -> None:
         try:
             if self.IsLoaded: raise Exception('Aff Already Loaded')
         except:
             pass
+        aff = None
         if type(file) == str:
             try:
                 file = open(file, 'r', encoding='utf-8')
@@ -591,6 +592,7 @@ class Aff:
                 pass
         elif type(file) == TextIOWrapper:
             aff = file.read().splitlines()
+        if aff == None: raise AffError('failed to open or read aff file: ' + file)
         s = aff.index('-')
         aff = [aff[:s]] + [aff[s + 1:]]
         self.Events = []
@@ -986,7 +988,6 @@ class ArcaeaSongs:
         return 0
 
     def songRes(self, song_id):
-        print(self.res_path)
         song = self.fetchSinfoById(song_id)
         folder_name = song.SongId
         if song.IsRemoteDl:
@@ -1001,7 +1002,6 @@ class ArcaeaSongs:
         aff_path_list = [self.res_path + 'songs\\' + folder_name + '\\' + str(x) + '.aff' for x in range(0, int(song.Difficulties) + 1)]
         if song.IsRemoteDl:
             aff_path_list = [self.res_path + 'songs\\' + 'dl' + '\\' + song.SongId + '_' + str(x) for x in range(0, int(song.Difficulties) + 1)]
-        print(pic_list, aud_path, aff_path_list)
         return pic_list, aud_path, aff_path_list
 
     def songs_id(self) -> list:
@@ -1110,9 +1110,6 @@ class ArcaeaSongs:
                 1: ['PRS', ['prs', 'pre'], 'Present'],
                 2: ['FTR', ['ftr'], 'Future'],
                 3: ['BYD', ['byd', 'byn'], 'Beyond']}
-
-a = ArcaeaSongs('')
-print(a.songDetails('tempestissimo'))
 
 
 '''
@@ -1265,3 +1262,29 @@ def ArcAutoplayGenerator(aff_path, Width = 1920, Height = 1080):
     JudgeArea = [CanvasW[1] - CanvasW[0], CanvasH[0] - CanvasH[1]]
     aff = Aff()
     aff.Load(aff_path)
+
+t1 = time.time()
+a = ArcaeaSongs('.\\')
+j = json.loads(open('arcsong.json', 'r', encoding='utf-8').read())
+def query_in_arcsong(j, id):
+    for i in j['content']['songs']:
+        if i['id'] == id: return i
+text = ''
+for i in a.slist:
+    try:
+        for n in a.songRes(i.SongId)[2]:
+            z = Aff()
+            z.Load(n)
+            try:
+                diff = int(n[-1:])
+            except:
+                diff = int(n[1:].split('.')[0][-1:])
+            if z.CountNotes()[0] != query_in_arcsong(j, i.SongId)['difficulties'][diff]['totalNotes']:
+                text += i.SongName['en'] + '「' + a.diff_dict[diff][0] + '」' + ': {0} -> {1}'.format(z.CountNotes(), query_in_arcsong(j, i.SongId)['difficulties'][diff]['totalNotes']) + '\n'
+    except:
+        pass
+print(text)
+t2 = time.time()
+print(str(t2-t1)+'ms')
+f = open('errors.txt', 'w', encoding='utf-8')
+f.write(text)
