@@ -521,9 +521,12 @@ class SceneControl:
                 self.Type = args[3]
 
 class TiminggroupProperties:
-    def __init__(self, Type, TiminggroupId: int):
+    def __init__(self, NoInput: bool, FadingHolds: bool, AngleX: int, AngleY: int, TiminggroupId: int):
         self.TiminggroupId = TiminggroupId
-        self.Type = Type
+        self.NoInput = NoInput
+        self.FadingHolds = FadingHolds
+        self.AngleX = AngleX
+        self.AngleY = AngleY
         self.Count = 0
 
 class Flick:
@@ -628,7 +631,7 @@ class Aff:
         FadingHolds = False
         AngleX = 0
         AngleY = 0
-        self.CurrentBPM = None
+        self.CurrentBPM = []
         for i in aff[1]:
             line += 1
             if i.startswith('};'):
@@ -656,36 +659,27 @@ class Aff:
                     elif i == '':
                         pass
                     else: raise AffError('Unknow timinggroup type')
+                self.Events.append(TiminggroupProperties(NoInput, FadingHolds, AngleX, AngleY, TiminggroupId))
             else:
-                self.Events.append(self.proceed(i, NoInput, FadingHolds, AngleX, AngleY, len(aff[0]) + 1 + line, TiminggroupId))
+                self.Events.append(self.proceed(i, NoInput, FadingHolds, AngleX, AngleY, TiminggroupId, len(aff[0]) + 1 + line))
         del self.CurrentBPM
         try:
             self.Events.remove(None)
         except:
             pass
-        for i in self.Events:
-            if isinstance(i, TiminggroupProperties):
-                Id = i.TiminggroupId
-                for n in self.Events:
-                    if n.TiminggroupId == Id:
-                        if not isinstance(i, Timing):
-                            i.StartTime = n.StartTime
-        self.CalcArcRelationship()
+        self.Refresh()
         self.IsLoaded = True
 
-    def proceed(self, i, NoInput: bool, FadingHolds: bool, AngleX: int, AngleY: int, line: int, TiminggroupId: int):
+    def proceed(self, i, NoInput: bool, FadingHolds: bool, AngleX: int, AngleY: int, TiminggroupId: int, line: int):
         i = i.strip().strip(';')
         if i.strip() == '':
             return None
         elif i.startswith('timing') and not i.startswith('timinggroup'):
             args = i.strip('timing')
             args = formatAffCmd(args)
-            if TiminggroupId != 0:
-                self.TiminggroupBPM = args[1]
-            else:
-                self.CurrentBPM = args[1]
+            self.CurrentBPM[TiminggroupId] = args[1]
             return Timing(args[0], args[1], args[2], TiminggroupId)
-        BPM = self.TiminggroupBPM if TiminggroupId != 0 else self.CurrentBPM
+        BPM = self.CurrentBPM[TiminggroupId]
         if i.startswith('arc'):
             arcCmd = re.match(r'arc\(.*?\)', i)
             if arcCmd == None: raise AffError('Arc regex not matched', line = line)
@@ -871,6 +865,13 @@ class Aff:
                 i.Update()
 
     def Refresh(self):
+        for i in self.Events:
+            if isinstance(i, TiminggroupProperties):
+                Id = i.TiminggroupId
+                for n in self.Events:
+                    if n.TiminggroupId == Id:
+                        if not isinstance(i, Timing):
+                            i.StartTime = n.StartTime
         self.Events.sort(key = lambda x:x.StartTime)
         self.CalcArcRelationship()
 
