@@ -340,7 +340,7 @@
             "song_id": "auxesia",
             "song_name": "Auxesia",
             "song_nicknames": [
-                "夏光"
+                "夏光", "夏对立"
             ]
         },
         {
@@ -410,7 +410,7 @@
             "song_id": "redandblue",
             "song_name": "Red and Blue",
             "song_nicknames": [
-                ""
+                "红和蓝"
             ]
         },
         {
@@ -494,14 +494,14 @@
             "song_id": "singularity",
             "song_name": "Singularity",
             "song_nicknames": [
-                "奇点"
+                "奇点", "寄点"
             ]
         },
         {
             "song_id": "memoryforest",
             "song_name": "Memory Forest",
             "song_nicknames": [
-                ""
+                "记忆森林"
             ]
         },
         {
@@ -613,7 +613,7 @@
             "song_id": "fractureray",
             "song_name": "Fracture Ray",
             "song_nicknames": [
-                "骨折光"
+                "骨折光", "我很可爱请给我钱"
             ]
         },
         {
@@ -774,7 +774,7 @@
             "song_id": "ouroboros",
             "song_name": "ouroboros -twin stroke of the end-",
             "song_nicknames": [
-                ""
+                "衔尾蛇"
             ]
         },
         {
@@ -893,7 +893,7 @@
             "song_id": "particlearts",
             "song_name": "Particle Arts",
             "song_nicknames": [
-                ""
+                "粒子艺术"
             ]
         },
         {
@@ -935,7 +935,7 @@
             "song_id": "melodyoflove",
             "song_name": "A Wandering Melody of Love",
             "song_nicknames": [
-                "恋歌"
+                "恋歌", "恋歌一代"
             ]
         },
         {
@@ -977,7 +977,7 @@
             "song_id": "gloryroad",
             "song_name": "GLORY：ROAD",
             "song_nicknames": [
-                ""
+                "里红"
             ]
         },
         {
@@ -1096,7 +1096,7 @@
             "song_id": "antagonism",
             "song_name": "Antagonism",
             "song_nicknames": [
-                ""
+                "对立烤串"
             ]
         },
         {
@@ -1215,7 +1215,7 @@
             "song_id": "badtek",
             "song_name": "BADTEK",
             "song_nicknames": [
-                ""
+                "坏锤"
             ]
         },
         {
@@ -1243,7 +1243,7 @@
             "song_id": "galaxyfriends",
             "song_name": "Galaxy Friends",
             "song_nicknames": [
-                ""
+                "星际朋友"
             ]
         },
         {
@@ -1544,7 +1544,7 @@
             "song_id": "rekkaresonance",
             "song_name": "REKKA RESONANCE",
             "song_nicknames": [
-                ""
+                "烈华"
             ]
         },
         {
@@ -1705,7 +1705,7 @@
             "song_id": "summerfireworks",
             "song_name": "Summer Fireworks of Love",
             "song_nicknames": [
-                ""
+                "恋歌二代"
             ]
         },
         {
@@ -1761,14 +1761,14 @@
             "song_id": "akinokagerou",
             "song_name": "Haze of Autumn",
             "song_nicknames": [
-                ""
+                "恋歌三代"
             ]
         },
         {
             "song_id": "medusa",
             "song_name": "Medusa",
             "song_nicknames": [
-                ""
+                "美杜莎"
             ]
         },
         {
@@ -1789,7 +1789,7 @@
             "song_id": "sakurafubuki",
             "song_name": "Sakura Fubuki",
             "song_nicknames": [
-                ""
+                "樱吹雪"
             ]
         },
         {
