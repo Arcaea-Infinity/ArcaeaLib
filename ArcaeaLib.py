@@ -12,14 +12,15 @@
 '''
 TODO List:
 
-Arcaea Nickname system									0%
-Song Name Comparing System								30%
-Arc & Hold Note Count									90%
+Rewrite the Aff System									50%
+Arcaea Nickname system									5%
+Song Name Comparing System								50%
+Arc & Hold Note Count									95%
 Arc Coordinate Calc										30%
 Arcaea autoplay											1%
 RemoteDL Challenge Calc									0%
-Phigros chart reader									1%
-Phigros chart and Arcaea chart converter				1%
+Phigros chart reader									0%
+Phigros chart and Arcaea chart converter				0%
 '''
 
 '''
