@@ -182,11 +182,17 @@ class MultiprocessDownload:
             last = num * i
         self.threads[-1:][0][1] += self.length % self.thread_num
 
+    def started(self) -> bool:
+        for i in range(self.thread_num):
+            if not os.path.exists('dl_block_' + str(i)):
+                return False
+        return True
+
+
     def thread(self, num) -> int:
         self.lock[num] = _thread.allocate_lock()
         with self.lock[num]:
             header = {'Range': f'bytes=' + str(self.threads[num][0]) + '-' + str(self.threads[num][1])}
-            print(header)
             self.proc[num] = 0
             req = requests.get(self.url, headers=header, stream = True)
             blk_size = self.threads[num][1] - self.threads[num][0] + 1
@@ -200,7 +206,7 @@ class MultiprocessDownload:
             file.close()
         return 0
 
-    def getDownloadInfo(self) -> list:
+    def GetDownloadInfo(self) -> list:
         info = []
         total = 0
         for i in range(self.thread_num):
@@ -213,10 +219,10 @@ class MultiprocessDownload:
     def run(self):
         for i in range(self.thread_num):
             _thread.start_new_thread(self.thread, (i,))
-        time.sleep(10)
         locked = 1
         while locked:
-            print(self.getDownloadInfo())
+            if not self.started(): continue
+            print(self.GetDownloadInfo())
             locked = 0
             for n in range(self.thread_num):
                 while None in self.lock:
@@ -231,7 +237,6 @@ class MultiprocessDownload:
             blk.close()
             os.remove('dl_block_' + str(num))
         target.close()
-        print('File download as', self.path + self.filename)
 
 def formatScore(score: int) -> int:
     score = str(score)
