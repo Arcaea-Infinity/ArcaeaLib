@@ -230,9 +230,8 @@ class MultiprocessDownload:
             if not self.started(): continue
             print(self.GetDownloadInfo())
             locked = 0
+            print(self.lock)
             for n in range(self.thread_num):
-                while None in self.lock:
-                    locked = 1
                 if self.lock[n].locked():
                     locked += 1
             time.sleep(5)
@@ -1336,6 +1335,10 @@ def ArcAutoplayGenerator(aff_path, Width = 1920, Height = 1080):
 # f.write(text)
 # f.close()
 
-a = Aff()
-a.Load(r'C:\Project\ArcaeaLib\songs\supernova\2.aff')
-print(a.CountNotes())
+# a = Aff()
+# a.Load(r'C:\Project\ArcaeaLib\songs\supernova\2.aff')
+# print(a.CountNotes())
+
+a = MultiprocessDownload('https://static-bin.lowiro.com/serve/arcaea_3.12.10c.apk?token=RfombOUYfqFv97ZwJco2mtRhTMpCxJdRYOHB0o41yCj7ieu2AbBZOvGLiUjDh2hth', '', 'arcaea.apk', 16)
+a.run()
+a.run()
