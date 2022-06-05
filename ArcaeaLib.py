@@ -164,6 +164,10 @@ class MultiprocessDownload:
     # TODO
     # Download ane file with multithreads
     def __init__(self, url: str, path: str, filename: str, thread_num: int) -> None:
+        try:
+            if self.downloaded: raise Exception('This task is downloaded')
+        except: pass
+        self.downloaded = False
         self.url = url
         self.path = path
         self.filename = filename
@@ -188,8 +192,8 @@ class MultiprocessDownload:
                 return False
         return True
 
-
     def thread(self, num) -> int:
+        if self.downloaded: raise Exception('This task is downloaded')
         self.lock[num] = _thread.allocate_lock()
         with self.lock[num]:
             header = {'Range': f'bytes=' + str(self.threads[num][0]) + '-' + str(self.threads[num][1])}
@@ -207,6 +211,7 @@ class MultiprocessDownload:
         return 0
 
     def GetDownloadInfo(self) -> list:
+        if self.downloaded: raise Exception('This task is downloaded')
         info = []
         total = 0
         for i in range(self.thread_num):
@@ -217,6 +222,7 @@ class MultiprocessDownload:
         return info
 
     def run(self):
+        if self.downloaded: raise Exception('This task is downloaded')
         for i in range(self.thread_num):
             _thread.start_new_thread(self.thread, (i,))
         locked = 1
@@ -237,6 +243,7 @@ class MultiprocessDownload:
             blk.close()
             os.remove('dl_block_' + str(num))
         target.close()
+        self.downloaded = True
 
 def formatScore(score: int) -> int:
     score = str(score)
