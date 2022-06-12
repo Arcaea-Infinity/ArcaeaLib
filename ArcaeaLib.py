@@ -76,7 +76,7 @@ def whiteblur(image: Image, white_ratio, radius):
     image = image.convert('RGB')
     return image.filter(ImageFilter.GaussianBlur(radius))
 
-# Standard Arcaea Song Picture pixel: 512*512
+# Standard Arcaea Song Picture Size: 512*512
 # Resize to 1024*1024
 
 def best30_horizontal():
@@ -184,7 +184,7 @@ class MultiprocessDownload:
         for i in range(1, thread_num + 1):
             self.threads.append([last + 1, num * i])
             last = num * i
-        self.threads[-1:][0][1] += self.length % self.thread_num
+        self.threads[-1][1] += self.length % self.thread_num
 
     def started(self) -> bool:
         for i in range(self.thread_num):
@@ -276,15 +276,26 @@ class TiminggroupProperties:
         self.StartTime = 0
         self.Count = 0
         self.__Chart = Chart
-    
-    def GetBPMByTiming(self, Time: int):
-        TimingList = [x for x in self.__Chart.Events if x.TiminggroupId == self.TiminggroupId and isinstance(x, Timing)]
-        for i in range(len(TimingList)):
-            if TimingList[i].StartTime == Time: return TimingList[i].BPM
-            elif TimingList[i].StartTime > Time: return TimingList[i - 1].BPM
-        if TimingList[-1:][0].StartTime <= Time: return TimingList[-1:][0].BPM
-        raise AffError('Unknow error occured while GetBPMByTiming')
 
+    def GetTimings(self) -> None:
+        self.Timings = [i for i in self.__Chart.Events if i.TiminggroupId == self.TiminggroupId and isinstance(i, Timing)]
+
+    def SetSelfStartTime(self) -> None:
+        for i in self.__Chart.Events:
+            if i.TiminggroupId == self.TiminggroupId and not (isinstance(i, TiminggroupProperties) or isinstance(i, Timing)):
+                self.StartTime = i.StartTime
+                return None
+        self.StartTime = self.Timings[0].StartTime
+
+    def Update(self) -> None:
+        self.GetTimings()
+        self.SetSelfStartTime()
+
+    def GetBPMByTiming(self, Time: int) -> float:
+        for i in range(len(self.Timings)):
+            if self.Timings[i].StartTime == Time: return self.Timings[i].BPM
+            elif self.Timings[i].StartTime > Time: return self.Timings[i - 1].BPM
+        if self.Timings[-1:][0].StartTime <= Time: return self.Timings[-1:][0].BPM
 
 class Arc: pass
 
@@ -462,8 +473,6 @@ class Hold:
         self.TiminggroupId = TiminggroupId
         self.TiminggroupProperties = Timinggroup
         self.Count = 0
-        if not self.NoInput: self.CalcJudgeTimings(); self.Count = len(self.JudgeTimings)
-        else: pass
         # By yyyr
         '''
 		public void CalculateJudgeTimings()
@@ -514,6 +523,11 @@ class Hold:
             JudgeTiming = int(self.StartTime + Judge * PartitionIndex)
             if JudgeTiming < self.EndTime: self.JudgeTimings.append(JudgeTiming)
         # print("Hold JudgeTimings:", self.JudgeTimings)
+
+    def Update(self) -> None:
+        if not self.NoInput:
+            self.CalcJudgeTimings()
+            self.Count = len(self.JudgeTimings)
 
     def Clone(self):
         return Hold(self.StartTime, self.EndTime, self.Lane, self.TiminggroupId)
@@ -904,11 +918,9 @@ class Aff:
     def Refresh(self):
         for i in self.Events:
             if isinstance(i, TiminggroupProperties):
-                Id = i.TiminggroupId
-                for n in self.Events:
-                    if n.TiminggroupId == Id:
-                        if not isinstance(i, Timing):
-                            i.StartTime = n.StartTime
+                i.Update()
+            if isinstance(i, Hold):
+                i.Update()
         self.Events.sort(key = lambda x:x.StartTime)
         self.CalcArcRelationship()
 
@@ -925,7 +937,7 @@ class Aff:
         self.Refresh()
 
 '''
-ArcaeaSongs: Parse packlist, songlist, unlocks from Arcaea APK file
+ArcaeaSongs: Parse packlist, songlist, unlocks from an Arcaea APK file
 '''
 
 class Song:
@@ -942,11 +954,6 @@ class Song:
 
 class ArcaeaSongs:
     def __init__(self, res_path, log: Log = Log(True, 'log.txt')) -> None:
-        # if res_path[-1:] != '\\' or not os.path.exists(res_path):
-        #     log.log('warning', 'Path not valid', 'ArcaeaSongs.__init__()')
-        #     res_path += '\\'
-        #     if not os.path.exists(res_path):
-        #         raise ValueError('Path not found')
         self.res_path = res_path
         log.log('info', 'parsing songlist', 'ArcaeaSongs.__init__()')
         time1 = time.time()
@@ -1335,10 +1342,6 @@ def ArcAutoplayGenerator(aff_path, Width = 1920, Height = 1080):
 # f.write(text)
 # f.close()
 
-# a = Aff()
-# a.Load(r'C:\Project\ArcaeaLib\songs\supernova\2.aff')
-# print(a.CountNotes())
-
-a = MultiprocessDownload('https://static-bin.lowiro.com/serve/arcaea_3.12.10c.apk?token=RfombOUYfqFv97ZwJco2mtRhTMpCxJdRYOHB0o41yCj7ieu2AbBZOvGLiUjDh2hth', '', 'arcaea.apk', 16)
-a.run()
-a.run()
+a = Aff()
+a.Load(r'C:\Project\ArcaeaLib\songs\supernova\2.aff')
+print(a.CountNotes())
