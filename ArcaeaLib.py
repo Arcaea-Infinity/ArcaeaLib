@@ -1,5 +1,5 @@
 # Arcaea Lib Script
-# Ver 0.0.5b by
+# Ver 0.1.1b by
 # @Player01
 # @yyyr
 
@@ -17,7 +17,6 @@ Arcaea Nickname system									5%
 Song Name Comparing System								50%
 Arc & Hold Note Count									95%
 Arc Coordinate Calc										30%
-Arcaea autoplay											1%
 RemoteDL Challenge Calc									0%
 Phigros chart reader									0%
 Phigros chart and Arcaea chart converter				0%
@@ -60,6 +59,14 @@ class ResError(Exception):
 
     def __str__(self) -> str:
         return self.error + ' in file ' + self.file
+
+class RequestError(Exception):
+    def __init__(self, url: str) -> None:
+        self.url = url
+
+    def __str__(self) -> str:
+        return 'Error while requesting ' + self.url
+
 
 '''
 Draw pic for best30 and recent record card
@@ -244,7 +251,7 @@ class MultiprocessDownload:
         target.close()
         self.downloaded = True
 
-def formatScore(score: int) -> int:
+def FormatScore(score: int) -> int:
     score = str(score)
     if len(score) > 8:
         raise ValueError('Score must be under 8 digits')
@@ -257,12 +264,15 @@ Notes count for Arc & Hold not complete
 Will append Arc Coodinate Calc in the future
 '''
 class Timing:
-    def __init__(self, Time: int, BPM: float, Beats: int, TiminggroupId: int) -> None:
+    def __init__(self, Time: int, BPM: float, Beats: float, TiminggroupId: int) -> None:
         self.StartTime = Time
         self.BPM = BPM
         self.Beats = Beats
         self.TiminggroupId = TiminggroupId
         self.Count = 0
+
+    def __str__(self) -> str:
+        return 'timing(' + str(self.StartTime) + ',' + '%.2f'% self.BPM + ',' + '%.2f'% self.Beats + ')' + ';'
 
 class Aff: pass
 
@@ -296,6 +306,23 @@ class TiminggroupProperties:
             if self.Timings[i].StartTime == Time: return self.Timings[i].BPM
             elif self.Timings[i].StartTime > Time: return self.Timings[i - 1].BPM
         if self.Timings[-1:][0].StartTime <= Time: return self.Timings[-1:][0].BPM
+        # for i in range(len(self.Timings)):
+        #     if self.Timings[i].StartTime == Time and self.Timings[i].BPM != 0.0: return self.Timings[i].BPM
+        #     elif self.Timings[i].StartTime > Time and self.Timings[i].BPM != 0.0: return self.Timings[i - 1].BPM
+        #     else:
+        #         for n in range(i, 0, -1):
+        #             if self.Timings[n].BPM != 0.0: return self.Timings[n].BPM
+        # raise AffError('No Valid Timing Error')
+
+    def __str__(self) -> str:
+        Args = ''
+        if self.NoInput: Args += 'noinput_'
+        if self.FadingHolds: Args += 'fadingholds_'
+        if self.AngleX: Args += ('anglex' + str(self.AngleX) + '_')
+        if self.AngleY: Args += ('angley' + str(self.AngleY) + '_')
+        if Args != '':
+            Args = Args[:-1]
+        return 'timinggroup(' + Args + ')'
 
 class Arc: pass
 
@@ -303,16 +330,22 @@ class Arctap:
     def __init__(self, Time: int):
         self.StartTime = Time
         self.count = 1
-        self.Enabled = True
 
     def Instantiate(self, arc: Arc):
         self.Arc = arc
 
-    def Destroy(self):
-        self.Enabled = False
-
     def Clone(self):
         return Arctap(self.StartTime)
+
+    def GetX(self):
+        return self.Arc.GetXAtTiming(self.StartTime)
+
+    def GetY(self):
+        return self.Arc.GetYAtTiming(self.StartTime)
+
+    def __str__(self) -> str:
+        return 'arctap(' + str(self.StartTime) + ')'
+
 
 # ArcAlgorithm
 ArcXToWorld = lambda x:-8.5 * x + 4.25
@@ -349,7 +382,7 @@ def Qo(value: float):
     return (value - 1) * (value - 1) * (value - 1) + 1
 
 class Arc:
-    def __init__(self, StartTime: int, EndTime: int, XStart: float, XEnd: float, EasingType: str, YStart: float, YEnd: float, Color: int, FX: str, IsSkyline: bool, ArcTaps: list, TimingPointDensityFactor: float, NoInput: bool, AngleX: int, AngleY: int, TiminggroupId: int, Timinggroup: TiminggroupProperties) -> None:
+    def __init__(self, StartTime: int, EndTime: int, XStart: float, XEnd: float, EasingType: str, YStart: float, YEnd: float, Color: int, FX: str, IsSkyline: bool, TimingPointDensityFactor: float, NoInput: bool, AngleX: int, AngleY: int, TiminggroupId: int, Timinggroup: TiminggroupProperties) -> None:
         self.StartTime = StartTime
         self.EndTime = EndTime
         self.XStart = XStart
@@ -360,7 +393,7 @@ class Arc:
         self.Color = Color
         self.FX = FX
         self.IsSkyLine = IsSkyline
-        self.Arctaps = ArcTaps
+        self.Arctaps = []
         self.TimingPointDensityFactor = TimingPointDensityFactor
         self.NoInput = NoInput
         self.AngleX = AngleX
@@ -413,7 +446,10 @@ class Arc:
         BPM = abs(self.TiminggroupProperties.GetBPMByTiming(self.StartTime))
         if BPM >= 255.0: x = 1.0
         else: x = 2.0
-        PartitionIndex = 60000.0 / BPM / x / self.TimingPointDensityFactor
+        try:
+            PartitionIndex = 60000.0 / BPM / x / self.TimingPointDensityFactor
+        except:
+            return None
         Point = int((self.EndTime - self.StartTime) / PartitionIndex)
         if Head ^ 1 >= Point:
             self.JudgeTimings.append(self.StartTime)
@@ -428,6 +464,8 @@ class Arc:
         # print("Arc JudgeTimings:", self.JudgeTimings)
 
     def Update(self):
+        for i in self.Arctaps:
+            i.Instantiate(self)
         if not self.NoInput:
             if len(self.Arctaps): #ArcTaps, Skyline
                 self.Count = len(self.Arctaps)
@@ -437,11 +475,11 @@ class Arc:
 
     def GetXAtTiming(self, t: int):
         t2 = (t - self.StartTime) / (self.EndTime - self.StartTime)
-        return ArcXToWorld(X(self.XStart, self.XEnd, t2, self.EasingType))
+        return X(self.XStart, self.XEnd, t2, self.EasingType)
 
     def GetYAtTiming(self, t: int):
         t2 = (t - self.StartTime) / (self.EndTime - self.StartTime)
-        return ArcXToWorld(Y(self.YStart, self.YEnd, t2, self.EasingType)) 
+        return Y(self.YStart, self.YEnd, t2, self.EasingType)
 
     def AddArcTap(self, arctap: Arctap):
         if arctap.StartTime > self.EndTime or arctap.StartTime < self.StartTime:
@@ -450,6 +488,10 @@ class Arc:
             raise AffError("Try to add arctap into an non-skyline arc")
         arctap.Instantiate(self)
         self.Arctaps.append(arctap)
+
+    def __str__(self) -> str:
+        Arctaps = ((str([i.__str__() for i in self.Arctaps])).replace(' ', '')).replace("'",'') if self.Arctaps else ''
+        return 'arc(' + str(self.StartTime) + ',' + str(self.EndTime) + ',' + '%.2f'% self.XStart + ',' + '%.2f'% self.XEnd + ',' + self.EasingType + ',' + '%.2f'% self.YStart + ',' + '%.2f'% self.YEnd + ',' + str(self.Color) + ',' + self.FX + ',' + (str(self.IsSkyLine)).lower() + ')' + Arctaps + ';'
 
 class Tap:
     def __init__(self, Time: int, Lane: int, NoInput: bool, TiminggroupId: int, Timinggroup: TiminggroupProperties) -> None:
@@ -461,6 +503,9 @@ class Tap:
         self.Count = 0
         if not self.NoInput: self.Count = 1
         else: pass
+
+    def __str__(self) -> str:
+        return '(' + str(self.StartTime) + ',' + str(self.Lane) + ')' + ';'
 
 class Hold:
     def __init__(self, StartTime: int, EndTime: int, Lane: int, TimingPointDensityFactor: float, NoInput: bool, FadingHolds: bool, TiminggroupId: int, Timinggroup: TiminggroupProperties) -> None:
@@ -509,7 +554,10 @@ class Hold:
         BPM = abs(self.TiminggroupProperties.GetBPMByTiming(self.StartTime))
         if BPM >= 255.0: x = 1.0
         else: x = 2.0
-        PartitionIndex = 60000.0 / BPM / x / self.TimingPointDensityFactor
+        try:
+            PartitionIndex = 60000.0 / BPM / x / self.TimingPointDensityFactor
+        except:
+            return None
         Point = int((self.EndTime - self.StartTime) / PartitionIndex)
         if (num ^ 1) >= Point:
             JudgeTiming = int(float(self.StartTime) + float(self.EndTime - self.StartTime) * 0.5)
@@ -532,6 +580,9 @@ class Hold:
     def Clone(self):
         return Hold(self.StartTime, self.EndTime, self.Lane, self.TiminggroupId)
 
+    def __str__(self) -> str:
+        return 'hold(' + str(self.StartTime) + ',' + str(self.EndTime) + ',' + str(self.Lane) + ')' + ';'
+
 class Camera:
     def __init__(self, StartTime: int, Transverse: float, BottomZoom: float, LineZoom: float, SteadyAngle: float, TopZoom: float, RotateAngle: float, EasingType: str, LastingTime: int, TiminggroupId: int, Timinggroup: TiminggroupProperties) -> None:
         self.StartTime = StartTime
@@ -548,11 +599,15 @@ class Camera:
         self.TiminggroupProperties = Timinggroup
         self.Count = 0
 
+    def __str__(self) -> str:
+        return 'camera(' + str(self.StartTime) + ',' + str(self.Transverse) + ',' + str(self.BottomZoom) + ',' + str(self.LineZoom) + ',' + str(self.SteadyAngle) + ',' + str(self.TopZoom) + ',' + str(self.RotateAngle) + ',' + str(self.EasingType) + ',' + str(self.LastingTime) + ')' + ';'
+
 class SceneControl:
     def __init__(self, args, TiminggroupId: int, Timinggroup: TiminggroupProperties) -> None:
         self.Count = 0
         self.TiminggroupId = TiminggroupId
         self.TiminggroupProperties = Timinggroup
+        self.args = args
         if len(args) == 2: #scenecontrol(t,type);
             self.SceneControlType = 'HideTrack'
             self.StartTime = args[0]
@@ -571,9 +626,18 @@ class SceneControl:
                 self.Param = args[2]
                 self.Type = args[3]
 
+    def __str__(self) -> str:
+        args = ''
+        for i in self.args:
+            args += str(i) if not isinstance(i, float) else '%.2f'% i
+            args += ','
+        args = args[:-1]
+        return 'scenecontrol(' + args + ')' + ';'
+
+
 class Flick:
-    def __init__(self, Time, X, Y, FX, FY, NoInput, TiminggroupId: int, Timinggroup: TiminggroupProperties):
-        self.Time = Time
+    def __init__(self, Time: int, X: float, Y: float, FX: float, FY: float, NoInput: bool, TiminggroupId: int, Timinggroup: TiminggroupProperties):
+        self.StartTime = Time
         self.X = X
         self.Y = Y
         self.FX = FX
@@ -583,6 +647,8 @@ class Flick:
         self.TiminggroupId = TiminggroupId
         self.TiminggroupProperties = Timinggroup
 
+    def __str__(self) -> str:
+        return 'flick(' + str(self.StartTime) + ',' + '%.2f'% self.X + ',' + '%.2f'% self.Y + ',' + '%.2f'% self.FX + ',' + '%.2f'% self.FY + ')' + ';'
 
 def formatAffCmd(cmd):
     cmd = cmd.strip('(')
@@ -732,24 +798,27 @@ class Aff:
             args = formatAffCmd(args)
             return Timing(args[0], args[1], args[2], TiminggroupId)
         if i.startswith('arc'):
-            arcCmd = re.match(r'arc\(.*?\)', i)
-            if arcCmd == None: raise AffError('Arc regex not matched', line = line)
-            arcCmd = arcCmd.group()
-            arcCmd = arcCmd.strip('arc')
-            arcArgs = formatAffCmd(arcCmd)
-            arctapArgs = []
-            arctaps = []
+            ArcCommand = re.match(r'arc\(.*?\)', i)
+            if ArcCommand == None: raise AffError('Arc regex not matched', line = line)
+            ArcCommand = ArcCommand.group()
+            ArcCommand = ArcCommand.strip('arc')
+            ArcArguments = formatAffCmd(ArcCommand)
+            ArctapArgs = []
+            Arctaps = []
             if i.find('arctap') >= 0:
-                arctapCmd = re.search(r'(arctap\([0-9]+\),)*arctap\([0-9]+\)', i)
-                if arctapCmd == None: AffError('Arctap regex not matched', line = line)
-                arctapCmd = arctapCmd.group()
-                arctapCmd = arctapCmd.strip('[').strip(']')
-                arctapCmd = arctapCmd.split(',')
-                for c in arctapCmd:
-                    arctapArgs.append(int(c.strip('arctap(').strip(')')))
-                for n in arctapArgs:
-                    arctaps.append(Arctap(n))
-            return Arc(arcArgs[0], arcArgs[1], arcArgs[2], arcArgs[3], arcArgs[4], arcArgs[5], arcArgs[6], arcArgs[7], arcArgs[8], arcArgs[9], arctaps, self.TimingPointDensityFactor, NoInput, AngleX, AngleY, TiminggroupId, self.TiminggroupProperties[TiminggroupId])
+                ArctapCommand = re.search(r'(arctap\([0-9]+\),)*arctap\([0-9]+\)', i)
+                if ArctapCommand == None: AffError('Arctap regex not matched', line = line)
+                ArctapCommand = ArctapCommand.group()
+                ArctapCommand = ArctapCommand.strip('[').strip(']')
+                ArctapCommand = ArctapCommand.split(',')
+                for c in ArctapCommand:
+                    ArctapArgs.append(int(c.strip('arctap(').strip(')')))
+                for n in ArctapArgs:
+                    Arctaps.append(Arctap(n))
+            arc = Arc(ArcArguments[0], ArcArguments[1], ArcArguments[2], ArcArguments[3], ArcArguments[4], ArcArguments[5], ArcArguments[6], ArcArguments[7], ArcArguments[8], ArcArguments[9], self.TimingPointDensityFactor, NoInput, AngleX, AngleY, TiminggroupId, self.TiminggroupProperties[TiminggroupId])
+            for arctap in Arctaps:
+                arc.AddArcTap(arctap)
+            return arc
         elif i.startswith('hold'):
             args = formatAffCmd(i.strip('hold').strip(';'))
             return Hold(args[0], args[1], args[2], self.TimingPointDensityFactor, NoInput, FadingHolds, TiminggroupId, self.TiminggroupProperties[TiminggroupId])
@@ -761,7 +830,7 @@ class Aff:
             return Flick(args[0], args[1], args[2], args[3], args[4], NoInput, TiminggroupId, self.TiminggroupProperties[TiminggroupId])
         elif i.startswith('camera'):
             args = formatAffCmd(i.strip('camera').strip(';'))
-            return Camera(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[9], TiminggroupId)
+            return Camera(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], TiminggroupId)
         elif i[0] == '(' and i[-1:] == ')': #Tap
             args = formatAffCmd(i.strip(';'))
             return Tap(args[0], args[1], NoInput, TiminggroupId, self.TiminggroupProperties[TiminggroupId])
@@ -936,6 +1005,29 @@ class Aff:
         self.Events.append(Event)
         self.Refresh()
 
+    def Chart(self) -> str:
+        self.Refresh()
+        ChartString = ''
+        ChartString += ('AudioOffset:' + str(self.AudioOffset) + '\n')
+        if self.TimingPointDensityFactor != 1.0:
+            ChartString += ('TimingPointDensityFactor:' + str(self.TimingPointDensityFactor) + '\n')
+        ChartString += '-\n'
+        MaxTiminggroupId = 0
+        for i in self.Events:
+            if i.TiminggroupId > MaxTiminggroupId:
+                MaxTiminggroupId = i.TiminggroupId
+        for i in self.Events:
+            if isinstance(i, TiminggroupProperties) and i.TiminggroupId == 0: pass
+            elif i.TiminggroupId == 0:
+                ChartString += (i.__str__() + '\n')
+            elif isinstance(i, TiminggroupProperties):
+                ChartString += (i.__str__() + '{\n')
+                for n in self.Events:
+                    if n.TiminggroupId == i.TiminggroupId and not isinstance(n, TiminggroupProperties):
+                        ChartString += ('  ' + n.__str__() + '\n')
+                ChartString += '};\n'
+        return ChartString
+
 '''
 ArcaeaSongs: Parse packlist, songlist, unlocks from an Arcaea APK file
 '''
@@ -953,10 +1045,8 @@ class Song:
         self.DiffList = diff_list
 
 class ArcaeaSongs:
-    def __init__(self, res_path, log: Log = Log(True, 'log.txt')) -> None:
+    def __init__(self, res_path) -> None:
         self.res_path = res_path
-        log.log('info', 'parsing songlist', 'ArcaeaSongs.__init__()')
-        time1 = time.time()
         self.slist_json = json.loads(open(res_path + 'songs\\songlist', 'r', encoding='utf-8').read())
         self.slist = []
         for i in self.slist_json['songs']:
@@ -970,28 +1060,16 @@ class ArcaeaSongs:
                 diffs.append(str(n['rating']))
             sinfo = Song(i['id'], i['title_localized'], i['artist'], charters, i['bpm'], i['bpm_base'], i.get('remote_dl', False), len(i['difficulties']) - 1, diffs)
             self.slist.append(sinfo) #(song_id, song_name, artist, charter_list, bpm, bpm_base, is_remote_dl, difficulties, diff_list)
-        time2 = time.time()
-        log.log('info', 'songlist parsed, time spent: %sms' % ((time2 - time1) * 1000), 'ArcaeaSongs.__init__()')
-        log.log('info', 'parsing characters list', 'ArcaeaSongs.__init__()')
-        time1 = time.time()
         self.chardict = {}
         chars = open(res_path + 'chars_formated.txt', 'r', encoding='utf-8')
         for i in chars.readlines():
             key = int(i[:i.find(' ')])
             value = i[len(str(key)) + 1:]
             self.chardict[key] = value
-        time2 = time.time()
-        log.log('info', 'characters parsed, time spent: %sms' % ((time2 - time1) * 1000), 'ArcaeaSongs.__init__()')
-        log.log('info', 'parsing packlist', 'ArcaeaSongs.__init__()')
-        time1 = time.time()
         self.plist_json = json.loads(open(res_path + 'songs\\packlist', 'r', encoding='utf-8').read())
         self.plist = []
         for i in self.plist_json['packs']:
             self.plist.append([i['id'], i['plus_character'], i['name_localized']['en'], i.get('description_localized').get('zh-Hans', i['description_localized']['en'])])
-        time2 = time.time()
-        log.log('info', 'packlist parsed, time spent: %sms' % ((time2 - time1) * 1000), 'ArcaeaSongs.__init__()')
-        log.log('info', 'parsing unlocks', 'ArcaeaSongs.__init__()')
-        time1 = time.time()
         self.ulks_json = json.loads(open(res_path + 'songs\\unlocks', 'r', encoding='utf-8').read())
         self.ulks = {}
         for i in self.ulks_json['unlocks']:
@@ -1029,24 +1107,21 @@ class ArcaeaSongs:
                 else:
                     raise ResError('Unknown Unlocks type ' + str(c['type']), 'unlocks')
             self.ulks[key] = value
-        time2 = time.time()
-        log.log('info', 'unlocks parsed, time spent: %sms' % ((time2 - time1) * 1000), 'ArcaeaSongs.__init__()')
-        log.log('info', 'loding vlinks and nicknames', 'ArcaeaSongs.__init__()')
         self.vlinks = json.load(open(self.res_path + 'vlinks.json', 'r', encoding='utf-8'))
         self.nicknames = json.load(open(self.res_path + 'nicknames.json', 'r', encoding='utf-8'))
 
-    def fetchSinfoById(self, song_id):
+    def GetSinfoById(self, song_id):
         for i in self.slist:
             if i.SongId == song_id: return i
         return 0
 
-    def fetchSinfoByName(self, song_name):
+    def GetSinfoByName(self, song_name):
         for i in self.slist:
             if i.SongName['en'] == song_name or i.SongName['ja'] == song_name: return i
         return 0
 
     def songRes(self, song_id):
-        song = self.fetchSinfoById(song_id)
+        song = self.GetSinfoById(song_id)
         folder_name = song.SongId
         if song.IsRemoteDl:
             folder_name = 'dl_' + folder_name
@@ -1071,7 +1146,7 @@ class ArcaeaSongs:
     def count(self) -> list:
         return len(self.slist)
 
-    def fetchUnlocks(self, song_id: str, song_difficulty: int, tab_size: int = 2) -> list:
+    def FetchUnlocks(self, song_id: str, song_difficulty: int, tab_size: int = 2) -> list:
         tab_size *= ' '
         key = song_id + str(song_difficulty)
         value = self.ulks.get(key, False)
@@ -1081,11 +1156,11 @@ class ArcaeaSongs:
             if i[0] == 0:
                 ulksInfo.append(str(i[1]) + ' 残片')
             elif i[0] == 1:
-                ulksInfo.append('以 「' + ArcaeaSongs.grade_dict[i[3]] + '」 或以上成绩通关 ' + self.fetchSinfoById(i[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(i[2])[0] + '] ')
+                ulksInfo.append('以 「' + ArcaeaSongs.grade_dict[i[3]] + '」 或以上成绩通关 ' + self.GetSinfoById(i[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(i[2])[0] + '] ')
             elif i[0] == 2:
-                ulksInfo.append('游玩 ' + self.fetchSinfoById(i[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(i[2])[0] + ']')
+                ulksInfo.append('游玩 ' + self.GetSinfoById(i[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(i[2])[0] + ']')
             elif i[0] == 3:
-                ulksInfo.append('以 「' + ArcaeaSongs.grade_dict[i[3]] + '」 或以上成绩通关 ' + self.fetchSinfoById(i[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(i[2])[0] + '] ' + str(i[4]) + '回')
+                ulksInfo.append('以 「' + ArcaeaSongs.grade_dict[i[3]] + '」 或以上成绩通关 ' + self.GetSinfoById(i[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(i[2])[0] + '] ' + str(i[4]) + '回')
             elif i[0] == 4:
                 fo = tab_size + '或 '
                 t = 0
@@ -1095,20 +1170,20 @@ class ArcaeaSongs:
                         if n[0] == 0:
                             ulksInfo.append(str(n[1]) + ' 残片')
                         elif n[0] == 1:
-                            ulksInfo.append('以 「' + ArcaeaSongs.grade_dict[n[3]] + '」 或以上成绩通关 ' + self.fetchSinfoById(n[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(n[2])[0] + '] ')
+                            ulksInfo.append('以 「' + ArcaeaSongs.grade_dict[n[3]] + '」 或以上成绩通关 ' + self.GetSinfoById(n[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(n[2])[0] + '] ')
                         elif n[0] == 2:
-                            ulksInfo.append('游玩 ' + self.fetchSinfoById(n[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(n[2])[0] + '] ')
+                            ulksInfo.append('游玩 ' + self.GetSinfoById(n[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(n[2])[0] + '] ')
                         elif n[0] == 3:
-                            ulksInfo.append('以 「' + ArcaeaSongs.grade_dict[n[3]] + '」 或以上成绩通关 ' + self.fetchSinfoById(n[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(n[2])[0] + '] ' + str(n[4]) + '回')
+                            ulksInfo.append('以 「' + ArcaeaSongs.grade_dict[n[3]] + '」 或以上成绩通关 ' + self.GetSinfoById(n[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(n[2])[0] + '] ' + str(n[4]) + '回')
                     else:
                         if n[0] == 0:
                             ulksInfo.append(fo + str(n[1]) + ' 残片')
                         elif n[0] == 1:
-                            ulksInfo.append(fo + '以 「' + ArcaeaSongs.grade_dict[n[3]] + '」 或以上成绩通关 ' + self.fetchSinfoById(n[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(n[2])[0] + '] ')
+                            ulksInfo.append(fo + '以 「' + ArcaeaSongs.grade_dict[n[3]] + '」 或以上成绩通关 ' + self.GetSinfoById(n[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(n[2])[0] + '] ')
                         elif n[0] == 2:
-                            ulksInfo.append(fo + '游玩 ' + self.fetchSinfoById(n[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(n[2])[0] + '] ')
+                            ulksInfo.append(fo + '游玩 ' + self.GetSinfoById(n[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(n[2])[0] + '] ')
                         elif n[0] == 3:
-                            ulksInfo.append(fo + '以 「' + ArcaeaSongs.grade_dict[n[3]] + '」 或以上成绩通关 ' + self.fetchSinfoById(n[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(n[2])[0] + '] ' + str(n[4]) + '回')
+                            ulksInfo.append(fo + '以 「' + ArcaeaSongs.grade_dict[n[3]] + '」 或以上成绩通关 ' + self.GetSinfoById(n[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(n[2])[0] + '] ' + str(n[4]) + '回')
             if i[0] == 5:
                 potential = i[1] / 100
                 ulksInfo.append('个人游玩潜力值 ' + '%.2f'% potential + ' 或以上')
@@ -1121,7 +1196,7 @@ class ArcaeaSongs:
             ulks += str(i) + '\n'
         return ulks
 
-    def genVlinksJson(self, difficulty, file):
+    def GenerateVlinksJson(self, difficulty, file):
         json_data = []
         for i in self.slist:
             index = -1
@@ -1140,7 +1215,7 @@ class ArcaeaSongs:
         json.dump({'vids': json_data}, f, ensure_ascii=False, indent = 4)
         f.close()
 
-    def genNickNamesJson(self, file):
+    def GenerateNickNamesJson(self, file):
         json_data = []
         for i in self.slist:
             song_nicknames = {}
@@ -1153,7 +1228,7 @@ class ArcaeaSongs:
         f.close()
 
     def songDetails(self, song_id):
-        song = self.fetchSinfoById(song_id)
+        song = self.GetSinfoById(song_id)
         def Count(aff_path):
             aff = Aff()
             aff.Load(aff_path)
@@ -1161,7 +1236,7 @@ class ArcaeaSongs:
         def f(str1: str, str2: str):
             if str1 + str2 != str1 and str1 + str2 != str1: return str1 + str2
             return ''
-        return [song.SongName['en'], BotRes(self.songRes(song_id)[0][0], 'image')] + [ArcaeaSongs.diff_dict[i][0] + ': ' + song.DiffList[i] + '，共 ' + str(Count(self.songRes(song_id)[2][i])[0]) + ' Notes' for i in range(song.Difficulties + 1)] + [x for x in [f(song.SongName['en'] + ' 「' + ArcaeaSongs.diff_dict.get(i)[0] + '」 的解锁条件：\n', self.fetchUnlocks(song_id, i)) for i in range(song.Difficulties + 1)] if x != '']
+        return [song.SongName['en'], BotRes(self.songRes(song_id)[0][0], 'image')] + [ArcaeaSongs.diff_dict[i][0] + ': ' + song.DiffList[i] + '，共 ' + str(Count(self.songRes(song_id)[2][i])[0]) + ' Notes' for i in range(song.Difficulties + 1)] + [x for x in [f(song.SongName['en'] + ' 「' + ArcaeaSongs.diff_dict.get(i)[0] + '」 的解锁条件：\n', self.FetchUnlocks(song_id, i)) for i in range(song.Difficulties + 1)] if x != '']
 
     grade_dict = {0: 'No Limit', 1: 'C', 2: 'B', 3: 'A', 4: 'AA', 5: 'EX', 6: 'EX+'}
     diff_dict = {0: ['PST', ['pst'], 'Past'], 
@@ -1204,53 +1279,76 @@ class PhiChart:
 '''
 Update functions
 '''
-def autoUpd(res_path, log: Log = Log(True, 'log.txt')) -> int:
-    arcWebApi = r'https://webapi.lowiro.com/webapi/serve/static/bin/arcaea/apk'
-    req = requests.get(arcWebApi)
-    if req.status_code != 200: return 1
-    content = json.loads(req.content)
-    log.log('info', content, 'autoUpd()')
-    version = open(res_path + 'version', 'r')
-    version = version.read()
+
+def CheckUpdate(res_path):
+    ArcaeaDownloadApi = r'https://webapi.lowiro.com/webapi/serve/static/bin/arcaea/apk'
+    request = requests.get(ArcaeaDownloadApi)
+    if request.status_code != 200: raise RequestError(ArcaeaDownloadApi)
+    content = json.loads(request.content)
+    try:
+        version = open(res_path + 'version', 'r')
+        version = version.read()
+    except:
+        return content
     if version == content['value']['version']: return 0
-    apkUrl = content['value']['url']
-    down = MultiprocessDownload(apkUrl, res_path, 'arcApk.zip', 16)
-    down.run()
-    res = zipfile.ZipFile(res_path + 'arcApk.zip')
-    res.extractall(res_path + content['value']['version'])
-    os.mkdir(res_path + version)
-    for i in ['char', 'songs']:
-        shutil.move(res_path + i, res_path + version)
-        shutil.move(res_path + content['value']['version'] +'\\assets\\' + i, res_path)
-    ver_update = open(res_path + 'version', 'w')
-    ver_update.write(content['value']['version'])
-    log.log('info', 'Updated to ' + content['value']['version'] + ' old files in ' + version + ' folder', 'autoUpd()')
-    return 0
+    return content
 
-def autoDlRes(res_path, log: Log = Log(True, 'log.txt')) -> int:
-    arcWebApi = r'https://webapi.lowiro.com/webapi/serve/static/bin/arcaea/apk'
-    req = requests.get(arcWebApi)
-    if req.status_code != 200: return 1
-    content = json.loads(req.content)
-    log.log('info', content, 'autoDlRes()')
-    apkUrl = content['value']['url']
-    down = MultiprocessDownload(apkUrl, res_path, 'arcApk.zip', 16)
-    down.run()
-    res = zipfile.ZipFile(res_path + 'arcApk.zip')
-    res.extractall(res_path + content['value']['version'])
-    for i in ['char', 'songs']:
-        shutil.move(res_path + content['value']['version'] + '\\assets\\' + i, res_path)
-    ver_file = open(res_path + 'version', 'w')
-    ver_file.write(content['value']['version'])
-    log.log('info', 'Download to ' + content['value']['version'], 'autoDlRes()')
-    return 0
+def ExecuteUpdate(res_path) -> None:
+    content = CheckUpdate(res_path)
+    if not content: return None
+    Download = MultiprocessDownload(content['value']['url'], res_path, 'ArcaeaApk.apk', 16)
+    Download.run()
+    resources = zipfile.ZipFIle(res_path + 'ArcaeaApk.apk')
+    resources.extractall(res_path + content['value']['version'])
 
-def resource(res_path) -> int:
-    if os.path.exists(res_path + 'version'):
-        autoUpd(res_path)
-    else:
-        autoDlRes(res_path)
-    return 0
+
+# def autoUpd(res_path, log: Log = Log(True, 'log.txt')) -> int:
+#     arcWebApi = r'https://webapi.lowiro.com/webapi/serve/static/bin/arcaea/apk'
+#     req = requests.get(arcWebApi)
+#     if req.status_code != 200: return 1
+#     content = json.loads(req.content)
+#     log.log('info', content, 'autoUpd()')
+#     version = open(res_path + 'version', 'r')
+#     version = version.read()
+#     if version == content['value']['version']: return 0
+#     apkUrl = content['value']['url']
+#     down = MultiprocessDownload(apkUrl, res_path, 'arcApk.zip', 16)
+#     down.run()
+#     res = zipfile.ZipFile(res_path + 'arcApk.zip')
+#     res.extractall(res_path + content['value']['version'])
+#     os.mkdir(res_path + version)
+#     for i in ['char', 'songs']:
+#         shutil.move(res_path + i, res_path + version)
+#         shutil.move(res_path + content['value']['version'] +'\\assets\\' + i, res_path)
+#     ver_update = open(res_path + 'version', 'w')
+#     ver_update.write(content['value']['version'])
+#     log.log('info', 'Updated to ' + content['value']['version'] + ' old files in ' + version + ' folder', 'autoUpd()')
+#     return 0
+
+# def autoDlRes(res_path, log: Log = Log(True, 'log.txt')) -> int:
+#     arcWebApi = r'https://webapi.lowiro.com/webapi/serve/static/bin/arcaea/apk'
+#     req = requests.get(arcWebApi)
+#     if req.status_code != 200: return 1
+#     content = json.loads(req.content)
+#     log.log('info', content, 'autoDlRes()')
+#     apkUrl = content['value']['url']
+#     down = MultiprocessDownload(apkUrl, res_path, 'arcApk.zip', 16)
+#     down.run()
+#     res = zipfile.ZipFile(res_path + 'arcApk.zip')
+#     res.extractall(res_path + content['value']['version'])
+#     for i in ['char', 'songs']:
+#         shutil.move(res_path + content['value']['version'] + '\\assets\\' + i, res_path)
+#     ver_file = open(res_path + 'version', 'w')
+#     ver_file.write(content['value']['version'])
+#     log.log('info', 'Download to ' + content['value']['version'], 'autoDlRes()')
+#     return 0
+
+# def resource(res_path) -> int:
+#     if os.path.exists(res_path + 'version'):
+#         autoUpd(res_path)
+#     else:
+#         autoDlRes(res_path)
+#     return 0
 
 
 '''
@@ -1274,43 +1372,10 @@ class GuessPic:
         yend = ystart + length
         self.pic.crop((xstart, ystart, xend, yend)).save(save_path)
 
-    def Guess(self, msg, qq):
+    def Guess(self, msg, account):
         if compare(msg.split().lower(), self.song.SongId) or compare(msg.split().lower(), self.song.SongName['en']) or compare(msg.split().lower(), self.song.SongName['ja']): win = True
-        self.winner = qq
+        self.winner = account
         return True if win else False
-
-
-'''
-Autoplay script generator
-'''
-
-class SlotEvent:
-    def __init__(self, SlotId, Time, Type, X, Y):
-        self.SlotId = SlotId
-        self.Time = Time
-        self.Type = Type
-        self.X = X
-        self.Y = Y
-
-class Slots:
-    def __init__(self):
-        self.Events = []
-
-    def AddEvent(self, SlotId, Time, Type, X, Y):
-        self.Events.append(SlotEvent(SlotId, Time, Type, X, Y))
-
-    def SortEventByTime(self):
-        self.Events.sort(key = lambda slot:slot.Time)
-
-    def ToSlotsCode(self):
-        pass
-
-def ArcAutoplayGenerator(aff_path, Width = 1920, Height = 1080):
-    CanvasW = [Width * 0.33, Width * 0.71]
-    CanvasH = [Height * 0.81, Height * 0.37]
-    JudgeArea = [CanvasW[1] - CanvasW[0], CanvasH[0] - CanvasH[1]]
-    aff = Aff()
-    aff.Load(aff_path)
 
 
 # Code for Test 
@@ -1342,6 +1407,7 @@ def ArcAutoplayGenerator(aff_path, Width = 1920, Height = 1080):
 # f.write(text)
 # f.close()
 
-a = Aff()
-a.Load(r'C:\Project\ArcaeaLib\songs\supernova\2.aff')
-print(a.CountNotes())
+
+aff = Aff()
+aff.Load(r'C:\Project\ArcaeaLib\songs\dl\tempestissimo_3')
+print(aff.CountNotes())
