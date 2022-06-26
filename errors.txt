@@ -1,9 +1,9 @@
 Shades of Light in a Transcendent Realm「FTR」: 1063 -> 1067
+PRAGMATISM「BYD」: 1500 -> 1502
 Flashback「FTR」: 858 -> 856
 αterlβus「FTR」: 1029 -> 1030
 Auxesia「FTR」: 994 -> 1000
 trappola bewitching「FTR」: 1043 -> 1044
-conflict「PRS」: 561 -> 731
 Axium Crisis「PRS」: 1058 -> 1065
 Grievous Lady「PRS」: 1324 -> 1194
 Grievous Lady「FTR」: 1447 -> 1450
@@ -12,11 +12,10 @@ Singularity「FTR」: 1103 -> 1105
 The Message「FTR」: 988 -> 992
 Ether Strike「FTR」: 1167 -> 1170
 Nhelv「FTR」: 1104 -> 1108
-Linear Accelerator「PST」: 439 -> 438
-Linear Accelerator「PRS」: 489 -> 488
+Linear Accelerator「PST」: 435 -> 438
+Linear Accelerator「PRS」: 485 -> 488
 Rugie「FTR」: 961 -> 975
 Astral tale「FTR」: 883 -> 884
-OMAKENO Stroke「BYD」: 889 -> 931
 Solitary Dream「FTR」: 971 -> 972
 Antithese「BYD」: 957 -> 968
 Vicious Heroism「FTR」: 1149 -> 1150
@@ -33,6 +32,8 @@ La'qryma of the Wasteland「PST」: 446 -> 447
 La'qryma of the Wasteland「FTR」: 955 -> 956
 Equilibrium「FTR」: 946 -> 951
 #1f1e33「FTR」: 1574 -> 1576
+Arcahv「PRS」: 882 -> 884
+Arcahv「FTR」: 1063 -> 1065
 Altale「FTR」: 687 -> 690
 Black Lotus「PRS」: 681 -> 687
 Black Lotus「FTR」: 964 -> 965
@@ -42,11 +43,10 @@ MAHOROBA「FTR」: 829 -> 828
 BUCHiGiRE Berserker「PRS」: 1039 -> 1046
 Galaxy Friends「FTR」: 1010 -> 1013
 CROSS†OVER「FTR」: 1076 -> 1094
-ω4「PRS」: 936 -> 943
-ω4「FTR」: 1489 -> 1393
-Bamboo「FTR」: 1032 -> 1050
-GIMME DA BLOOD「PST」: 572 -> 582
-GIMME DA BLOOD「PRS」: 732 -> 737
+ω4「PRS」: 747 -> 943
+Bamboo「PST」: 390 -> 499
+GIMME DA BLOOD「PST」: 617 -> 582
+GIMME DA BLOOD「PRS」: 763 -> 737
 Paper Witch「PRS」: 485 -> 487
 Paper Witch「FTR」: 792 -> 793
 Far Away Light「FTR」: 1315 -> 1322
@@ -58,5 +58,5 @@ lastendconductor「FTR」: 1208 -> 1209
 Redolent Shape「FTR」: 1087 -> 1088
 Cosmica「PST」: 425 -> 428
 Haze of Autumn「FTR」: 1076 -> 1077
-Medusa「FTR」: 911 -> 931
 Ävril -Flicka i krans-「FTR」: 847 -> 851
+Head BONK ache「PST」: 576 -> 570

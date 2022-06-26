@@ -12,7 +12,7 @@
 '''
 TODO List:
 
-Rewrite the Aff System									50%
+Rewrite the Aff System									60%
 Arcaea Nickname system									5%
 Song Name Comparing System								50%
 Arc & Hold Note Count									95%
@@ -105,6 +105,14 @@ def recent_v3(back, char, result):
 '''
 Utils
 '''
+
+def EnsurePath(Path):
+    if Path.strip() == '':
+        return '.'
+    if Path[-1] == '\\':
+        return Path
+    return Path + '\\'
+
 
 class BotRes:
     def __init__(self, path, filetype) -> None:
@@ -331,7 +339,7 @@ class Arctap:
         self.StartTime = Time
         self.count = 1
 
-    def Instantiate(self, arc: Arc):
+    def SetArc(self, arc: Arc):
         self.Arc = arc
 
     def Clone(self):
@@ -465,7 +473,7 @@ class Arc:
 
     def Update(self):
         for i in self.Arctaps:
-            i.Instantiate(self)
+            i.SetArc(self)
         if not self.NoInput:
             if len(self.Arctaps): #ArcTaps, Skyline
                 self.Count = len(self.Arctaps)
@@ -486,7 +494,7 @@ class Arc:
             raise AffError("Arctap Time Invalid")
         if not self.IsSkyLine:
             raise AffError("Try to add arctap into an non-skyline arc")
-        arctap.Instantiate(self)
+        arctap.SetArc(self)
         self.Arctaps.append(arctap)
 
     def __str__(self) -> str:
@@ -1028,6 +1036,24 @@ class Aff:
                 ChartString += '};\n'
         return ChartString
 
+    def Save(self, FilePath) -> None:
+        ChartFile = open(FilePath, 'w', encoding='utf-8')
+        ChartFile.write(self.Chart())
+        ChartFile.close()
+
+    def CreateNewChartMigratingTimings(self) -> Aff:
+        EventsNeedMigrate = []
+        for i in self.Events:
+            if isinstance(i, Timing) and i.TiminggroupId == 0:
+                EventsNeedMigrate.append(i)
+        aff = Aff()
+        aff.New()
+        aff.SetAudioOffset(self.AudioOffset)
+        aff.SetTimingPointDensityFactor(self.TimingPointDensityFactor)
+        for i in EventsNeedMigrate:
+            aff.AddEvent(i)
+        return aff
+
 '''
 ArcaeaSongs: Parse packlist, songlist, unlocks from an Arcaea APK file
 '''
@@ -1110,18 +1136,18 @@ class ArcaeaSongs:
         self.vlinks = json.load(open(self.res_path + 'vlinks.json', 'r', encoding='utf-8'))
         self.nicknames = json.load(open(self.res_path + 'nicknames.json', 'r', encoding='utf-8'))
 
-    def GetSinfoById(self, song_id):
+    def GetSinfoById(self, SongId):
         for i in self.slist:
-            if i.SongId == song_id: return i
+            if i.SongId == SongId: return i
         return 0
 
-    def GetSinfoByName(self, song_name):
+    def GetSinfoByName(self, SongName):
         for i in self.slist:
-            if i.SongName['en'] == song_name or i.SongName['ja'] == song_name: return i
+            if i.SongName['en'] == SongName or i.SongName['ja'] == SongName: return i
         return 0
 
-    def songRes(self, song_id):
-        song = self.GetSinfoById(song_id)
+    def SongRes(self, SongId):
+        song = self.GetSinfoById(SongId)
         folder_name = song.SongId
         if song.IsRemoteDl:
             folder_name = 'dl_' + folder_name
@@ -1137,13 +1163,13 @@ class ArcaeaSongs:
             aff_path_list = [self.res_path + 'songs\\' + 'dl' + '\\' + song.SongId + '_' + str(x) for x in range(0, int(song.Difficulties) + 1)]
         return pic_list, aud_path, aff_path_list
 
-    def songs_id(self) -> list:
+    def SongsId(self) -> list:
         return [i.SongId for i in self.slist]
 
-    def songs(self) -> list:
+    def Songs(self) -> list:
         return [i.SongName['en'] for i in self.slist]
 
-    def count(self) -> list:
+    def Count(self) -> list:
         return len(self.slist)
 
     def FetchUnlocks(self, song_id: str, song_difficulty: int, tab_size: int = 2) -> list:
@@ -1151,16 +1177,16 @@ class ArcaeaSongs:
         key = song_id + str(song_difficulty)
         value = self.ulks.get(key, False)
         if not value: return ''
-        ulksInfo = []
+        unlocks_info = []
         for i in value:
             if i[0] == 0:
-                ulksInfo.append(str(i[1]) + ' 残片')
+                unlocks_info.append(str(i[1]) + ' 残片')
             elif i[0] == 1:
-                ulksInfo.append('以 「' + ArcaeaSongs.grade_dict[i[3]] + '」 或以上成绩通关 ' + self.GetSinfoById(i[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(i[2])[0] + '] ')
+                unlocks_info.append('以 「' + ArcaeaSongs.grade_dict[i[3]] + '」 或以上成绩通关 ' + self.GetSinfoById(i[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(i[2])[0] + '] ')
             elif i[0] == 2:
-                ulksInfo.append('游玩 ' + self.GetSinfoById(i[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(i[2])[0] + ']')
+                unlocks_info.append('游玩 ' + self.GetSinfoById(i[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(i[2])[0] + ']')
             elif i[0] == 3:
-                ulksInfo.append('以 「' + ArcaeaSongs.grade_dict[i[3]] + '」 或以上成绩通关 ' + self.GetSinfoById(i[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(i[2])[0] + '] ' + str(i[4]) + '回')
+                unlocks_info.append('以 「' + ArcaeaSongs.grade_dict[i[3]] + '」 或以上成绩通关 ' + self.GetSinfoById(i[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(i[2])[0] + '] ' + str(i[4]) + '回')
             elif i[0] == 4:
                 fo = tab_size + '或 '
                 t = 0
@@ -1168,33 +1194,33 @@ class ArcaeaSongs:
                     t += 1
                     if t == 1:
                         if n[0] == 0:
-                            ulksInfo.append(str(n[1]) + ' 残片')
+                            unlocks_info.append(str(n[1]) + ' 残片')
                         elif n[0] == 1:
-                            ulksInfo.append('以 「' + ArcaeaSongs.grade_dict[n[3]] + '」 或以上成绩通关 ' + self.GetSinfoById(n[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(n[2])[0] + '] ')
+                            unlocks_info.append('以 「' + ArcaeaSongs.grade_dict[n[3]] + '」 或以上成绩通关 ' + self.GetSinfoById(n[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(n[2])[0] + '] ')
                         elif n[0] == 2:
-                            ulksInfo.append('游玩 ' + self.GetSinfoById(n[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(n[2])[0] + '] ')
+                            unlocks_info.append('游玩 ' + self.GetSinfoById(n[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(n[2])[0] + '] ')
                         elif n[0] == 3:
-                            ulksInfo.append('以 「' + ArcaeaSongs.grade_dict[n[3]] + '」 或以上成绩通关 ' + self.GetSinfoById(n[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(n[2])[0] + '] ' + str(n[4]) + '回')
+                            unlocks_info.append('以 「' + ArcaeaSongs.grade_dict[n[3]] + '」 或以上成绩通关 ' + self.GetSinfoById(n[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(n[2])[0] + '] ' + str(n[4]) + '回')
                     else:
                         if n[0] == 0:
-                            ulksInfo.append(fo + str(n[1]) + ' 残片')
+                            unlocks_info.append(fo + str(n[1]) + ' 残片')
                         elif n[0] == 1:
-                            ulksInfo.append(fo + '以 「' + ArcaeaSongs.grade_dict[n[3]] + '」 或以上成绩通关 ' + self.GetSinfoById(n[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(n[2])[0] + '] ')
+                            unlocks_info.append(fo + '以 「' + ArcaeaSongs.grade_dict[n[3]] + '」 或以上成绩通关 ' + self.GetSinfoById(n[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(n[2])[0] + '] ')
                         elif n[0] == 2:
-                            ulksInfo.append(fo + '游玩 ' + self.GetSinfoById(n[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(n[2])[0] + '] ')
+                            unlocks_info.append(fo + '游玩 ' + self.GetSinfoById(n[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(n[2])[0] + '] ')
                         elif n[0] == 3:
-                            ulksInfo.append(fo + '以 「' + ArcaeaSongs.grade_dict[n[3]] + '」 或以上成绩通关 ' + self.GetSinfoById(n[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(n[2])[0] + '] ' + str(n[4]) + '回')
+                            unlocks_info.append(fo + '以 「' + ArcaeaSongs.grade_dict[n[3]] + '」 或以上成绩通关 ' + self.GetSinfoById(n[1]).SongName['en'] + ' [' + ArcaeaSongs.diff_dict.get(n[2])[0] + '] ' + str(n[4]) + '回')
             if i[0] == 5:
                 potential = i[1] / 100
-                ulksInfo.append('个人游玩潜力值 ' + '%.2f'% potential + ' 或以上')
+                unlocks_info.append('个人游玩潜力值 ' + '%.2f'% potential + ' 或以上')
             if i[0] == 101:
-                ulksInfo.append('通过异象解锁，失败时最少获得' + str(i[1]) + '%，最多获得' + str(i[2]) + '%')
+                unlocks_info.append('通过异象解锁，失败时最少获得' + str(i[1]) + '%，最多获得' + str(i[2]) + '%')
             if i[0] == 103:
-                ulksInfo.append('解锁时需使用 ' + self.chardict.get(i[1]) + ' 搭档')
-        ulks = ''
-        for i in ulksInfo:
-            ulks += str(i) + '\n'
-        return ulks
+                unlocks_info.append('解锁时需使用 ' + self.chardict.get(i[1]) + ' 搭档')
+        unlocks = ''
+        for i in unlocks_info:
+            unlocks += str(i) + '\n'
+        return unlocks
 
     def GenerateVlinksJson(self, difficulty, file):
         json_data = []
@@ -1227,7 +1253,7 @@ class ArcaeaSongs:
         json.dump({'nicknames': json_data}, f, ensure_ascii=False, indent = 4)
         f.close()
 
-    def songDetails(self, song_id):
+    def SongDetails(self, song_id):
         song = self.GetSinfoById(song_id)
         def Count(aff_path):
             aff = Aff()
@@ -1236,7 +1262,7 @@ class ArcaeaSongs:
         def f(str1: str, str2: str):
             if str1 + str2 != str1 and str1 + str2 != str1: return str1 + str2
             return ''
-        return [song.SongName['en'], BotRes(self.songRes(song_id)[0][0], 'image')] + [ArcaeaSongs.diff_dict[i][0] + ': ' + song.DiffList[i] + '，共 ' + str(Count(self.songRes(song_id)[2][i])[0]) + ' Notes' for i in range(song.Difficulties + 1)] + [x for x in [f(song.SongName['en'] + ' 「' + ArcaeaSongs.diff_dict.get(i)[0] + '」 的解锁条件：\n', self.FetchUnlocks(song_id, i)) for i in range(song.Difficulties + 1)] if x != '']
+        return [song.SongName['en'], BotRes(self.SongRes(song_id)[0][0], 'image')] + [ArcaeaSongs.diff_dict[i][0] + ': ' + song.DiffList[i] + '，共 ' + str(Count(self.SongRes(song_id)[2][i])[0]) + ' Notes' for i in range(song.Difficulties + 1)] + [x for x in [f(song.SongName['en'] + ' 「' + ArcaeaSongs.diff_dict.get(i)[0] + '」 的解锁条件：\n', self.FetchUnlocks(song_id, i)) for i in range(song.Difficulties + 1)] if x != '']
 
     grade_dict = {0: 'No Limit', 1: 'C', 2: 'B', 3: 'A', 4: 'AA', 5: 'EX', 6: 'EX+'}
     diff_dict = {0: ['PST', ['pst'], 'Past'], 
@@ -1264,13 +1290,13 @@ class PhiChart:
     def __init__(self) -> None:
         self.IsLoaded = False
 
-    def Load(self, file: str or TextIOWrapper, format: str):
-        if isinstance(file, TextIOWrapper):
-            file = file.read()
+    def Load(self, File: str or TextIOWrapper, Format: str):
+        if isinstance(File, TextIOWrapper):
+            File = File.read()
         if format == 'offical':
-            self.format = format
-            self.raw = file
-            self.jsonraw = json.dumps(file)
+            self.Format = Format
+            self.Raw = File
+            self.JsonRaw = json.dumps(File)
         pass
 
     def ToOffical(self):
@@ -1280,27 +1306,48 @@ class PhiChart:
 Update functions
 '''
 
-def CheckUpdate(res_path):
+def CheckUpdate(ResourcePath):
+    ResourcePath = EnsurePath(ResourcePath)
     ArcaeaDownloadApi = r'https://webapi.lowiro.com/webapi/serve/static/bin/arcaea/apk'
-    request = requests.get(ArcaeaDownloadApi)
-    if request.status_code != 200: raise RequestError(ArcaeaDownloadApi)
-    content = json.loads(request.content)
+    Request = requests.get(ArcaeaDownloadApi)
+    if Request.status_code != 200: raise RequestError(ArcaeaDownloadApi)
+    Content = json.loads(Request.content)
     try:
-        version = open(res_path + 'version', 'r')
-        version = version.read()
+        Version = open(ResourcePath + 'version', 'r')
+        Version = Version.read()
     except:
-        return content
-    if version == content['value']['version']: return 0
-    return content
+        return Content
+    if Version == Content['value']['version']: return 0
+    return Content, Version
 
-def ExecuteUpdate(res_path) -> None:
-    content = CheckUpdate(res_path)
-    if not content: return None
-    Download = MultiprocessDownload(content['value']['url'], res_path, 'ArcaeaApk.apk', 16)
+def ExecuteUpdate(ResourcesPath) -> None:
+    ResourcePath = EnsurePath(ResourcePath)
+    Content, Version = CheckUpdate(ResourcesPath)
+    if not Content: return None
+    Download = MultiprocessDownload(Content['value']['url'], ResourcesPath, 'ArcaeaApk.apk', 16)
     Download.run()
-    resources = zipfile.ZipFIle(res_path + 'ArcaeaApk.apk')
-    resources.extractall(res_path + content['value']['version'])
+    Resources = zipfile.ZipFIle(ResourcesPath + 'ArcaeaApk.apk')
+    Resources.extractall(ResourcesPath + Content['value']['version'])
+    os.mkdir(ResourcesPath + Version)
+    for i in ['char', 'songs']:
+        shutil.move(ResourcePath + i, ResourcePath + Version)
+        shutil.move(ResourcePath + Content['value']['version'] +'\\assets\\' + i, ResourcePath)
+    VersionUpdate = open(ResourcePath + 'version', 'w')
+    VersionUpdate.write(Content['value']['version'])
 
+
+def ExecuteResource(ResourcesPath) -> None:
+    ResourcePath = EnsurePath(ResourcePath)
+    Content = CheckUpdate(ResourcesPath)
+    if not Content: return None
+    Download = MultiprocessDownload(Content['value']['url'], ResourcesPath, 'ArcaeaApk.apk', 16)
+    Download.run()
+    Resources = zipfile.ZipFIle(ResourcesPath + 'ArcaeaApk.apk')
+    Resources.extractall(ResourcesPath + Content['value']['version'])
+    for i in ['char', 'songs']:
+        shutil.move(ResourcePath + Content['value']['version'] +'\\assets\\' + i, ResourcePath)
+    VersionUpdate = open(ResourcePath + 'version', 'w')
+    VersionUpdate.write(Content['value']['version'])
 
 # def autoUpd(res_path, log: Log = Log(True, 'log.txt')) -> int:
 #     arcWebApi = r'https://webapi.lowiro.com/webapi/serve/static/bin/arcaea/apk'
@@ -1357,7 +1404,7 @@ Bot functions
 class GuessPic:
     def __init__(self, song: Song, res: ArcaeaSongs, guess_type: str): #guess_type: easy, hard, insane
         self.song = song
-        self.pic_path = res.songRes(song.SongId)[0][0]
+        self.pic_path = res.SongRes(song.SongId)[0][0]
         self.guess_type = guess_type
         self.pic = Image.open(self.pic_path)
         self.res = res
@@ -1380,34 +1427,42 @@ class GuessPic:
 
 # Code for Test 
 
-# t1 = time.time()
-# a = ArcaeaSongs('.\\')
-# j = json.loads(open('arcsong.json', 'r', encoding='utf-8').read())
-# def query_in_arcsong(j, id):
-#     for i in j['content']['songs']:
-#         if i['id'] == id: return i
-# text = ''
-# for i in a.slist:
-#     try:
-#         for n in a.songRes(i.SongId)[2]:
-#             z = Aff()
-#             z.Load(n)
-#             try:
-#                 diff = int(n[-1:])
-#             except:
-#                 diff = int(n[1:].split('.')[0][-1:])
-#             if z.CountNotes()[0] != query_in_arcsong(j, i.SongId)['difficulties'][diff]['totalNotes']:
-#                 text += i.SongName['en'] + '「' + a.diff_dict[diff][0] + '」' + ': {0} -> {1}'.format(z.CountNotes()[0], query_in_arcsong(j, i.SongId)['difficulties'][diff]['totalNotes']) + '\n'
-#     except:
-#         pass
-# print(text)
-# t2 = time.time()
-# print('%sms' % ((t2 - t1) * 1000))
-# f = open('errors.txt', 'w', encoding='utf-8')
-# f.write(text)
-# f.close()
+t1 = time.time()
+a = ArcaeaSongs('.\\')
+j = json.loads(open('arcsong.json', 'r', encoding='utf-8').read())
+def query_in_arcsong(j, id):
+    for i in j['content']['songs']:
+        if i['id'] == id: return i
+text = ''
+num = 0
+for i in a.slist:
+    num += 1
+    print(num)
+    try:
+        for n in a.SongRes(i.SongId)[2]:
+            z = Aff()
+            z.Load(n)
+            try:
+                diff = int(n[-1:])
+            except:
+                diff = int(n[1:].split('.')[0][-1:])
+            if z.CountNotes()[0] != query_in_arcsong(j, i.SongId)['difficulties'][diff]['totalNotes']:
+                text += i.SongName['en'] + '「' + a.diff_dict[diff][0] + '」' + ': {0} -> {1}'.format(z.CountNotes()[0], query_in_arcsong(j, i.SongId)['difficulties'][diff]['totalNotes']) + '\n'
+    except:
+        pass
+print(text)
+t2 = time.time()
+print('%sms' % ((t2 - t1) * 1000))
+f = open('errors.txt', 'w', encoding='utf-8')
+f.write(text)
+f.close()
 
+# aff = Aff()
+# aff.Load('C:/Users/Player01/Desktop/tutorial/1.aff')
+# affm = aff.CreateNewChartMigratingTimings()
+# affm.Save('C:/Users/Player01/Desktop/tutorial/2.aff')
 
-aff = Aff()
-aff.Load(r'C:\Project\ArcaeaLib\songs\dl\tempestissimo_3')
-print(aff.CountNotes())
+# aff = Aff()
+# aff.Load('C:/Users/Player01/Desktop/bamboo/2.aff')
+# affm = aff.CreateNewChartMigratingTimings()
+# affm.Save('C:/Users/Player01/Desktop/bamboo/3.aff')
