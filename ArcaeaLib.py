@@ -13,13 +13,14 @@
 TODO List:
 
 Rewrite the Aff System									60%
-Arcaea Nickname system									5%
+Arcaea Nickname System									5%
 Song Name Comparing System								50%
 Arc & Hold Note Count									95%
 Arc Coordinate Calc										30%
 RemoteDL Challenge Calc									0%
-Phigros chart reader									0%
-Phigros chart and Arcaea chart converter				0%
+Phigros Chart Reader									30%
+Phigros Renderer
+Phigros Chart and Arcaea Chart Converter				0%
 '''
 
 '''
