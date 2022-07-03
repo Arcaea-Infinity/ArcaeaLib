@@ -66,8 +66,6 @@ class RequestError(Exception):
 
     def __str__(self) -> str:
         return 'Error while requesting ' + self.url
-
-
 '''
 Draw pic for best30 and recent record card
 '''
@@ -1270,38 +1268,6 @@ class ArcaeaSongs:
                 2: ['FTR', ['ftr'], 'Future'],
                 3: ['BYD', ['byd', 'byn'], 'Beyond']}
 
-
-'''
-Phigros Chart Reader(Beta)
-'''
-class BPMGroup:
-    def __init__(self, BPM: float, Beat: float, Time: float) -> None:
-        self.BPM = BPM
-        self.Beat = Beat
-        self.Time = Time
-
-class SpeedEvent:
-    def __init__(self, StartTime: float, EndTime: float, Value: float) -> None:
-        self.StartTime = StartTime
-        self.EndTime = EndTime
-        self.Value = Value
-
-class PhiChart:
-    def __init__(self) -> None:
-        self.IsLoaded = False
-
-    def Load(self, File: str or TextIOWrapper, Format: str):
-        if isinstance(File, TextIOWrapper):
-            File = File.read()
-        if format == 'offical':
-            self.Format = Format
-            self.Raw = File
-            self.JsonRaw = json.dumps(File)
-        pass
-
-    def ToOffical(self):
-        pass
-
 '''
 Update functions
 '''
@@ -1427,35 +1393,35 @@ class GuessPic:
 
 # Code for Test 
 
-t1 = time.time()
-a = ArcaeaSongs('.\\')
-j = json.loads(open('arcsong.json', 'r', encoding='utf-8').read())
-def query_in_arcsong(j, id):
-    for i in j['content']['songs']:
-        if i['id'] == id: return i
-text = ''
-num = 0
-for i in a.slist:
-    num += 1
-    print(num)
-    try:
-        for n in a.SongRes(i.SongId)[2]:
-            z = Aff()
-            z.Load(n)
-            try:
-                diff = int(n[-1:])
-            except:
-                diff = int(n[1:].split('.')[0][-1:])
-            if z.CountNotes()[0] != query_in_arcsong(j, i.SongId)['difficulties'][diff]['totalNotes']:
-                text += i.SongName['en'] + '「' + a.diff_dict[diff][0] + '」' + ': {0} -> {1}'.format(z.CountNotes()[0], query_in_arcsong(j, i.SongId)['difficulties'][diff]['totalNotes']) + '\n'
-    except:
-        pass
-print(text)
-t2 = time.time()
-print('%sms' % ((t2 - t1) * 1000))
-f = open('errors.txt', 'w', encoding='utf-8')
-f.write(text)
-f.close()
+# t1 = time.time()
+# a = ArcaeaSongs('.\\')
+# j = json.loads(open('arcsong.json', 'r', encoding='utf-8').read())
+# def query_in_arcsong(j, id):
+#     for i in j['content']['songs']:
+#         if i['id'] == id: return i
+# text = ''
+# num = 0
+# for i in a.slist:
+#     num += 1
+#     print(num)
+#     try:
+#         for n in a.SongRes(i.SongId)[2]:
+#             z = Aff()
+#             z.Load(n)
+#             try:
+#                 diff = int(n[-1:])
+#             except:
+#                 diff = int(n[1:].split('.')[0][-1:])
+#             if z.CountNotes()[0] != query_in_arcsong(j, i.SongId)['difficulties'][diff]['totalNotes']:
+#                 text += i.SongName['en'] + '「' + a.diff_dict[diff][0] + '」' + ': {0} -> {1}'.format(z.CountNotes()[0], query_in_arcsong(j, i.SongId)['difficulties'][diff]['totalNotes']) + '\n'
+#     except:
+#         pass
+# print(text)
+# t2 = time.time()
+# print('%sms' % ((t2 - t1) * 1000))
+# f = open('errors.txt', 'w', encoding='utf-8')
+# f.write(text)
+# f.close()
 
 # aff = Aff()
 # aff.Load('C:/Users/Player01/Desktop/tutorial/1.aff')
