@@ -1,5 +1,5 @@
 # Arcaea Lib Script
-# Ver 0.1.1b by
+# Ver 0.1.2b by
 # @Player01
 # @yyyr
 

@@ -1,3 +1,8 @@
+# Arcaea Lib Script
+# Ver 0.0.1b by
+# @Player01
+
+
 from io import TextIOWrapper
 import json
 import gc
