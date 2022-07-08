@@ -107,10 +107,10 @@ class JudgeLine:
         elif isinstance(Event, JudgeLineRotateEvent):
             self.JudgeLineRotateEvents.append(Event)
 
-    def AddNoteAbove(self, Note: PhiNote) -> None:
+    def AddNotesAbove(self, Note: PhiNote) -> None:
         self.NotesAbove.append(Note)
 
-    def AddNoteBelow(self, Note: PhiNote) -> None:
+    def AddNotesBelow(self, Note: PhiNote) -> None:
         self.NotesBelow.append(Note)
 
     @property
@@ -144,18 +144,18 @@ class PhiChart:
             judgeline = JudgeLine(JudgeLineId, judgelinedict['bpm'])
             # Set Notes
             for note in judgelinedict['notesAbove']:
-                judgeline.AddNoteAbove(DictToNote(note))
+                judgeline.NotesAbove.append(DictToNote(note))
             for note in judgelinedict['notesBelow']:
-                judgeline.AddNoteBelow(DictToNote(note))
+                judgeline.NotesBelow.append(DictToNote(note))
             # Set Events
             for event in judgelinedict['speedEvents']:
-                judgeline.AddEvent(DictToSpeedEvent(event))
+                judgeline.SpeedEvents.append(DictToSpeedEvent(event))
             for event in judgelinedict['judgeLineDisappearEvents']:
-                judgeline.AddEvent(DictToJudgeLineEvent(event, 'Disappear'))
+                judgeline.JudgeLineDisappearEvents.append(DictToJudgeLineEvent(event, 'Disappear'))
             for event in judgelinedict['judgeLineMoveEvents']:
-                judgeline.AddEvent(DictToJudgeLineEvent(event, 'Move'))
+                judgeline.JudgeLineMoveEvents.append(DictToJudgeLineEvent(event, 'Move'))
             for event in judgelinedict['judgeLineRotateEvents']:
-                judgeline.AddEvent(DictToJudgeLineEvent(event, 'Rotate'))
+                judgeline.JudgeLineRotateEvents.append(DictToJudgeLineEvent(event, 'Rotate'))
             self.JudgeLineList.append(judgeline)
         gc.collect()
         print(self.NumOfNotes)
