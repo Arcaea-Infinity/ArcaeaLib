@@ -124,16 +124,16 @@ class PhiChart:
     def Load(self, File: str or TextIOWrapper, Format: str):
         if isinstance(File, str):
             File = open(File, 'r')
-        if Format == 'offical':
+        if Format == 'official':
             self.JsonRaw = json.load(File)
-            self.LoadOffical(self.JsonRaw)
+            self.LoadOfficial(self.JsonRaw)
         pass
 
-    def ToOffical(self):
+    def ToOfficial(self):
         pass
 
-    def LoadOffical(self, JsonRaw: json) -> None:
-        self.Format = 'offical'
+    def LoadOfficial(self, JsonRaw: json) -> None:
+        self.Format = 'official'
         self.FormatVersion = JsonRaw['formatVersion']
         if self.FormatVersion != 3:
             raise Exception('Unsupported chart version')
@@ -168,8 +168,3 @@ class PhiChart:
         return Notes
 
 
-t1 = time.time()
-Chart = PhiChart()
-Chart.Load('E:\\Lyrith\\Chart_AT.json', 'offical')
-t2 = time.time()
-print('%sms' % ((t2 - t1) * 1000))
