@@ -19,7 +19,7 @@ Arc & Hold Note Count									95%
 Arc Coordinate Calc										30%
 RemoteDL Challenge Calc									0%
 Phigros Chart Reader									30%
-Phigros Renderer
+Phigros Renderer										0%
 Phigros Chart and Arcaea Chart Converter				0%
 '''
 
@@ -1064,10 +1064,13 @@ class Song:
         self.Artist = artist
         self.CharterList = charter_list
         self.BPM = bpm
-        self.BPM_Base = bpm_base
+        self.BPMBase = bpm_base
         self.IsRemoteDl = is_remote_dl
         self.Difficulties = difficulties
         self.DiffList = diff_list
+
+    def GetResource(self):
+        pass
 
 class ArcaeaSongs:
     def __init__(self, res_path) -> None:
@@ -1145,22 +1148,22 @@ class ArcaeaSongs:
             if i.SongName['en'] == SongName or i.SongName['ja'] == SongName: return i
         return 0
 
-    def SongRes(self, SongId):
-        song = self.GetSinfoById(SongId)
-        folder_name = song.SongId
-        if song.IsRemoteDl:
-            folder_name = 'dl_' + folder_name
-        pic_list = [self.res_path + 'songs\\' + folder_name + '\\base.jpg']
-        for i in range(song.Difficulties + 1):
-            if os.path.exists(self.res_path + 'songs\\' + folder_name + '\\' + str(i) + '.jpg'): pic_list.append(self.res_path + 'songs\\' + folder_name + '\\' + str(i) + '.jpg')
-            else: pass
-        aud_path = self.res_path + 'songs\\' + folder_name + '\\base.ogg'
-        if song.IsRemoteDl:
-            aud_path = self.res_path + 'songs\\' + 'dl\\' + song.SongId
-        aff_path_list = [self.res_path + 'songs\\' + folder_name + '\\' + str(x) + '.aff' for x in range(0, int(song.Difficulties) + 1)]
-        if song.IsRemoteDl:
-            aff_path_list = [self.res_path + 'songs\\' + 'dl' + '\\' + song.SongId + '_' + str(x) for x in range(0, int(song.Difficulties) + 1)]
-        return pic_list, aud_path, aff_path_list
+    # def SongRes(self, SongId):
+    #     song = self.GetSinfoById(SongId)
+    #     folder_name = song.SongId
+    #     if song.IsRemoteDl:
+    #         folder_name = 'dl_' + folder_name
+    #     pic_list = [self.res_path + 'songs\\' + folder_name + '\\base.jpg']
+    #     for i in range(song.Difficulties + 1):
+    #         if os.path.exists(self.res_path + 'songs\\' + folder_name + '\\' + str(i) + '.jpg'): pic_list.append(self.res_path + 'songs\\' + folder_name + '\\' + str(i) + '.jpg')
+    #         else: pass
+    #     aud_path = self.res_path + 'songs\\' + folder_name + '\\base.ogg'
+    #     if song.IsRemoteDl:
+    #         aud_path = self.res_path + 'songs\\' + 'dl\\' + song.SongId
+    #     aff_path_list = [self.res_path + 'songs\\' + folder_name + '\\' + str(x) + '.aff' for x in range(0, int(song.Difficulties) + 1)]
+    #     if song.IsRemoteDl:
+    #         aff_path_list = [self.res_path + 'songs\\' + 'dl' + '\\' + song.SongId + '_' + str(x) for x in range(0, int(song.Difficulties) + 1)]
+    #     return pic_list, aud_path, aff_path_list
 
     def SongsId(self) -> list:
         return [i.SongId for i in self.slist]

@@ -7,6 +7,7 @@ from io import TextIOWrapper
 import json
 import gc
 import time
+import _thread # 别骂我 这个真的很简单
 
 '''
 Phigros Chart Reader(Beta)
@@ -113,6 +114,26 @@ class JudgeLine:
     def AddNotesBelow(self, Note: PhiNote) -> None:
         self.NotesBelow.append(Note)
 
+    def SetNotesByJudgeLineDict(self, JudgeLineDict: dict, lock: _thread.LockType) -> None:
+        lock.acquire()
+        for note in JudgeLineDict['notesAbove']:
+            self.NotesAbove.append(DictToNote(note))
+        for note in JudgeLineDict['notesBelow']:
+            self.NotesBelow.append(DictToNote(note))
+        lock.release()
+
+    def SetEventsByJudgeLineDict(self, JudgeLineDict: dict, lock: _thread.LockType) -> None:
+        lock.acquire()
+        for event in JudgeLineDict['speedEvents']:
+            self.SpeedEvents.append(DictToSpeedEvent(event))
+        for event in JudgeLineDict['judgeLineDisappearEvents']:
+            self.JudgeLineDisappearEvents.append(DictToJudgeLineEvent(event, 'Disappear'))
+        for event in JudgeLineDict['judgeLineMoveEvents']:
+            self.JudgeLineMoveEvents.append(DictToJudgeLineEvent(event, 'Move'))
+        for event in JudgeLineDict['judgeLineRotateEvents']:
+            self.JudgeLineRotateEvents.append(DictToJudgeLineEvent(event, 'Rotate'))
+        lock.release()
+
     @property
     def NumOfNotes(self) -> int:
         return len(self.NotesAbove) + len(self.NotesBelow)
@@ -139,23 +160,35 @@ class PhiChart:
             raise Exception('Unsupported chart version')
         self.Offset = JsonRaw['offset']
         self.JudgeLineList = []
+        locks = []
         for JudgeLineId in range(len(JsonRaw['judgeLineList'])):
             judgelinedict = JsonRaw['judgeLineList'][JudgeLineId]
             judgeline = JudgeLine(JudgeLineId, judgelinedict['bpm'])
             # Set Notes
-            for note in judgelinedict['notesAbove']:
-                judgeline.NotesAbove.append(DictToNote(note))
-            for note in judgelinedict['notesBelow']:
-                judgeline.NotesBelow.append(DictToNote(note))
+            # for note in judgelinedict['notesAbove']:
+            #     judgeline.NotesAbove.append(DictToNote(note))
+            # for note in judgelinedict['notesBelow']:
+            #     judgeline.NotesBelow.append(DictToNote(note))
+            # judgeline.SetNotesByJudgeLineDict(judgelinedict)
+            lock = _thread.allocate_lock()
+            _thread.start_new_thread(JudgeLine.SetNotesByJudgeLineDict, (judgeline, judgelinedict, lock))
+            locks.append(lock)
             # Set Events
-            for event in judgelinedict['speedEvents']:
-                judgeline.SpeedEvents.append(DictToSpeedEvent(event))
-            for event in judgelinedict['judgeLineDisappearEvents']:
-                judgeline.JudgeLineDisappearEvents.append(DictToJudgeLineEvent(event, 'Disappear'))
-            for event in judgelinedict['judgeLineMoveEvents']:
-                judgeline.JudgeLineMoveEvents.append(DictToJudgeLineEvent(event, 'Move'))
-            for event in judgelinedict['judgeLineRotateEvents']:
-                judgeline.JudgeLineRotateEvents.append(DictToJudgeLineEvent(event, 'Rotate'))
+            # for event in judgelinedict['speedEvents']:
+            #     judgeline.SpeedEvents.append(DictToSpeedEvent(event))
+            # for event in judgelinedict['judgeLineDisappearEvents']:
+            #     judgeline.JudgeLineDisappearEvents.append(DictToJudgeLineEvent(event, 'Disappear'))
+            # for event in judgelinedict['judgeLineMoveEvents']:
+            #     judgeline.JudgeLineMoveEvents.append(DictToJudgeLineEvent(event, 'Move'))
+            # for event in judgelinedict['judgeLineRotateEvents']:
+            #     judgeline.JudgeLineRotateEvents.append(DictToJudgeLineEvent(event, 'Rotate'))
+            # judgeline.SetEventsByJudgeLineDict(judgelinedict)
+            lock = _thread.allocate_lock()
+            _thread.start_new_thread(JudgeLine.SetEventsByJudgeLineDict, (judgeline, judgelinedict, lock))
+            locks.append(lock)
+            islocked = [i.locked for i in locks]
+            while True in islocked:
+                islocked = [i.locked for i in locks]
             self.JudgeLineList.append(judgeline)
         gc.collect()
         print(self.NumOfNotes)
@@ -167,4 +200,6 @@ class PhiChart:
             Notes += i.NumOfNotes
         return Notes
 
+p = PhiChart()
+p.Load(r'E:\Lyrith\Chart_AT.json', 'official')
 
