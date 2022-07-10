@@ -115,16 +115,13 @@ class JudgeLine:
     def AddNotesBelow(self, Note: PhiNote) -> None:
         self.NotesBelow.append(Note)
 
-    def SetNotesByJudgeLineDict(self, JudgeLineDict: dict, lock: _thread.LockType) -> None:
-        lock.acquire()
+    def SetNotesByJudgeLineDict(self, JudgeLineDict: dict) -> None:
         for note in JudgeLineDict['notesAbove']:
             self.NotesAbove.append(DictToNote(note))
         for note in JudgeLineDict['notesBelow']:
             self.NotesBelow.append(DictToNote(note))
-        lock.release()
 
-    def SetEventsByJudgeLineDict(self, JudgeLineDict: dict, lock: _thread.LockType) -> None:
-        lock.acquire()
+    def SetEventsByJudgeLineDict(self, JudgeLineDict: dict) -> None:
         for event in JudgeLineDict['speedEvents']:
             self.SpeedEvents.append(DictToSpeedEvent(event))
         for event in JudgeLineDict['judgeLineDisappearEvents']:
@@ -133,7 +130,6 @@ class JudgeLine:
             self.JudgeLineMoveEvents.append(DictToJudgeLineEvent(event, 'Move'))
         for event in JudgeLineDict['judgeLineRotateEvents']:
             self.JudgeLineRotateEvents.append(DictToJudgeLineEvent(event, 'Rotate'))
-        lock.release()
 
     @property
     def NumOfNotes(self) -> int:
@@ -180,6 +176,7 @@ class PhiChart:
             # for event in judgelinedict['judgeLineRotateEvents']:
             #     judgeline.JudgeLineRotateEvents.append(DictToJudgeLineEvent(event, 'Rotate'))
             judgeline.SetEventsByJudgeLineDict(judgelinedict)
+            self.JudgeLineList.append(judgeline)
         gc.collect()
         print(self.NumOfNotes)
 
