@@ -9,3 +9,5 @@ log.txt
 version
 
 dl_block_*
+
+__pycache__

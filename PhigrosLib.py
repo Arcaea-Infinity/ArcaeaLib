@@ -8,6 +8,7 @@ import json
 import gc
 import time
 import _thread # 别骂我 这个真的很简单
+# threading太难我不会（x
 
 '''
 Phigros Chart Reader(Beta)
@@ -160,7 +161,6 @@ class PhiChart:
             raise Exception('Unsupported chart version')
         self.Offset = JsonRaw['offset']
         self.JudgeLineList = []
-        locks = []
         for JudgeLineId in range(len(JsonRaw['judgeLineList'])):
             judgelinedict = JsonRaw['judgeLineList'][JudgeLineId]
             judgeline = JudgeLine(JudgeLineId, judgelinedict['bpm'])
@@ -169,10 +169,7 @@ class PhiChart:
             #     judgeline.NotesAbove.append(DictToNote(note))
             # for note in judgelinedict['notesBelow']:
             #     judgeline.NotesBelow.append(DictToNote(note))
-            # judgeline.SetNotesByJudgeLineDict(judgelinedict)
-            lock = _thread.allocate_lock()
-            _thread.start_new_thread(JudgeLine.SetNotesByJudgeLineDict, (judgeline, judgelinedict, lock))
-            locks.append(lock)
+            judgeline.SetNotesByJudgeLineDict(judgelinedict)
             # Set Events
             # for event in judgelinedict['speedEvents']:
             #     judgeline.SpeedEvents.append(DictToSpeedEvent(event))
@@ -182,14 +179,7 @@ class PhiChart:
             #     judgeline.JudgeLineMoveEvents.append(DictToJudgeLineEvent(event, 'Move'))
             # for event in judgelinedict['judgeLineRotateEvents']:
             #     judgeline.JudgeLineRotateEvents.append(DictToJudgeLineEvent(event, 'Rotate'))
-            # judgeline.SetEventsByJudgeLineDict(judgelinedict)
-            lock = _thread.allocate_lock()
-            _thread.start_new_thread(JudgeLine.SetEventsByJudgeLineDict, (judgeline, judgelinedict, lock))
-            locks.append(lock)
-            islocked = [i.locked for i in locks]
-            while True in islocked:
-                islocked = [i.locked for i in locks]
-            self.JudgeLineList.append(judgeline)
+            judgeline.SetEventsByJudgeLineDict(judgelinedict)
         gc.collect()
         print(self.NumOfNotes)
 
