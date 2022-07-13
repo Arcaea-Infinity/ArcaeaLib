@@ -1,5 +1,5 @@
 # Arcaea Lib Script
-# Ver 0.0.1b by
+# Ver 0.0.1a by
 # @Player01
 
 
@@ -68,13 +68,13 @@ class JudgeLineRotateEvent(JudgeLineEvent): pass
 # Util
 
 def DictToNote(NoteDict: dict) -> PhiNote:
-    TargetNote = {
+    TargetNotes = {
         1: Tap,
         2: Drag,
         3: Hold,
         4: Flick
     }
-    return TargetNote[NoteDict['type']](NoteDict['time'], NoteDict['positionX'], NoteDict['holdTime'], NoteDict['speed'], NoteDict['floorPosition'])
+    return TargetNotes[NoteDict['type']](NoteDict['time'], NoteDict['positionX'], NoteDict['holdTime'], NoteDict['speed'], NoteDict['floorPosition'])
 
 def DictToSpeedEvent(EventDict: dict) -> SpeedEvent:
     return SpeedEvent(EventDict['startTime'], EventDict['endTime'], EventDict['floorPosition'], EventDict['value'])
@@ -109,10 +109,10 @@ class JudgeLine:
         elif isinstance(Event, JudgeLineRotateEvent):
             self.JudgeLineRotateEvents.append(Event)
 
-    def AddNotesAbove(self, Note: PhiNote) -> None:
+    def AddNoteAbove(self, Note: PhiNote) -> None:
         self.NotesAbove.append(Note)
 
-    def AddNotesBelow(self, Note: PhiNote) -> None:
+    def AddNoteBelow(self, Note: PhiNote) -> None:
         self.NotesBelow.append(Note)
 
     def SetNotesByJudgeLineDict(self, JudgeLineDict: dict) -> None:
@@ -189,4 +189,6 @@ class PhiChart:
 
 p = PhiChart()
 p.Load(r'E:\Lyrith\Chart_AT.json', 'official')
+
+
 
