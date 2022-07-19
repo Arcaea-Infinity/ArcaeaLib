@@ -285,7 +285,7 @@ class Timing:
 class Aff: pass
 
 class TiminggroupProperties:
-    def __init__(self, NoInput: bool, FadingHolds: bool, AngleX: int, AngleY: int, TiminggroupId: int, Chart: Aff):
+    def __init__(self, NoInput: bool, FadingHolds: bool, AngleX: int, AngleY: int, TiminggroupId: int, Chart: Aff) -> None:
         self.TiminggroupId = TiminggroupId
         self.NoInput = NoInput
         self.FadingHolds = FadingHolds
@@ -323,27 +323,36 @@ class TiminggroupProperties:
         # raise AffError('No Valid Timing Error')
 
     def __str__(self) -> str:
-        Args = ''
-        if self.NoInput: Args += 'noinput_'
-        if self.FadingHolds: Args += 'fadingholds_'
-        if self.AngleX: Args += ('anglex' + str(self.AngleX) + '_')
-        if self.AngleY: Args += ('angley' + str(self.AngleY) + '_')
-        if Args != '':
-            Args = Args[:-1]
-        return 'timinggroup(' + Args + ')'
+        # Args = ''
+        # if self.NoInput: Args += 'noinput_'
+        # if self.FadingHolds: Args += 'fadingholds_'
+        # if self.AngleX: Args += ('anglex' + str(self.AngleX) + '_')
+        # if self.AngleY: Args += ('angley' + str(self.AngleY) + '_')
+        # if Args != '':
+        #     Args = Args[:-1]
+        Args = []
+        if self.NoInput: Args.append('noinput')
+        if self.FadingHolds: Args.append('fadingholds')
+        if self.AngleX: Args.append('anglex' + str(self.AngleX))
+        if self.AngleY: Args.append('angley' + str(self.AngleY))
+        return 'timinggroup(' + ('_'.join(Args) if Args != [] else '') + ')'
 
 class Arc: pass
 
 class Arctap:
-    def __init__(self, Time: int):
+    def __init__(self, Time: int) -> None:
         self.StartTime = Time
         self.count = 1
 
-    def SetArc(self, arc: Arc):
+    def SetArc(self, arc: Arc) -> None:
         self.Arc = arc
 
-    def Clone(self):
-        return Arctap(self.StartTime)
+    @property
+    def Effect(self) -> None or str:
+        try:
+            return self.Arc.Effect
+        except:
+            return None
 
     def GetX(self):
         return self.Arc.GetXAtTiming(self.StartTime)
@@ -390,7 +399,7 @@ def Qo(value: float):
     return (value - 1) * (value - 1) * (value - 1) + 1
 
 class Arc:
-    def __init__(self, StartTime: int, EndTime: int, XStart: float, XEnd: float, EasingType: str, YStart: float, YEnd: float, Color: int, FX: str, IsSkyline: bool, TimingPointDensityFactor: float, NoInput: bool, AngleX: int, AngleY: int, TiminggroupId: int, Timinggroup: TiminggroupProperties) -> None:
+    def __init__(self, StartTime: int, EndTime: int, XStart: float, XEnd: float, EasingType: str, YStart: float, YEnd: float, Color: int, Effect: str, IsSkyline: bool, TimingPointDensityFactor: float, NoInput: bool, AngleX: int, AngleY: int, TiminggroupId: int, Timinggroup: TiminggroupProperties) -> None:
         self.StartTime = StartTime
         self.EndTime = EndTime
         self.XStart = XStart
@@ -399,7 +408,7 @@ class Arc:
         self.YStart = YStart
         self.YEnd = YEnd
         self.Color = Color
-        self.FX = FX
+        self.Effect = Effect
         self.IsSkyLine = IsSkyline
         self.Arctaps = []
         self.TimingPointDensityFactor = TimingPointDensityFactor
@@ -499,7 +508,7 @@ class Arc:
 
     def __str__(self) -> str:
         Arctaps = ((str([i.__str__() for i in self.Arctaps])).replace(' ', '')).replace("'",'') if self.Arctaps else ''
-        return 'arc(' + str(self.StartTime) + ',' + str(self.EndTime) + ',' + '%.2f'% self.XStart + ',' + '%.2f'% self.XEnd + ',' + self.EasingType + ',' + '%.2f'% self.YStart + ',' + '%.2f'% self.YEnd + ',' + str(self.Color) + ',' + self.FX + ',' + (str(self.IsSkyLine)).lower() + ')' + Arctaps + ';'
+        return 'arc(' + str(self.StartTime) + ',' + str(self.EndTime) + ',' + '%.2f'% self.XStart + ',' + '%.2f'% self.XEnd + ',' + self.EasingType + ',' + '%.2f'% self.YStart + ',' + '%.2f'% self.YEnd + ',' + str(self.Color) + ',' + self.Effect + ',' + (str(self.IsSkyLine)).lower() + ')' + Arctaps + ';'
 
 class Tap:
     def __init__(self, Time: int, Lane: int, NoInput: bool, TiminggroupId: int, Timinggroup: TiminggroupProperties) -> None:
@@ -585,9 +594,6 @@ class Hold:
             self.CalcJudgeTimings()
             self.Count = len(self.JudgeTimings)
 
-    def Clone(self):
-        return Hold(self.StartTime, self.EndTime, self.Lane, self.TiminggroupId)
-
     def __str__(self) -> str:
         return 'hold(' + str(self.StartTime) + ',' + str(self.EndTime) + ',' + str(self.Lane) + ')' + ';'
 
@@ -616,23 +622,17 @@ class SceneControl:
         self.TiminggroupId = TiminggroupId
         self.TiminggroupProperties = Timinggroup
         self.args = args
+        self.StartTime = args[0]
         if len(args) == 2: #scenecontrol(t,type);
             self.SceneControlType = 'HideTrack'
-            self.StartTime = args[0]
             self.Type = args[1]
         elif len(args) == 4: #scenecontrol(t,type,x,y); scenecontrol(t,hidegroup,x,type);
             if args[1] in ['redline', 'arcahvdistort', 'arcahvdabris']:
-                self.SceneControlType = 'Arcahv'
-                self.StartTime = args[0]
+                self.SceneControlType = 'ArcahvVisual'
                 self.Type = args[1]
                 self.LastingTime = args[2]
                 self.Param = args[3]
-            else:
-                self.SceneControlType = 'HideNote'
-                self.StartTime = args[0]
-                self.HideGroup = args[1]
-                self.Param = args[2]
-                self.Type = args[3]
+
 
     def __str__(self) -> str:
         args = ''
@@ -1014,7 +1014,6 @@ class Aff:
         self.Refresh()
 
     def Chart(self) -> str:
-        self.Refresh()
         ChartString = ''
         ChartString += ('AudioOffset:' + str(self.AudioOffset) + '\n')
         if self.TimingPointDensityFactor != 1.0:
@@ -1028,7 +1027,8 @@ class Aff:
             if isinstance(i, TiminggroupProperties) and i.TiminggroupId == 0: pass
             elif i.TiminggroupId == 0:
                 ChartString += (i.__str__() + '\n')
-            elif isinstance(i, TiminggroupProperties):
+        for i in self.Events:
+            if isinstance(i, TiminggroupProperties) and i.TiminggroupId != 0:
                 ChartString += (i.__str__() + '{\n')
                 for n in self.Events:
                     if n.TiminggroupId == i.TiminggroupId and not isinstance(n, TiminggroupProperties):
@@ -1053,6 +1053,27 @@ class Aff:
         for i in EventsNeedMigrate:
             aff.AddEvent(i)
         return aff
+
+    def RandomizeChart(self):
+        for i in self.Events:
+            if isinstance(i, Hold) or isinstance(i, Tap):
+                i.Lane = random.randint(0, 5)
+            elif isinstance(i, Arc):
+                point = random.randint(0, 1)
+                if point == 0:
+                    i.XEnd, i.YEnd = i.YEnd, i.XEnd
+                elif point == 1:
+                    i.XStart, i.YStart = i.YStart, i.XStart
+
+    @property
+    def EnwidenLaneRange(self) -> list: # Scenecontrol 还没写
+        EnwidenLaneScenecontrolEvents = []
+        for i in self.Events:
+            if isinstance(i, SceneControl):
+                pass
+
+    def InEnwidenLaneRange(self, LaneNote: Tap or Hold):
+        pass
 
 '''
 ArcaeaSongs: Parse packlist, songlist, unlocks from an Arcaea APK file
@@ -1091,7 +1112,10 @@ class Difficulty:
         self.rating = DifficultyDict.get('rating')
         self.plusFingers = DifficultyDict.get('plusFingers')
         self.jacketOverride = DifficultyDict.get('jacketOverride')
+        self.audioOverride = DifficultyDict.get('audioOverride')
         self.hidden_until_unlocked = DifficultyDict.get('hidden_until_unlocked')
+        self.hidden_until = DifficultyDict.get('hidden_until')
+        self.world_unlock = DifficultyDict.get('world_unlock')
 
     @property
     def ratingString(self):
@@ -1126,6 +1150,7 @@ class Song:
         self.version = SongDict.get('version')
         self.difficulties = Difficulties()
         self.difficulties.LoadFromDifficultiesList(SongDict.get('difficulties'))
+        self.additional_files = SongDict.get('additional_files')
 
 class Pack:
     def __init__(self) -> None:
@@ -1656,10 +1681,15 @@ Bot functions
 #         self.winner = account
 #         return True if win else False
 
-a = ArcaeaSongs('.\\')
-print(a.QuerySongUnlockConditions('lostcivilization', 2))
-f = open('Unlocks.txt', 'w', encoding='utf-8')
-for i in a.Unlocks:
-    f.write(a.QuerySongNameBySongId(i.songId) + ' ' + diff_dict.get(i.ratingClass)[0] + ' 的解锁条件：')
-    f.write('\n' + i.GetSongUnlockCondition() + '\n\n')
-f.close()
+# a = ArcaeaSongs('.\\')
+# print(a.QuerySongUnlockConditions('lostcivilization', 2))
+# f = open('Unlocks.txt', 'w', encoding='utf-8')
+# for i in a.Unlocks:
+#     f.write(a.QuerySongNameBySongId(i.songId) + ' ' + diff_dict.get(i.ratingClass)[0] + ' 的解锁条件：')
+#     f.write('\n' + i.GetSongUnlockCondition() + '\n\n')
+# f.close()
+
+a = Aff()
+a.Load(r'C:\Users\Player01\Desktop\Testify\3.aff')
+a.RandomizeChart()
+a.Save(r'C:\Users\Player01\Desktop\Testify\2.aff')
