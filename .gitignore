@@ -13,3 +13,5 @@ dl_block_*
 __pycache__
 
 4.0.0
+
+*.xml

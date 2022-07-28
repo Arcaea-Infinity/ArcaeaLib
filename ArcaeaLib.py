@@ -1,7 +1,6 @@
 # Arcaea Lib Script
-# Ver 0.1.2b by
+# Ver 0.4.0.255stable by
 # @Player01
-# @yyyr
 
 # Video links collected by
 # @Player01
@@ -108,7 +107,7 @@ Utils
 
 def EnsurePath(Path):
     if Path.strip() == '':
-        return '.'
+        return '.\\'
     if Path[-1] == '\\':
         return Path
     return Path + '\\'
@@ -623,15 +622,12 @@ class SceneControl:
         self.TiminggroupProperties = Timinggroup
         self.args = args
         self.StartTime = args[0]
+        self.Type = args[1]
         if len(args) == 2: #scenecontrol(t,type);
-            self.SceneControlType = 'HideTrack'
-            self.Type = args[1]
-        elif len(args) == 4: #scenecontrol(t,type,x,y); scenecontrol(t,hidegroup,x,type);
-            if args[1] in ['redline', 'arcahvdistort', 'arcahvdabris']:
-                self.SceneControlType = 'ArcahvVisual'
-                self.Type = args[1]
-                self.LastingTime = args[2]
-                self.Param = args[3]
+            pass # Nothing to do
+        elif len(args) == 4:
+            Param1 = args[2]
+            Param2 = args[3]
 
 
     def __str__(self) -> str:
@@ -737,7 +733,7 @@ class Aff:
             i = i.split(':')
             if i[0] == 'AudioOffset':
                 self.AudioOffset = int(i[1])
-            if i[0] == 'TimingPointDensityFactor':
+            elif i[0] == 'TimingPointDensityFactor':
                 self.TimingPointDensityFactor = float(i[1])
         if self.AudioOffset == None:
             raise AffError('AudioOffset not set')
@@ -887,9 +883,9 @@ class Aff:
 					continue;
 				}
 				if (arc3.Timing - arc2.EndTiming > 0 && !(arc2.Timing == arc2.EndTiming || arc3.Timing == arc3.EndTiming))
-                   {
+                    {
 					arc2.arcRenderer.RebuildSegmentsAndColliderWithEndTiming(arc3.Timing);
-                   }
+                    }
 				if (arc2.IsVoid == arc3.IsVoid && (arc2.IsVoid == arc3.IsVoid == true || arc2.Color == arc3.Color))
 				{
 					if (arc2.ArcGroup == null && arc3.ArcGroup != null)
@@ -1057,7 +1053,10 @@ class Aff:
     def RandomizeChart(self):
         for i in self.Events:
             if isinstance(i, Hold) or isinstance(i, Tap):
-                i.Lane = random.randint(0, 5)
+                if self.InEnwidenLaneRange(i.StartTime):
+                    i.Lane = random.randint(0, 5)
+                else:
+                    i.Lane = random.randint(1, 4)
             elif isinstance(i, Arc):
                 point = random.randint(0, 1)
                 if point == 0:
@@ -1065,15 +1064,30 @@ class Aff:
                 elif point == 1:
                     i.XStart, i.YStart = i.YStart, i.XStart
 
-    @property
-    def EnwidenLaneRange(self) -> list: # Scenecontrol 还没写
-        EnwidenLaneScenecontrolEvents = []
+    def InEnwidenLaneRange(self, Timing: int) -> bool:
+        enwidens = []
         for i in self.Events:
-            if isinstance(i, SceneControl):
-                pass
+            if isinstance(i, SceneControl) and i.Type == 'enwidenlanes':
+                enwidens.append(i)
+        if len(enwidens) == 0:
+            return False
+        elif len(enwidens) == 1:
+            if enwidens[0].StartTime <= Timing:
+                return True
+            return False
+        enwidens.sort(key = lambda sc:sc.StartTime)
+        # Match last enwidenlanes event
+        last = None
+        for i in range(len(enwidens)):
+            if enwidens[i] <= Timing:
+                if i == len(enwidens) - 1:
+                    last = enwidens[i]
+                elif enwidens[i + 1] > Timing:
+                    last = enwidens[i]
+        if last:
+            return last.Param2
+        return False
 
-    def InEnwidenLaneRange(self, LaneNote: Tap or Hold):
-        pass
 
 '''
 ArcaeaSongs: Parse packlist, songlist, unlocks from an Arcaea APK file
@@ -1592,7 +1606,6 @@ def ExecuteUpdate(ResourcesPath) -> None:
     VersionUpdate = open(ResourcePath + 'version', 'w')
     VersionUpdate.write(Content['value']['version'])
 
-
 def ExecuteResource(ResourcesPath) -> None:
     ResourcePath = EnsurePath(ResourcePath)
     Content = CheckUpdate(ResourcesPath)
@@ -1605,91 +1618,3 @@ def ExecuteResource(ResourcesPath) -> None:
         shutil.move(ResourcePath + Content['value']['version'] +'\\assets\\' + i, ResourcePath)
     VersionUpdate = open(ResourcePath + 'version', 'w')
     VersionUpdate.write(Content['value']['version'])
-
-# def autoUpd(res_path, log: Log = Log(True, 'log.txt')) -> int:
-#     arcWebApi = r'https://webapi.lowiro.com/webapi/serve/static/bin/arcaea/apk'
-#     req = requests.get(arcWebApi)
-#     if req.status_code != 200: return 1
-#     content = json.loads(req.content)
-#     log.log('info', content, 'autoUpd()')
-#     version = open(res_path + 'version', 'r')
-#     version = version.read()
-#     if version == content['value']['version']: return 0
-#     apkUrl = content['value']['url']
-#     down = MultiprocessDownload(apkUrl, res_path, 'arcApk.zip', 16)
-#     down.run()
-#     res = zipfile.ZipFile(res_path + 'arcApk.zip')
-#     res.extractall(res_path + content['value']['version'])
-#     os.mkdir(res_path + version)
-#     for i in ['char', 'songs']:
-#         shutil.move(res_path + i, res_path + version)
-#         shutil.move(res_path + content['value']['version'] +'\\assets\\' + i, res_path)
-#     ver_update = open(res_path + 'version', 'w')
-#     ver_update.write(content['value']['version'])
-#     log.log('info', 'Updated to ' + content['value']['version'] + ' old files in ' + version + ' folder', 'autoUpd()')
-#     return 0
-
-# def autoDlRes(res_path, log: Log = Log(True, 'log.txt')) -> int:
-#     arcWebApi = r'https://webapi.lowiro.com/webapi/serve/static/bin/arcaea/apk'
-#     req = requests.get(arcWebApi)
-#     if req.status_code != 200: return 1
-#     content = json.loads(req.content)
-#     log.log('info', content, 'autoDlRes()')
-#     apkUrl = content['value']['url']
-#     down = MultiprocessDownload(apkUrl, res_path, 'arcApk.zip', 16)
-#     down.run()
-#     res = zipfile.ZipFile(res_path + 'arcApk.zip')
-#     res.extractall(res_path + content['value']['version'])
-#     for i in ['char', 'songs']:
-#         shutil.move(res_path + content['value']['version'] + '\\assets\\' + i, res_path)
-#     ver_file = open(res_path + 'version', 'w')
-#     ver_file.write(content['value']['version'])
-#     log.log('info', 'Download to ' + content['value']['version'], 'autoDlRes()')
-#     return 0
-
-# def resource(res_path) -> int:
-#     if os.path.exists(res_path + 'version'):
-#         autoUpd(res_path)
-#     else:
-#         autoDlRes(res_path)
-#     return 0
-
-
-'''
-Bot functions
-'''
-# class GuessPic:
-#     def __init__(self, song: Song, res: ArcaeaSongs, guess_type: str): #guess_type: easy, hard, insane
-#         self.song = song
-#         self.pic_path = res.SongRes(song.SongId)[0][0]
-#         self.guess_type = guess_type
-#         self.pic = Image.open(self.pic_path)
-#         self.res = res
-
-#     def GeneratePic(self, save_path: str):
-#         if self.guess_type == 'easy': length = self.pic.size[0] // 3
-#         if self.guess_type == 'hard': length = self.pic.size[0] // 4
-#         if self.guess_type == 'insane': length = self.pic.size[0] // 5; self.pic.convert('L')
-#         xstart = random.randint(0, self.pic.size[0] - length)
-#         xend = xstart + length
-#         ystart = random.randint(0, self.pic.size[1] - length)
-#         yend = ystart + length
-#         self.pic.crop((xstart, ystart, xend, yend)).save(save_path)
-
-#     def Guess(self, msg, account):
-#         if compare(msg.split().lower(), self.song.SongId) or compare(msg.split().lower(), self.song.SongName['en']) or compare(msg.split().lower(), self.song.SongName['ja']): win = True
-#         self.winner = account
-#         return True if win else False
-
-# a = ArcaeaSongs('.\\')
-# print(a.QuerySongUnlockConditions('lostcivilization', 2))
-# f = open('Unlocks.txt', 'w', encoding='utf-8')
-# for i in a.Unlocks:
-#     f.write(a.QuerySongNameBySongId(i.songId) + ' ' + diff_dict.get(i.ratingClass)[0] + ' 的解锁条件：')
-#     f.write('\n' + i.GetSongUnlockCondition() + '\n\n')
-# f.close()
-
-a = Aff()
-a.Load(r'C:\Users\Player01\Desktop\Testify\3.aff')
-a.RandomizeChart()
-a.Save(r'C:\Users\Player01\Desktop\Testify\2.aff')
