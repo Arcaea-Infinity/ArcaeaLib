@@ -150,13 +150,13 @@ class PhiChart:
             File = open(File, 'r')
         if Format == 'official':
             self.JsonRaw = json.load(File)
-            self.LoadOfficial(self.JsonRaw)
+            self.__LoadOfficial(self.JsonRaw)
         pass
 
     def ToOfficial(self):
         pass
 
-    def LoadOfficial(self, JsonRaw: json) -> None:
+    def __LoadOfficial(self, JsonRaw: json) -> None:
         self.Format = 'official'
         self.FormatVersion = JsonRaw['formatVersion']
         if self.FormatVersion != 3:
@@ -187,7 +187,7 @@ class PhiChart:
         print(self.NumOfNotes)
 
     @property
-    def NumOfNotes(self):
+    def NumOfNotes(self) -> int:
         Notes = 0
         for i in self.JudgeLineList:
             Notes += i.NumOfNotes
@@ -218,10 +218,12 @@ def ToString(obj) -> str:
     return str(obj)
 
 def __indent(e, level=0):
-    indent = '\n' + level * '\t'
+    # tab = '\t
+    tab = '    '
+    indent = '\n' + level * tab
     if len(e):
         if not e.text or not e.text.strip():
-            e.text = indent + '\t'
+            e.text = indent + tab
         if not e.tail or not e.tail.strip():
             e.tail = indent
         for e in e:
@@ -428,3 +430,4 @@ class PhigrosPlayerPrefsManager:
     # @property
     # def RankingScore(self) -> float:
     #     return float('%.2f'% self.CalculateRankingScore())
+

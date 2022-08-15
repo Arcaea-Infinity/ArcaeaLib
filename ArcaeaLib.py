@@ -341,7 +341,6 @@ class Arc: pass
 class Arctap:
     def __init__(self, Time: int) -> None:
         self.StartTime = Time
-        self.count = 1
 
     def SetArc(self, arc: Arc) -> None:
         self.Arc = arc
@@ -362,6 +361,9 @@ class Arctap:
     def __str__(self) -> str:
         return 'arctap(' + str(self.StartTime) + ')'
 
+    @property
+    def Count(self) -> int:
+        return 0 if self.Arc.NoInput else 1
 
 # ArcAlgorithm
 ArcXToWorld = lambda x:-8.5 * x + 4.25
@@ -398,7 +400,7 @@ def Qo(value: float):
     return (value - 1) * (value - 1) * (value - 1) + 1
 
 class Arc:
-    def __init__(self, StartTime: int, EndTime: int, XStart: float, XEnd: float, EasingType: str, YStart: float, YEnd: float, Color: int, Effect: str, IsSkyline: bool, TimingPointDensityFactor: float, NoInput: bool, AngleX: int, AngleY: int, TiminggroupId: int, Timinggroup: TiminggroupProperties) -> None:
+    def __init__(self, StartTime: int, EndTime: int, XStart: float, XEnd: float, EasingType: str, YStart: float, YEnd: float, Color: int, Effect: str, IsSkyline: bool, TimingPointDensityFactor: float, TiminggroupId: int, Timinggroup: TiminggroupProperties) -> None:
         self.StartTime = StartTime
         self.EndTime = EndTime
         self.XStart = XStart
@@ -411,14 +413,8 @@ class Arc:
         self.IsSkyLine = IsSkyline
         self.Arctaps = []
         self.TimingPointDensityFactor = TimingPointDensityFactor
-        self.NoInput = NoInput
-        self.AngleX = AngleX
-        self.AngleY = AngleY
         self.TiminggroupId = TiminggroupId
         self.TiminggroupProperties = Timinggroup
-        self.Count = 0
-        if self.IsSkyLine:
-            self.Count = len(self.Arctaps)
         # By yyyr
         '''
 		public void CalculateJudgeTimings()
@@ -482,12 +478,6 @@ class Arc:
     def Update(self):
         for i in self.Arctaps:
             i.SetArc(self)
-        if not self.NoInput:
-            if len(self.Arctaps): #ArcTaps, Skyline
-                self.Count = len(self.Arctaps)
-            elif not self.IsSkyLine: #Arc
-                self.Count = len(self.JudgeTimings)
-        else: self.Count = 0
 
     def GetXAtTiming(self, t: int):
         t2 = (t - self.StartTime) / (self.EndTime - self.StartTime)
@@ -509,31 +499,55 @@ class Arc:
         Arctaps = ((str([i.__str__() for i in self.Arctaps])).replace(' ', '')).replace("'",'') if self.Arctaps else ''
         return 'arc(' + str(self.StartTime) + ',' + str(self.EndTime) + ',' + '%.2f'% self.XStart + ',' + '%.2f'% self.XEnd + ',' + self.EasingType + ',' + '%.2f'% self.YStart + ',' + '%.2f'% self.YEnd + ',' + str(self.Color) + ',' + self.Effect + ',' + (str(self.IsSkyLine)).lower() + ')' + Arctaps + ';'
 
+    @property
+    def Count(self) -> int:
+        self.Update()
+        if not self.NoInput:
+            if self.IsSkyLine: #ArcTaps, Skyline
+                return len(self.Arctaps)
+            else: #Arc
+                return len(self.JudgeTimings)
+        else: return 0
+
+    @property
+    def NoInput(self) -> bool:
+        return self.TiminggroupProperties.NoInput
+
+    @property
+    def AngleX(self) -> int:
+        return self.TiminggroupProperties.AngleX
+
+    @property
+    def AngleY(self) -> int:
+        return self.TiminggroupProperties.AngleY
+
+
 class Tap:
-    def __init__(self, Time: int, Lane: int, NoInput: bool, TiminggroupId: int, Timinggroup: TiminggroupProperties) -> None:
+    def __init__(self, Time: int, Lane: int, TiminggroupId: int, Timinggroup: TiminggroupProperties) -> None:
         self.StartTime = Time
         self.Lane = Lane
-        self.NoInput = NoInput
         self.TiminggroupId = TiminggroupId
         self.TiminggroupProperties = Timinggroup
-        self.Count = 0
-        if not self.NoInput: self.Count = 1
-        else: pass
 
     def __str__(self) -> str:
         return '(' + str(self.StartTime) + ',' + str(self.Lane) + ')' + ';'
 
+    @property
+    def NoInput(self) -> bool:
+        return self.TiminggroupProperties.NoInput
+
+    @property
+    def Count(self) -> int:
+        return 0 if self.NoInput else 1
+
 class Hold:
-    def __init__(self, StartTime: int, EndTime: int, Lane: int, TimingPointDensityFactor: float, NoInput: bool, FadingHolds: bool, TiminggroupId: int, Timinggroup: TiminggroupProperties) -> None:
+    def __init__(self, StartTime: int, EndTime: int, Lane: int, TimingPointDensityFactor: float, TiminggroupId: int, Timinggroup: TiminggroupProperties) -> None:
         self.StartTime = StartTime
         self.EndTime = EndTime
         self.Lane = Lane
         self.TimingPointDensityFactor = TimingPointDensityFactor
-        self.NoInput = NoInput
-        self.FadingHolds = FadingHolds
         self.TiminggroupId = TiminggroupId
         self.TiminggroupProperties = Timinggroup
-        self.Count = 0
         # By yyyr
         '''
 		public void CalculateJudgeTimings()
@@ -591,10 +605,22 @@ class Hold:
     def Update(self) -> None:
         if not self.NoInput:
             self.CalcJudgeTimings()
-            self.Count = len(self.JudgeTimings)
 
     def __str__(self) -> str:
         return 'hold(' + str(self.StartTime) + ',' + str(self.EndTime) + ',' + str(self.Lane) + ')' + ';'
+
+    @property
+    def NoInput(self) -> bool:
+        return self.TiminggroupProperties.NoInput
+
+    @property
+    def FadingHolds(self) -> bool:
+        return self.TiminggroupProperties.FadingHolds
+
+    @property
+    def Count(self) -> int:
+        self.Update()
+        return len(self.JudgeTimings)
 
 class Camera:
     def __init__(self, StartTime: int, Transverse: float, BottomZoom: float, LineZoom: float, SteadyAngle: float, TopZoom: float, RotateAngle: float, EasingType: str, LastingTime: int, TiminggroupId: int, Timinggroup: TiminggroupProperties) -> None:
@@ -626,8 +652,8 @@ class SceneControl:
         if len(args) == 2: #scenecontrol(t,type);
             pass # Nothing to do
         elif len(args) == 4:
-            Param1 = args[2]
-            Param2 = args[3]
+            self.Param1 = args[2]
+            self.Param2 = args[3]
 
 
     def __str__(self) -> str:
@@ -640,19 +666,25 @@ class SceneControl:
 
 
 class Flick:
-    def __init__(self, Time: int, X: float, Y: float, FX: float, FY: float, NoInput: bool, TiminggroupId: int, Timinggroup: TiminggroupProperties):
+    def __init__(self, Time: int, X: float, Y: float, FX: float, FY: float, TiminggroupId: int, Timinggroup: TiminggroupProperties):
         self.StartTime = Time
         self.X = X
         self.Y = Y
         self.FX = FX
         self.FY = FY
-        self.NoInput = NoInput
-        self.Count = 0 if NoInput else 1
         self.TiminggroupId = TiminggroupId
         self.TiminggroupProperties = Timinggroup
 
     def __str__(self) -> str:
         return 'flick(' + str(self.StartTime) + ',' + '%.2f'% self.X + ',' + '%.2f'% self.Y + ',' + '%.2f'% self.FX + ',' + '%.2f'% self.FY + ')' + ';'
+
+    @property
+    def NoInput(self) -> bool:
+        return self.TiminggroupProperties.NoInput
+
+    @property
+    def Count(self) -> int:
+        return 0 if self.NoInput else 1
 
 def formatAffCmd(cmd):
     cmd = cmd.strip('(')
@@ -747,7 +779,7 @@ class Aff:
         self.TiminggroupProperties = []
         for i in aff[1]:
             if line == 0:
-                FirstTiming = self.proceed(i, NoInput, FadingHolds, AngleX, AngleY, TiminggroupId, len(aff[0]) + 1 + line + 1)
+                FirstTiming = self.proceed(i, TiminggroupId, len(aff[0]) + 1 + line + 1)
                 if not isinstance(FirstTiming, Timing):
                     raise AffError('First Aff Command not a timing')
                 Timinggroup = TiminggroupProperties(False, False, 0, 0, 0, self)
@@ -785,7 +817,7 @@ class Aff:
                 self.TiminggroupProperties.append(Timinggroup)
                 self.Events.append(Timinggroup)
             else:
-                self.Events.append(self.proceed(i, NoInput, FadingHolds, AngleX, AngleY, TiminggroupId, len(aff[0]) + 1 + line))
+                self.Events.append(self.proceed(i, TiminggroupId, len(aff[0]) + 1 + line))
         try:
             self.Events.remove(None)
         except:
@@ -793,7 +825,7 @@ class Aff:
         self.Refresh()
         self.IsLoaded = True
 
-    def proceed(self, i, NoInput: bool, FadingHolds: bool, AngleX: int, AngleY: int, TiminggroupId: int, line: int):
+    def proceed(self, i, TiminggroupId: int, line: int):
         i = i.strip().strip(';')
         if i.strip() == '':
             return None
@@ -819,25 +851,25 @@ class Aff:
                     ArctapArgs.append(int(c.strip('arctap(').strip(')')))
                 for n in ArctapArgs:
                     Arctaps.append(Arctap(n))
-            arc = Arc(ArcArguments[0], ArcArguments[1], ArcArguments[2], ArcArguments[3], ArcArguments[4], ArcArguments[5], ArcArguments[6], ArcArguments[7], ArcArguments[8], ArcArguments[9], self.TimingPointDensityFactor, NoInput, AngleX, AngleY, TiminggroupId, self.TiminggroupProperties[TiminggroupId])
+            arc = Arc(ArcArguments[0], ArcArguments[1], ArcArguments[2], ArcArguments[3], ArcArguments[4], ArcArguments[5], ArcArguments[6], ArcArguments[7], ArcArguments[8], ArcArguments[9], self.TimingPointDensityFactor, TiminggroupId, self.TiminggroupProperties[TiminggroupId])
             for arctap in Arctaps:
                 arc.AddArcTap(arctap)
             return arc
         elif i.startswith('hold'):
             args = formatAffCmd(i.strip('hold').strip(';'))
-            return Hold(args[0], args[1], args[2], self.TimingPointDensityFactor, NoInput, FadingHolds, TiminggroupId, self.TiminggroupProperties[TiminggroupId])
+            return Hold(args[0], args[1], args[2], self.TimingPointDensityFactor, TiminggroupId, self.TiminggroupProperties[TiminggroupId])
         elif i.startswith('scenecontrol'):
             args = formatAffCmd(i.strip('scenecontrol').strip(';'))
             return SceneControl(args, TiminggroupId, self.TiminggroupProperties[TiminggroupId])
         elif i.startswith('flick'):
             args = formatAffCmd(i.strip('flick').strip(';'))
-            return Flick(args[0], args[1], args[2], args[3], args[4], NoInput, TiminggroupId, self.TiminggroupProperties[TiminggroupId])
+            return Flick(args[0], args[1], args[2], args[3], args[4], TiminggroupId, self.TiminggroupProperties[TiminggroupId])
         elif i.startswith('camera'):
             args = formatAffCmd(i.strip('camera').strip(';'))
             return Camera(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], TiminggroupId)
         elif i[0] == '(' and i[-1:] == ')': #Tap
             args = formatAffCmd(i.strip(';'))
-            return Tap(args[0], args[1], NoInput, TiminggroupId, self.TiminggroupProperties[TiminggroupId])
+            return Tap(args[0], args[1], TiminggroupId, self.TiminggroupProperties[TiminggroupId])
         else:
             raise AffError('Unknow aff command', line=line)
 
@@ -1054,7 +1086,9 @@ class Aff:
         for i in self.Events:
             if isinstance(i, Hold) or isinstance(i, Tap):
                 if self.InEnwidenLaneRange(i.StartTime):
+                    old = i.__str__()
                     i.Lane = random.randint(0, 5)
+                    print('6k note detected', old, '=>', i.__str__())
                 else:
                     i.Lane = random.randint(1, 4)
             elif isinstance(i, Arc):
@@ -1079,10 +1113,10 @@ class Aff:
         # Match last enwidenlanes event
         last = None
         for i in range(len(enwidens)):
-            if enwidens[i] <= Timing:
+            if enwidens[i].StartTime <= Timing:
                 if i == len(enwidens) - 1:
                     last = enwidens[i]
-                elif enwidens[i + 1] > Timing:
+                elif enwidens[i + 1].StartTime > Timing:
                     last = enwidens[i]
         if last:
             return last.Param2
@@ -1618,3 +1652,4 @@ def ExecuteResource(ResourcesPath) -> None:
         shutil.move(ResourcePath + Content['value']['version'] +'\\assets\\' + i, ResourcePath)
     VersionUpdate = open(ResourcePath + 'version', 'w')
     VersionUpdate.write(Content['value']['version'])
+
