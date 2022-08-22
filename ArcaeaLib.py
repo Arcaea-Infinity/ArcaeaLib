@@ -258,7 +258,7 @@ class MultiprocessDownload:
         target.close()
         self.downloaded = True
 
-def FormatScore(score: int) -> int:
+def FormatScore(score: int) -> str:
     score = str(score)
     if len(score) > 8:
         raise ValueError('Score must be under 8 digits')
