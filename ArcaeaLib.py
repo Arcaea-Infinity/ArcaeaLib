@@ -36,6 +36,7 @@ import shutil
 import time
 import zipfile
 import random
+import hashlib
 import math
 
 from PIL import Image, ImageFilter
@@ -173,55 +174,77 @@ def compare(inp: str, target: str):
         return True
     return False
 
-
 class MultiprocessDownload:
     # TODO
     # Download ane file with multithreads
-    def __init__(self, url: str, path: str, filename: str, thread_num: int) -> None:
+    def __init__(self, url: str, path: str, filename: str, thread_num: int, temppath: str) -> None:
         try:
             if self.downloaded: raise Exception('This task is downloaded')
         except: pass
         self.downloaded = False
         self.url = url
-        self.path = path
+        self.id = (hashlib.md5(url.encode())).hexdigest()
+        self.path = EnsurePath(path)
         self.filename = filename
+        self.temppath = EnsurePath(temppath)
         self.thread_num = thread_num
         self.threads = []
         self.head = requests.head(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko'}).headers
         self.length = int(self.head.get('Content-Length', False))
         self.proc = self.lock = [None for _ in range(self.thread_num)]
+        self.error_flag = None
         if self.length < self.thread_num: raise ValueError('File length is smaller than thread_num')
         if self.thread_num >= 64: self.thread_num = 64
         if self.length == False: raise Exception('This file does not support multiprocess download')
+        self.lock = [None for i in range(thread_num)]
         num = self.length // self.thread_num
         last = -1
         for i in range(1, thread_num + 1):
             self.threads.append([last + 1, num * i])
             last = num * i
         self.threads[-1][1] += self.length % self.thread_num
+        print(self.threads)
 
     def started(self) -> bool:
-        for i in range(self.thread_num):
-            if not os.path.exists('dl_block_' + str(i)):
+        for l in self.lock:
+            try:
+                if l.locked() == False:
+                    return False
+            except: # AttributeError: 'NoneType' object has no attribute 'locked'
+                return False
+        return True
+
+    def closed(self) -> bool:
+        for l in self.lock:
+            if l.locked() == True:
                 return False
         return True
 
     def thread(self, num) -> int:
         if self.downloaded: raise Exception('This task is downloaded')
         self.lock[num] = _thread.allocate_lock()
-        with self.lock[num]:
-            header = {'Range': f'bytes=' + str(self.threads[num][0]) + '-' + str(self.threads[num][1])}
-            self.proc[num] = 0
-            req = requests.get(self.url, headers=header, stream = True)
-            blk_size = self.threads[num][1] - self.threads[num][0] + 1
-            file = open('dl_block_' + str(num), 'wb')
-            i = 0
-            for chunk in req.iter_content(chunk_size=512):
-                if chunk:
-                    file.write(chunk)
-                    i += 1
-                    self.proc[num] = i * 512 / blk_size
-            file.close()
+        try:
+            with self.lock[num]:
+                header = {'Range': f'bytes=' + str(self.threads[num][0]) + '-' + str(self.threads[num][1])}
+                self.proc[num] = 0
+                req = requests.get(self.url, headers=header, stream=True)
+                blk_size = self.threads[num][1] - self.threads[num][0] + 1
+                file = open(self.temppath + self.id + '_dl_block_' + str(num), 'wb')
+                i = 0
+                chunk_size = 1024*1024*16
+                for chunk in req.iter_content(chunk_size=chunk_size):
+                    if chunk:
+                        file.write(chunk)
+                        i += 1
+                        self.proc[num] = (i * chunk_size) / blk_size
+                req.close()
+                file.close()
+        except Exception as e:
+            try:
+                file.close()
+            except:
+                pass
+            self.error_flag = e
         return 0
 
     def GetDownloadInfo(self) -> list:
@@ -239,25 +262,32 @@ class MultiprocessDownload:
         if self.downloaded: raise Exception('This task is downloaded')
         for i in range(self.thread_num):
             _thread.start_new_thread(self.thread, (i,))
-        locked = 1
-        while locked:
-            if not self.started(): continue
+        while not self.started():
+            pass
+        while not self.closed():
+            if self.error_flag:
+                self.CleanDownloadBlocks()
+                raise self.error_flag
             print(self.GetDownloadInfo())
-            locked = 0
-            print(self.lock)
-            for n in range(self.thread_num):
-                if self.lock[n].locked():
-                    locked += 1
-            time.sleep(5)
+            time.sleep(0.5)
+        print(self.GetDownloadInfo())
         target = open(self.path + self.filename, 'wb')
         for num in range(self.thread_num):
-            blk = open('dl_block_' + str(num), 'rb')
+            blk = open(self.temppath + self.id + '_dl_block_' + str(num), 'rb')
             target.write(blk.read())
             blk.close()
-            os.remove('dl_block_' + str(num))
+        self.CleanDownloadBlocks()
         target.close()
         self.downloaded = True
 
+<<<<<<< Updated upstream
+=======
+    def CleanDownloadBlocks(self) -> None:
+        for num in range(self.thread_num):
+            os.remove(self.temppath + self.id + '_dl_block_' + str(num))
+
+
+>>>>>>> Stashed changes
 def FormatScore(score: int) -> str:
     score = str(score)
     if len(score) > 8:
@@ -711,25 +741,6 @@ def formatAffCmd(cmd):
 class Aff:
     def __init__(self) -> None:
         self.IsLoaded = False
-
-    @staticmethod
-    def IsValidAff(aff_text: str):
-        aff_text = aff_text.splitlines()
-        s = aff.index('-')
-        aff = [aff[:s]] + [aff[s + 1:]]
-        error = 0
-        AudioOffsetCount = 0
-        TimingPointDensityFactorCount = 0
-        for i in aff:
-            try:
-                i.split(':')
-                if i[0] == 'AudioOffset':
-                    AudioOffsetCount += 1
-                elif i[0] == 'TimingPointDensityFactor':
-                    TimingPointDensityFactorCount += 1
-                else: error += 1
-            except: #Use Regex to match Aff Commands
-                pass
 
     def New(self):
         try:
