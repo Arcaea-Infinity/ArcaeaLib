@@ -280,14 +280,11 @@ class MultiprocessDownload:
         target.close()
         self.downloaded = True
 
-<<<<<<< Updated upstream
-=======
     def CleanDownloadBlocks(self) -> None:
         for num in range(self.thread_num):
             os.remove(self.temppath + self.id + '_dl_block_' + str(num))
 
 
->>>>>>> Stashed changes
 def FormatScore(score: int) -> str:
     score = str(score)
     if len(score) > 8:
