@@ -39,7 +39,6 @@ import random
 import hashlib
 import math
 
-from PIL import Image, ImageFilter
 import requests
 
 '''
@@ -68,38 +67,6 @@ class RequestError(Exception):
 
     def __str__(self) -> str:
         return 'Error while requesting ' + self.url
-'''
-Draw pic for best30 and recent record card
-'''
-def whiteblur(image: Image, white_ratio, radius):
-    image = image.convert('RGBA')
-    for x in range(image.size[0]):
-        for y in range(image.size[1]):
-            color = image.getpixel((x, y))
-            color = color[:-1] + (int((255 - white_ratio) * 255),)
-            image.putpixel((x, y), color)
-    white_pic = Image.new('RGBA', image.size, (255, 255, 255, int(white_ratio*255)))
-    image = Image.alpha_composite(image, white_pic)
-    image = image.convert('RGB')
-    return image.filter(ImageFilter.GaussianBlur(radius))
-
-# Standard Arcaea Song Picture Size: 512*512
-# Resize to 1024*1024
-
-def best30_horizontal():
-    pass
-
-def best30_vertical():
-    pass
-
-def recent_v1(back, char, result):
-    pass
-
-def recent_v2(back, char, result):
-    pass
-
-def recent_v3(back, char, result):
-    pass
 
 
 '''
