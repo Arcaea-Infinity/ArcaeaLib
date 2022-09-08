@@ -17,26 +17,26 @@ class StringParser:
         elif type(length) == str:
             self.pos += len(length)
 
-    def ReadFloat(self, ternimator = None):
-        end = self.base.find(ternimator, self.pos) if ternimator != None else (int(len(self.base)) - 1)
+    def ReadFloat(self, terminator = None):
+        end = self.base.find(terminator, self.pos) if terminator != None else (int(len(self.base)) - 1)
         value = float(self.base[self.pos:end])
         self.pos += (end - self.pos + 1)
         return value
-        
-    def ReadInt(self, ternimator = None):
-        end = self.base.find(ternimator, self.pos) if ternimator != None else (int(len(self.base)) - 1)
+
+    def ReadInt(self, terminator = None):
+        end = self.base.find(terminator, self.pos) if terminator != None else (int(len(self.base)) - 1)
         value = int(self.base[self.pos:end])
         self.pos += (end - self.pos + 1)
         return value
 
-    def ReadBool(self, ternimator = None):
-        end = self.base.find(ternimator, self.pos) if ternimator != None else (int(len(self.base)) - 1)
+    def ReadBool(self, terminator = None):
+        end = self.base.find(terminator, self.pos) if terminator != None else (int(len(self.base)) - 1)
         value = bool(self.base[self.pos:end].lower() == "true")
         self.pos += (end - self.pos + 1)
         return value
 
-    def ReadString(self, ternimator = None):
-        end = self.base.find(ternimator, self.pos) if ternimator != None else (int(len(self.base)) - 1)
+    def ReadString(self, terminator = None):
+        end = self.base.find(terminator, self.pos) if terminator != None else (int(len(self.base)) - 1)
         value = self.base[self.pos:end]
         self.pos += (end - self.pos + 1)
         return value
@@ -47,32 +47,32 @@ class StringParser:
     def Peek(self, length = 1):
         return self.base[self.pos:self.pos + length]
 
-    def TryReadFloat(self, ternimator = None):
+    def TryReadFloat(self, terminator = None):
         try:
-            return self.ReadFloat(ternimator)
+            return self.ReadFloat(terminator)
         except:
             return 0
 
-    def TryReadInt(self, ternimator = None):
+    def TryReadInt(self, terminator = None):
         try:
-            return self.ReadInt(ternimator)
+            return self.ReadInt(terminator)
         except:
             return 0
 
-    def CanReadFloat(self, ternimator = None):
+    def CanReadFloat(self, terminator = None):
         originPos = pos
         try:
-            self.ReadFloat(ternimator)
+            self.ReadFloat(terminator)
             pos = originPos
             return True
         except:
             pos = originPos
             return False
 
-    def CanReadInt(self, ternimator = None):
+    def CanReadInt(self, terminator = None):
         originPos = pos
         try:
-            self.ReadInt(ternimator)
+            self.ReadInt(terminator)
             pos = originPos
             return True
         except:
