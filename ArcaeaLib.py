@@ -239,17 +239,6 @@ Aff(Beta): Parse aff file and calc Arc & Hold's JugdeTimings and NotesCount
 Notes count for Arc & Hold not complete
 Will append Arc Coodinate Calc in the future
 '''
-class Timing:
-    def __init__(self, Time: int, BPM: float, Beats: float, TiminggroupId: int) -> None:
-        self.StartTime = Time
-        self.BPM = BPM
-        self.Beats = Beats
-        self.TiminggroupId = TiminggroupId
-        self.Count = 0
-
-    def __str__(self) -> str:
-        return 'timing(' + str(self.StartTime) + ',' + '%.2f'% self.BPM + ',' + '%.2f'% self.Beats + ')' + ';'
-
 class Aff: pass
 
 class TiminggroupProperties:
@@ -259,23 +248,20 @@ class TiminggroupProperties:
         self.FadingHolds = FadingHolds
         self.AngleX = AngleX
         self.AngleY = AngleY
-        self.StartTime = 0
         self.Count = 0
         self.__Chart = Chart
 
-    def GetTimings(self) -> None:
+    @property
+    def Timings(self) -> None:
         self.Timings = [i for i in self.__Chart.Events if i.TiminggroupId == self.TiminggroupId and isinstance(i, Timing)]
 
-    def SetSelfStartTime(self) -> None:
+    @property
+    def StartTime(self) -> int or None:
         for i in self.__Chart.Events:
             if i.TiminggroupId == self.TiminggroupId and not (isinstance(i, TiminggroupProperties) or isinstance(i, Timing)):
                 self.StartTime = i.StartTime
                 return None
         self.StartTime = self.Timings[0].StartTime
-
-    def Update(self) -> None:
-        self.GetTimings()
-        self.SetSelfStartTime()
 
     def GetBPMByTiming(self, Time: int) -> float:
         for i in range(len(self.Timings)):
@@ -304,6 +290,18 @@ class TiminggroupProperties:
         if self.AngleX: Args.append('anglex' + str(self.AngleX))
         if self.AngleY: Args.append('angley' + str(self.AngleY))
         return 'timinggroup(' + ('_'.join(Args) if Args != [] else '') + ')'
+
+class Timing:
+    def __init__(self, Time: int, BPM: float, Beats: float, Timinggroup: TiminggroupProperties) -> None:
+        self.StartTime = Time
+        self.BPM = BPM
+        self.Beats = Beats
+        self.TiminggroupId = Timinggroup.TiminggroupId
+        self.Timinggroup = Timinggroup
+        self.Count = 0
+
+    def __str__(self) -> str:
+        return 'timing(' + str(self.StartTime) + ',' + '%.2f'% self.BPM + ',' + '%.2f'% self.Beats + ')' + ';'
 
 class Arc: pass
 
@@ -369,7 +367,7 @@ def Qo(value: float):
     return (value - 1) * (value - 1) * (value - 1) + 1
 
 class Arc:
-    def __init__(self, StartTime: int, EndTime: int, XStart: float, XEnd: float, EasingType: str, YStart: float, YEnd: float, Color: int, Effect: str, IsSkyline: bool, TimingPointDensityFactor: float, TiminggroupId: int, Timinggroup: TiminggroupProperties) -> None:
+    def __init__(self, StartTime: int, EndTime: int, XStart: float, XEnd: float, EasingType: str, YStart: float, YEnd: float, Color: int, Effect: str, IsSkyline: bool, Timinggroup: TiminggroupProperties) -> None:
         self.StartTime = StartTime
         self.EndTime = EndTime
         self.XStart = XStart
@@ -381,8 +379,7 @@ class Arc:
         self.Effect = Effect
         self.IsSkyLine = IsSkyline
         self.Arctaps = []
-        self.TimingPointDensityFactor = TimingPointDensityFactor
-        self.TiminggroupId = TiminggroupId
+        self.TiminggroupId = Timinggroup.TiminggroupId
         self.TiminggroupProperties = Timinggroup
         # By yyyr
         '''
@@ -490,12 +487,15 @@ class Arc:
     def AngleY(self) -> int:
         return self.TiminggroupProperties.AngleY
 
+    @property
+    def TimingPointDensityFactor(self) -> float:
+        return self.TiminggroupProperties._TiminggroupProperties__Chart.TimingPointDensityFactor
 
 class Tap:
-    def __init__(self, Time: int, Lane: int, TiminggroupId: int, Timinggroup: TiminggroupProperties) -> None:
+    def __init__(self, Time: int, Lane: int, Timinggroup: TiminggroupProperties) -> None:
         self.StartTime = Time
         self.Lane = Lane
-        self.TiminggroupId = TiminggroupId
+        self.TiminggroupId = Timinggroup.TiminggroupId
         self.TiminggroupProperties = Timinggroup
 
     def __str__(self) -> str:
@@ -510,12 +510,11 @@ class Tap:
         return 0 if self.NoInput else 1
 
 class Hold:
-    def __init__(self, StartTime: int, EndTime: int, Lane: int, TimingPointDensityFactor: float, TiminggroupId: int, Timinggroup: TiminggroupProperties) -> None:
+    def __init__(self, StartTime: int, EndTime: int, Lane: int, Timinggroup: TiminggroupProperties) -> None:
         self.StartTime = StartTime
         self.EndTime = EndTime
         self.Lane = Lane
-        self.TimingPointDensityFactor = TimingPointDensityFactor
-        self.TiminggroupId = TiminggroupId
+        self.TiminggroupId = Timinggroup.TiminggroupId
         self.TiminggroupProperties = Timinggroup
         # By yyyr
         '''
@@ -591,19 +590,23 @@ class Hold:
         self.Update()
         return len(self.JudgeTimings)
 
+    @property
+    def TimingPointDensityFactor(self) -> float:
+        return self.TiminggroupProperties._TiminggroupProperties__Chart.TimingPointDensityFactor
+
 class Camera:
-    def __init__(self, StartTime: int, Transverse: float, BottomZoom: float, LineZoom: float, SteadyAngle: float, TopZoom: float, RotateAngle: float, EasingType: str, LastingTime: int, TiminggroupId: int, Timinggroup: TiminggroupProperties) -> None:
+    def __init__(self, StartTime: int, PosX: float, PosY: float, PosZ: float, RotX: float, RotY: float, RotZ: float, EasingType: str, LastingTime: int, Timinggroup: TiminggroupProperties) -> None:
         self.StartTime = StartTime
-        self.Transverse = Transverse
-        self.BottomZoom = BottomZoom
-        self.LineZoom = LineZoom
-        self.SteadyAngle = SteadyAngle
-        self.TopZoom = TopZoom
-        self.RotateAngle = RotateAngle
+        self.PosX = PosX
+        self.PosY = PosY
+        self.PosZ = PosZ
+        self.RotX = RotX
+        self.RotY = RotY
+        self.PosZ = PosZ
         self.EasingType = EasingType
         self.LastingTime = LastingTime
         self.EndTime = self.StartTime + self.LastingTime
-        self.TiminggroupId = TiminggroupId
+        self.TiminggroupId = Timinggroup.TiminggroupId
         self.TiminggroupProperties = Timinggroup
         self.Count = 0
 
@@ -611,9 +614,9 @@ class Camera:
         return 'camera(' + str(self.StartTime) + ',' + str(self.Transverse) + ',' + str(self.BottomZoom) + ',' + str(self.LineZoom) + ',' + str(self.SteadyAngle) + ',' + str(self.TopZoom) + ',' + str(self.RotateAngle) + ',' + str(self.EasingType) + ',' + str(self.LastingTime) + ')' + ';'
 
 class SceneControl:
-    def __init__(self, args, TiminggroupId: int, Timinggroup: TiminggroupProperties) -> None:
+    def __init__(self, args, Timinggroup: TiminggroupProperties) -> None:
         self.Count = 0
-        self.TiminggroupId = TiminggroupId
+        self.TiminggroupId = Timinggroup.TiminggroupId
         self.TiminggroupProperties = Timinggroup
         self.args = args
         self.StartTime = args[0]
@@ -623,7 +626,6 @@ class SceneControl:
         elif len(args) == 4:
             self.Param1 = args[2]
             self.Param2 = args[3]
-
 
     def __str__(self) -> str:
         args = ''
@@ -635,13 +637,13 @@ class SceneControl:
 
 
 class Flick:
-    def __init__(self, Time: int, X: float, Y: float, FX: float, FY: float, TiminggroupId: int, Timinggroup: TiminggroupProperties):
+    def __init__(self, Time: int, PosX: float, PosY: float, VecX: float, VecY: float, Timinggroup: TiminggroupProperties):
         self.StartTime = Time
-        self.X = X
-        self.Y = Y
-        self.FX = FX
-        self.FY = FY
-        self.TiminggroupId = TiminggroupId
+        self.PosX = PosX
+        self.PosY = PosY
+        self.VecX = VecX
+        self.VecY = VecY
+        self.TiminggroupId = Timinggroup.TiminggroupId
         self.TiminggroupProperties = Timinggroup
 
     def __str__(self) -> str:
@@ -842,7 +844,119 @@ class Aff:
                 self.TimingPointDensityFactor = float(i[1])
         if self.AudioOffset == None:
             self.AudioOffset = 0
-        parser = {}
+
+        def ParseTiming(line: str, Timinggroup: TiminggroupProperties):
+            s = StringParser(line)
+            # The skip value is event start symbol (eg: "<timing(>100,1000.00,4.00);")
+            s.Skip(7)
+            Time = s.ReadInt(",")
+            BPM = s.ReadFloat(",")
+            Beats = s.ReadFloat(")")
+            return Timing(Time, BPM, Beats, Timinggroup)
+
+        def ParseTap(line: str, Timinggroup: TiminggroupProperties):
+            s = StringParser(line)
+            s.Skip(1)
+            Time = s.ReadInt(",")
+            Lane = s.ReadInt(")")
+            return Tap(Time, Lane, Timinggroup)
+
+        def ParseHold(line: str, Timinggroup: TiminggroupProperties):
+            s = StringParser(line)
+            s.Skip(5)
+            Time = s.ReadInt(",")
+            EndTime = s.ReadInt(",")
+            Lane = s.ReadInt(")")
+            return Hold(Time, EndTime, Lane, Timinggroup)
+
+        def ParseArc(line: str, Timinggroup: TiminggroupProperties):
+            s = StringParser(line)
+            s.Skip(4)
+            Time = s.ReadInt(",")
+            EndTime = s.ReadInt(",")
+            XStart = s.ReadFloat(",")
+            XEnd = s.ReadFloat(",")
+            Easing = s.ReadString(",")
+            YStart = s.ReadFloat(",")
+            YEnd = s.ReadFloat(",")
+            Color = s.ReadInt(",")
+            FX = s.ReadString(",")
+            IsSkyline = s.ReadBool(")")
+            arc = Arc(Time, EndTime, XStart, XEnd, Easing, YStart, YEnd, Color, FX, IsSkyline, Timinggroup)
+            arctaps = []
+            if s.Current() != ";":
+                IsSkyline = True
+                while True:
+                    s.Skip(8)
+                    arctaps.append(Arctap(s.ReadInt(")")))
+                    if s.Current() != ",":
+                        break
+                arc.Arctaps = arctaps
+            return arc
+
+        def ParseFlick(line: str, Timinggroup: TiminggroupProperties):
+            s = StringParser(line)
+            s.Skip(6)
+            Time = s.ReadInt(",")
+            PosX = s.ReadFloat(",")
+            PosY = s.ReadFloat(",")
+            VecX = s.ReadFloat(",")
+            VecY = s.ReadFloat(")")
+            return Flick(Time, PosX, PosY, VecX, VecY, Timinggroup)
+
+        def ParseCamera(line: str, Timinggroup: TiminggroupProperties):
+            s = StringParser(line)
+            s.Skip(7)
+            Time = s.ReadInt(",")
+            # Position
+            PosX = s.ReadFloat(",")
+            PosY = s.ReadFloat(",")
+            PosZ = s.ReadFloat(",")
+            # Rotation
+            RotX = s.ReadFloat(",")
+            RotY = s.ReadFloat(",")
+            RotZ = s.ReadFloat(",")
+            # Other
+            CameraType = s.ReadString(",")
+            Duration = s.ReadInt(")")
+            return Camera(Time, PosX, PosY, PosZ, RotX, RotY, RotZ, CameraType, Duration, Timinggroup)
+
+        def ParseSceneControl(line: str, Timinggroup: TiminggroupProperties):
+            s = StringParser(line)
+            s.Skip(13)
+            Time = s.ReadInt(",")
+            SceneControlType = s.ReadString(",")
+            if SceneControlType != "trackhide" or SceneControlType != "trackshow":
+                ParamFloat = s.ReadFloat(",")
+                ParamInt = s.ReadInt(")")
+            return SceneControl([Time, SceneControlType, ParamFloat, ParamInt], Timinggroup)
+
+        def ParseTiminggroup(line: str, TiminggroupId: int, Chart: Aff):
+            s = StringParser(line)
+            s.Skip(12)
+            Params = s.ReadString(')')
+            NoInput, FadingHolds = False
+            AngleX, AngleY = 0
+            if Params != '':
+                Params = Params.split('_')
+                # Parse NoInput
+                if 'noinput' in Params:
+                    NoInput = True
+                if 'fadingholds' in Params:
+                    FadingHolds = True
+                for c in Params:
+                    if 'anglex' in c:
+                        c.replace('anglex', '')
+                        AngleX = int(c)
+                    elif 'angley' in c:
+                        c.replace('angley', '')
+                        AngleY = int(c)
+            return TiminggroupProperties(NoInput, FadingHolds, AngleX, AngleY, TiminggroupId, Chart)
+
+        parser = {'tap': ParseTap, 'hold': ParseHold, 'arc': ParseArc, 'flick': ParseFlick, 'scenecontrol': ParseSceneControl, 'camera': ParseCamera, 'timing': ParseTiming, 'timinggroup': ParseTiminggroup}
+        MaxTiminggroupId = 0
+        CurrentTiminggroupId = 0
+        Timinggroups = [TiminggroupProperties(False, False, 0, 0, 0, self)]
         def GetCommandType(line: str):
             if line.startswith('hold('):
                 return 'hold'
@@ -862,16 +976,20 @@ class Aff:
                 return 'tap'
             elif line.startswith('};'):
                 return 'timinggroupend'
+            raise Exception('Unknow aff command')
         for line in aff[1]:
             line = line.strip() # Remove prefix-spaces from line
             command = GetCommandType(line)
             if command == 'timinggroupend':
-                pass
+                CurrentTiminggroupId = 0
             elif command == 'timinggroup':
-                pass
+                timinggroup = parser['timinggroup'](line, MaxTiminggroupId + 1, self)
+                MaxTiminggroupId += 1
+                CurrentTiminggroupId = MaxTiminggroupId
+                Timinggroups.append(timinggroup)
+                self.Events.append(timinggroup)
             else:
-                self.Events.append(parser[command](line))
-
+                self.Events.append(parser[command](line, Timinggroups[CurrentTiminggroupId]))
 
     def CountNotes(self) -> list:
         tap = 0
@@ -1086,9 +1204,7 @@ class Aff:
         for i in self.Events:
             if isinstance(i, Hold) or isinstance(i, Tap):
                 if self.InEnwidenLaneRange(i.StartTime):
-                    old = i.__str__()
                     i.Lane = random.randint(0, 5)
-                    print('6k note detected', old, '=>', i.__str__())
                 else:
                     i.Lane = random.randint(1, 4)
             elif isinstance(i, Arc):
@@ -1605,51 +1721,4 @@ class ArcaeaSongs:
 #                 1: ['PRS', ['prs', 'pre'], 'Present'],
 #                 2: ['FTR', ['ftr'], 'Future'],
 #                 3: ['BYD', ['byd', 'byn'], 'Beyond']}
-
-
-'''
-Update functions
-'''
-
-def CheckUpdate(ResourcePath):
-    ResourcePath = EnsurePath(ResourcePath)
-    ArcaeaDownloadApi = r'https://webapi.lowiro.com/webapi/serve/static/bin/arcaea/apk'
-    Request = requests.get(ArcaeaDownloadApi)
-    if Request.status_code != 200: raise Exception('Error while requesting update api')
-    Content = json.loads(Request.content)
-    try:
-        Version = open(ResourcePath + 'version', 'r')
-        Version = Version.read()
-    except:
-        return Content
-    if Version == Content['value']['version']: return 0
-    return Content, Version
-
-def ExecuteUpdate(ResourcesPath) -> None:
-    ResourcePath = EnsurePath(ResourcePath)
-    Content, Version = CheckUpdate(ResourcesPath)
-    if not Content: return None
-    Download = MultiprocessDownload(Content['value']['url'], ResourcesPath, 'ArcaeaApk.apk', 16)
-    Download.run()
-    Resources = zipfile.ZipFIle(ResourcesPath + 'ArcaeaApk.apk')
-    Resources.extractall(ResourcesPath + Content['value']['version'])
-    os.mkdir(ResourcesPath + Version)
-    for i in ['char', 'songs']:
-        shutil.move(ResourcePath + i, ResourcePath + Version)
-        shutil.move(ResourcePath + Content['value']['version'] +'\\assets\\' + i, ResourcePath)
-    VersionUpdate = open(ResourcePath + 'version', 'w')
-    VersionUpdate.write(Content['value']['version'])
-
-def ExecuteResource(ResourcesPath) -> None:
-    ResourcePath = EnsurePath(ResourcePath)
-    Content = CheckUpdate(ResourcesPath)
-    if not Content: return None
-    Download = MultiprocessDownload(Content['value']['url'], ResourcesPath, 'ArcaeaApk.apk', 16)
-    Download.run()
-    Resources = zipfile.ZipFIle(ResourcesPath + 'ArcaeaApk.apk')
-    Resources.extractall(ResourcesPath + Content['value']['version'])
-    for i in ['char', 'songs']:
-        shutil.move(ResourcePath + Content['value']['version'] +'\\assets\\' + i, ResourcePath)
-    VersionUpdate = open(ResourcePath + 'version', 'w')
-    VersionUpdate.write(Content['value']['version'])
 
