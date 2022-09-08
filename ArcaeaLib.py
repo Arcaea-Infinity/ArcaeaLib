@@ -31,13 +31,11 @@ from io import TextIOWrapper
 import json
 import os
 import pprint
-import re
-import shutil
 import time
-import zipfile
 import random
 import hashlib
 import math
+
 
 import requests
 
@@ -253,15 +251,7 @@ class TiminggroupProperties:
 
     @property
     def Timings(self) -> None:
-        self.Timings = [i for i in self.__Chart.Events if i.TiminggroupId == self.TiminggroupId and isinstance(i, Timing)]
-
-    @property
-    def StartTime(self) -> int or None:
-        for i in self.__Chart.Events:
-            if i.TiminggroupId == self.TiminggroupId and not (isinstance(i, TiminggroupProperties) or isinstance(i, Timing)):
-                self.StartTime = i.StartTime
-                return None
-        self.StartTime = self.Timings[0].StartTime
+        return [i for i in self.__Chart.Events if (isinstance(i, Timing) and (i.TiminggroupId == self.TiminggroupId))]
 
     def GetBPMByTiming(self, Time: int) -> float:
         for i in range(len(self.Timings)):
@@ -442,6 +432,7 @@ class Arc:
         # print("Arc JudgeTimings:", self.JudgeTimings)
 
     def Update(self):
+        self.CalcJudgeTimings()
         for i in self.Arctaps:
             i.SetArc(self)
 
@@ -935,8 +926,8 @@ class Aff:
             s = StringParser(line)
             s.Skip(12)
             Params = s.ReadString(')')
-            NoInput, FadingHolds = False
-            AngleX, AngleY = 0
+            NoInput = FadingHolds = False
+            AngleX = AngleY = 0
             if Params != '':
                 Params = Params.split('_')
                 # Parse NoInput
@@ -956,7 +947,9 @@ class Aff:
         parser = {'tap': ParseTap, 'hold': ParseHold, 'arc': ParseArc, 'flick': ParseFlick, 'scenecontrol': ParseSceneControl, 'camera': ParseCamera, 'timing': ParseTiming, 'timinggroup': ParseTiminggroup}
         MaxTiminggroupId = 0
         CurrentTiminggroupId = 0
-        Timinggroups = [TiminggroupProperties(False, False, 0, 0, 0, self)]
+        FirstTiminggroup = TiminggroupProperties(False, False, 0, 0, 0, self)
+        self.Events.append(FirstTiminggroup)
+        Timinggroups = [FirstTiminggroup]
         def GetCommandType(line: str):
             if line.startswith('hold('):
                 return 'hold'
@@ -990,6 +983,8 @@ class Aff:
                 self.Events.append(timinggroup)
             else:
                 self.Events.append(parser[command](line, Timinggroups[CurrentTiminggroupId]))
+        self.Refresh()
+        self.IsLoaded = True
 
     def CountNotes(self) -> list:
         tap = 0
@@ -1133,19 +1128,17 @@ class Aff:
                 if i.ArcGroup == None:
                     i.ArcGroup = [i]
                 i.ArcGroup.sort(key=key)
-        for i in self.Events:
-            if isinstance(i, Arc):
-                i.CalcJudgeTimings()
-                i.Update()
 
     def Refresh(self):
-        for i in self.Events:
-            if isinstance(i, TiminggroupProperties):
-                i.Update()
-            if isinstance(i, Hold):
-                i.Update()
-        self.Events.sort(key = lambda x:x.StartTime)
         self.CalcArcRelationship()
+        for i in self.Events:
+            if isinstance(i, Hold) or isinstance(i, Arc):
+                i.Update()
+        def _(x):
+            if isinstance(x, TiminggroupProperties):
+                return 9999999999999
+            return x.StartTime
+        self.Events.sort(key = _)
 
     def SetTimingPointDensityFactor(self, TimingPointDensityFactor: float):
         self.TimingPointDensityFactor = TimingPointDensityFactor
