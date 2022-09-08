@@ -1280,12 +1280,7 @@ class ArcaeaSongs:
             song.LoadFromSongDict(i)
             self.Songlist.append(song)
         # Parse Characters
-        Characters = open(self.ResourcePath + 'chars_formated.txt', mode='r', encoding='utf-8')
-        self.CharactersDict = {}
-        for i in Characters.readlines():
-            i = i.replace('\n', '')
-            SingleCharacter = i.split(' ')
-            self.CharactersDict[int(SingleCharacter[0])] = SingleCharacter[1]
+        self.CharactersDict = json.load(open('characters.json', encoding='utf-8', mode='r'))
         # Parse Packlist
         self.PacklistRaw = json.load(open(self.ResourcePath + 'songs\\packlist', mode='r', encoding='utf-8'))
         packs = []
