@@ -1,5 +1,5 @@
 # Arcaea Lib Script
-# Ver 0.4.0.255stable by
+# Ver 0.5.1a by
 # @Player01
 
 # Video links collected by
@@ -54,47 +54,6 @@ def EnsurePath(Path):
     return Path + '\\'
 
 
-class BotRes:
-    def __init__(self, path, filetype) -> None:
-        self.path = path
-        self.type = filetype
-
-    def GetCode(self):
-        pass
-
-
-class BotMessageBuilder:
-    def __init__(self, *args):
-        self.Message = []
-        self.Add(x for x in args)
-
-    def Add(self, *args):
-        pass
-
-    def ToDataSegment(self):
-        pass
-
-class Log:
-    def __init__(self, writefile: bool, logfile = None) -> None:
-        self.writefile = writefile
-        self.logfile = logfile
-
-    def log(self, level, info, part=None): #level: Info, Output, Warning, Error
-        color_dict = {'info': 37, 'output': 34, 'warning': 33, 'error': 31}
-        if level.lower() not in color_dict.keys():
-            self.log('warning', 'Unknown log level: ' + level, 'Log()')
-            level = 'info'
-        before_color = '\033[0;{0}m'.format(color_dict.get(level.lower()))
-        fore_color = '\033[0m'
-        time_str = time.strftime("[%Y/%m/%d] %H:%M:%S", time.localtime())
-        if part == None: output = '[' + level.capitalize() + ']' + time_str + '\n' + pprint.pformat(info)
-        else: output = '[' + level.capitalize() + ']' + time_str + '    ' + part + ':' + '\n' + pprint.pformat(info)
-        print(before_color + output + fore_color)
-        if self.writefile:
-            file = open(self.logfile, 'a', encoding='utf-8')
-            file.write(output + '\n\n')
-            file.close()
-
 def compare(inp: str, target: str):
     if inp.lower() == target.lower():
         return True
@@ -113,116 +72,6 @@ def compare(inp: str, target: str):
     if len(inp) > (len(target) / 3) and inp in target:
         return True
     return False
-
-class MultiprocessDownload:
-    # TODO
-    # Download ane file with multithreads
-    def __init__(self, url: str, path: str, filename: str, thread_num: int, temppath: str) -> None:
-        try:
-            if self.downloaded: raise Exception('This task is downloaded')
-        except: pass
-        self.downloaded = False
-        self.url = url
-        self.id = (hashlib.md5(url.encode())).hexdigest()
-        self.path = EnsurePath(path)
-        self.filename = filename
-        self.temppath = EnsurePath(temppath)
-        self.thread_num = thread_num
-        self.threads = []
-        self.head = requests.head(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko'}).headers
-        self.length = int(self.head.get('Content-Length', False))
-        self.proc = self.lock = [None for _ in range(self.thread_num)]
-        self.error_flag = None
-        if self.length < self.thread_num: raise ValueError('File length is smaller than thread_num')
-        if self.thread_num >= 64: self.thread_num = 64
-        if self.length == False: raise Exception('This file does not support multiprocess download')
-        self.lock = [None for i in range(thread_num)]
-        num = self.length // self.thread_num
-        last = -1
-        for i in range(1, thread_num + 1):
-            self.threads.append([last + 1, num * i])
-            last = num * i
-        self.threads[-1][1] += self.length % self.thread_num
-        print(self.threads)
-
-    def started(self) -> bool:
-        for l in self.lock:
-            try:
-                if l.locked() == False:
-                    return False
-            except: # AttributeError: 'NoneType' object has no attribute 'locked'
-                return False
-        return True
-
-    def closed(self) -> bool:
-        for l in self.lock:
-            if l.locked() == True:
-                return False
-        return True
-
-    def thread(self, num) -> int:
-        if self.downloaded: raise Exception('This task is downloaded')
-        self.lock[num] = _thread.allocate_lock()
-        try:
-            with self.lock[num]:
-                header = {'Range': f'bytes=' + str(self.threads[num][0]) + '-' + str(self.threads[num][1])}
-                self.proc[num] = 0
-                req = requests.get(self.url, headers=header, stream=True)
-                blk_size = self.threads[num][1] - self.threads[num][0] + 1
-                file = open(self.temppath + self.id + '_dl_block_' + str(num), 'wb')
-                i = 0
-                chunk_size = 1024*1024*16
-                for chunk in req.iter_content(chunk_size=chunk_size):
-                    if chunk:
-                        file.write(chunk)
-                        i += 1
-                        self.proc[num] = (i * chunk_size) / blk_size
-                req.close()
-                file.close()
-        except Exception as e:
-            try:
-                file.close()
-            except:
-                pass
-            self.error_flag = e
-        return 0
-
-    def GetDownloadInfo(self) -> list:
-        if self.downloaded: raise Exception('This task is downloaded')
-        info = []
-        total = 0
-        for i in range(self.thread_num):
-            if None in self.proc: return None
-            info.append(str(self.proc[i] * 100) + '%')
-            total += self.proc[i]
-        info.append(str(total / self.thread_num * 100) + '%') #[*threads_info, total_info]
-        return info
-
-    def run(self):
-        if self.downloaded: raise Exception('This task is downloaded')
-        for i in range(self.thread_num):
-            _thread.start_new_thread(self.thread, (i,))
-        while not self.started():
-            pass
-        while not self.closed():
-            if self.error_flag:
-                self.CleanDownloadBlocks()
-                raise self.error_flag
-            print(self.GetDownloadInfo())
-            time.sleep(0.5)
-        print(self.GetDownloadInfo())
-        target = open(self.path + self.filename, 'wb')
-        for num in range(self.thread_num):
-            blk = open(self.temppath + self.id + '_dl_block_' + str(num), 'rb')
-            target.write(blk.read())
-            blk.close()
-        self.CleanDownloadBlocks()
-        target.close()
-        self.downloaded = True
-
-    def CleanDownloadBlocks(self) -> None:
-        for num in range(self.thread_num):
-            os.remove(self.temppath + self.id + '_dl_block_' + str(num))
 
 
 def FormatScore(score: int) -> str:
