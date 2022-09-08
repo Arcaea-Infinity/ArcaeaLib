@@ -41,32 +41,7 @@ import math
 
 import requests
 
-'''
-Error Class Definations
-'''
-class AffError(Exception):
-    def __init__(self, error: str, line: int = None) -> None:
-        self.error = error
-        self.line = line
-
-    def __str__(self) -> str:
-        if self.line == None: return self.error
-        return self.error + ', in line ' + str(self.line)
-
-class ResError(Exception):
-    def __init__(self, error: str, file: str) -> None:
-        self.error = error
-        self.file = file
-
-    def __str__(self) -> str:
-        return self.error + ' in file ' + self.file
-
-class RequestError(Exception):
-    def __init__(self, url: str) -> None:
-        self.url = url
-
-    def __str__(self) -> str:
-        return 'Error while requesting ' + self.url
+from StringParser import StringParser
 
 
 '''
@@ -483,9 +458,9 @@ class Arc:
 
     def AddArcTap(self, arctap: Arctap):
         if arctap.StartTime > self.EndTime or arctap.StartTime < self.StartTime:
-            raise AffError("Arctap Time Invalid")
+            raise Exception("Arctap Time Invalid")
         if not self.IsSkyLine:
-            raise AffError("Try to add arctap into an non-skyline arc")
+            raise Exception("Try to add arctap into an non-skyline arc")
         arctap.SetArc(self)
         self.Arctaps.append(arctap)
 
@@ -680,27 +655,26 @@ class Flick:
     def Count(self) -> int:
         return 0 if self.NoInput else 1
 
-def formatAffCmd(cmd):
-    cmd = cmd.strip('(')
-    cmd = cmd.strip(')')
-    cmd = cmd.split(',')
-    index = -1
-    for i in cmd:
-        index += 1
-        if '.' in i:
-            try:
-                cmd[index] = float(i)
-            except:
-                pass
-        else:
-            try:
-                cmd[index] = int(i)
-            except:
-                pass
-    cmd = [True if x == 'true' else x for x in cmd]
-    cmd = [False if x == 'false' else x for x in cmd]
-    return cmd
-
+# def formatAffCmd(cmd):
+#     cmd = cmd.strip('(')
+#     cmd = cmd.strip(')')
+#     cmd = cmd.split(',')
+#     index = -1
+#     for i in cmd:
+#         index += 1
+#         if '.' in i:
+#             try:
+#                 cmd[index] = float(i)
+#             except:
+#                 pass
+#         else:
+#             try:
+#                 cmd[index] = int(i)
+#             except:
+#                 pass
+#     cmd = [True if x == 'true' else x for x in cmd]
+#     cmd = [False if x == 'false' else x for x in cmd]
+#     return cmd
 
 class Aff:
     def __init__(self) -> None:
@@ -716,21 +690,145 @@ class Aff:
         self.TimingPointDensityFactor = 1.0
         self.IsLoaded = True
 
-    def Load(self, file: str or TextIOWrapper) -> None:
+    # def Load(self, file: str or TextIOWrapper) -> None:
+    #     try:
+    #         if self.IsLoaded: raise Exception('Aff Already Loaded')
+    #     except:
+    #         pass
+    #     aff = None
+    #     if type(file) == str:
+    #         try:
+    #             file = open(file, 'r', encoding='utf-8')
+    #             aff = file.read().splitlines()
+    #         except:
+    #             pass
+    #     elif type(file) == TextIOWrapper:
+    #         aff = file.read().splitlines()
+    #     if aff == None: raise AffError('failed to open or read aff file: ' + file)
+    #     s = aff.index('-')
+    #     aff = [aff[:s]] + [aff[s + 1:]]
+    #     self.Events = []
+    #     self.AudioOffset = None
+    #     self.TimingPointDensityFactor = 1.0
+    #     for i in aff[0]:
+    #         i = i.split(':')
+    #         if i[0] == 'AudioOffset':
+    #             self.AudioOffset = int(i[1])
+    #         elif i[0] == 'TimingPointDensityFactor':
+    #             self.TimingPointDensityFactor = float(i[1])
+    #     if self.AudioOffset == None:
+    #         raise AffError('AudioOffset not set')
+    #     TiminggroupId = 0 #0: No Timinggroup
+    #     MaxTiminggroup = 0
+    #     line = 0
+    #     NoInput = False
+    #     FadingHolds = False
+    #     AngleX = 0
+    #     AngleY = 0
+    #     self.TiminggroupProperties = []
+    #     for i in aff[1]:
+    #         if line == 0:
+    #             FirstTiming = self.proceed(i, TiminggroupId, len(aff[0]) + 1 + line + 1)
+    #             if not isinstance(FirstTiming, Timing):
+    #                 raise AffError('First Aff Command not a timing')
+    #             Timinggroup = TiminggroupProperties(False, False, 0, 0, 0, self)
+    #             self.TiminggroupProperties.append(Timinggroup)
+    #             self.Events.append(FirstTiming)
+    #             self.Events.append(Timinggroup)
+    #             line += 1
+    #             continue
+    #         line += 1
+    #         if i.startswith('};'):
+    #             NoInput = False
+    #             FadingHolds = False
+    #             TiminggroupId = 0
+    #             AngleX = 0
+    #             AngleY = 0
+    #         elif i.startswith('timinggroup'):
+    #             MaxTiminggroup += 1
+    #             TiminggroupId = MaxTiminggroup
+    #             cmd = i.strip('timinggroup').strip().strip('{')
+    #             args = formatAffCmd(cmd)
+    #             timinggroupArgs = args[0].split('_')
+    #             for i in timinggroupArgs:
+    #                 if i == 'noinput':
+    #                     NoInput = True
+    #                 elif i == 'fadingholds':
+    #                     FadingHolds = True
+    #                 elif i.startswith('anglex'):
+    #                     AngleX = i[6:]
+    #                 elif i.startswith('angley'):
+    #                     AngleY = i[6:]
+    #                 elif i == '':
+    #                     pass
+    #                 else: raise AffError('Unknow timinggroup type')
+    #             Timinggroup = TiminggroupProperties(NoInput, FadingHolds, AngleX, AngleY, TiminggroupId, self)
+    #             self.TiminggroupProperties.append(Timinggroup)
+    #             self.Events.append(Timinggroup)
+    #         else:
+    #             self.Events.append(self.proceed(i, TiminggroupId, len(aff[0]) + 1 + line))
+    #     try:
+    #         self.Events.remove(None)
+    #     except:
+    #         pass
+    #     self.Refresh()
+    #     self.IsLoaded = True
+
+    # def proceed(self, i, TiminggroupId: int, line: int):
+    #     i = i.strip().strip(';')
+    #     if i.strip() == '':
+    #         return None
+    #     elif i.startswith('timing') and not i.startswith('timinggroup'):
+    #         args = i.strip('timing')
+    #         args = formatAffCmd(args)
+    #         return Timing(args[0], args[1], args[2], TiminggroupId)
+    #     if i.startswith('arc'):
+    #         ArcCommand = re.match(r'arc\(.*?\)', i)
+    #         if ArcCommand == None: raise AffError('Arc regex not matched', line = line)
+    #         ArcCommand = ArcCommand.group()
+    #         ArcCommand = ArcCommand.strip('arc')
+    #         ArcArguments = formatAffCmd(ArcCommand)
+    #         ArctapArgs = []
+    #         Arctaps = []
+    #         if i.find('arctap') >= 0:
+    #             ArctapCommand = re.search(r'(arctap\([0-9]+\),)*arctap\([0-9]+\)', i)
+    #             if ArctapCommand == None: AffError('Arctap regex not matched', line = line)
+    #             ArctapCommand = ArctapCommand.group()
+    #             ArctapCommand = ArctapCommand.strip('[').strip(']')
+    #             ArctapCommand = ArctapCommand.split(',')
+    #             for c in ArctapCommand:
+    #                 ArctapArgs.append(int(c.strip('arctap(').strip(')')))
+    #             for n in ArctapArgs:
+    #                 Arctaps.append(Arctap(n))
+    #         arc = Arc(ArcArguments[0], ArcArguments[1], ArcArguments[2], ArcArguments[3], ArcArguments[4], ArcArguments[5], ArcArguments[6], ArcArguments[7], ArcArguments[8], ArcArguments[9], self.TimingPointDensityFactor, TiminggroupId, self.TiminggroupProperties[TiminggroupId])
+    #         for arctap in Arctaps:
+    #             arc.AddArcTap(arctap)
+    #         return arc
+    #     elif i.startswith('hold'):
+    #         args = formatAffCmd(i.strip('hold').strip(';'))
+    #         return Hold(args[0], args[1], args[2], self.TimingPointDensityFactor, TiminggroupId, self.TiminggroupProperties[TiminggroupId])
+    #     elif i.startswith('scenecontrol'):
+    #         args = formatAffCmd(i.strip('scenecontrol').strip(';'))
+    #         return SceneControl(args, TiminggroupId, self.TiminggroupProperties[TiminggroupId])
+    #     elif i.startswith('flick'):
+    #         args = formatAffCmd(i.strip('flick').strip(';'))
+    #         return Flick(args[0], args[1], args[2], args[3], args[4], TiminggroupId, self.TiminggroupProperties[TiminggroupId])
+    #     elif i.startswith('camera'):
+    #         args = formatAffCmd(i.strip('camera').strip(';'))
+    #         return Camera(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], TiminggroupId)
+    #     elif i[0] == '(' and i[-1:] == ')': #Tap
+    #         args = formatAffCmd(i.strip(';'))
+    #         return Tap(args[0], args[1], TiminggroupId, self.TiminggroupProperties[TiminggroupId])
+    #     else:
+    #         raise AffError('Unknow aff command', line=line)
+
+    def Load(self, file):
         try:
             if self.IsLoaded: raise Exception('Aff Already Loaded')
         except:
             pass
-        aff = None
-        if type(file) == str:
-            try:
-                file = open(file, 'r', encoding='utf-8')
-                aff = file.read().splitlines()
-            except:
-                pass
-        elif type(file) == TextIOWrapper:
-            aff = file.read().splitlines()
-        if aff == None: raise AffError('failed to open or read aff file: ' + file)
+        file = open(file, 'r', encoding='utf-8')
+        aff = file.read().splitlines()
         s = aff.index('-')
         aff = [aff[:s]] + [aff[s + 1:]]
         self.Events = []
@@ -743,110 +841,37 @@ class Aff:
             elif i[0] == 'TimingPointDensityFactor':
                 self.TimingPointDensityFactor = float(i[1])
         if self.AudioOffset == None:
-            raise AffError('AudioOffset not set')
-        TiminggroupId = 0 #0: No Timinggroup
-        MaxTiminggroup = 0
-        line = 0
-        NoInput = False
-        FadingHolds = False
-        AngleX = 0
-        AngleY = 0
-        self.TiminggroupProperties = []
-        for i in aff[1]:
-            if line == 0:
-                FirstTiming = self.proceed(i, TiminggroupId, len(aff[0]) + 1 + line + 1)
-                if not isinstance(FirstTiming, Timing):
-                    raise AffError('First Aff Command not a timing')
-                Timinggroup = TiminggroupProperties(False, False, 0, 0, 0, self)
-                self.TiminggroupProperties.append(Timinggroup)
-                self.Events.append(FirstTiming)
-                self.Events.append(Timinggroup)
-                line += 1
-                continue
-            line += 1
-            if i.startswith('};'):
-                NoInput = False
-                FadingHolds = False
-                TiminggroupId = 0
-                AngleX = 0
-                AngleY = 0
-            elif i.startswith('timinggroup'):
-                MaxTiminggroup += 1
-                TiminggroupId = MaxTiminggroup
-                cmd = i.strip('timinggroup').strip().strip('{')
-                args = formatAffCmd(cmd)
-                timinggroupArgs = args[0].split('_')
-                for i in timinggroupArgs:
-                    if i == 'noinput':
-                        NoInput = True
-                    elif i == 'fadingholds':
-                        FadingHolds = True
-                    elif i.startswith('anglex'):
-                        AngleX = i[6:]
-                    elif i.startswith('angley'):
-                        AngleY = i[6:]
-                    elif i == '':
-                        pass
-                    else: raise AffError('Unknow timinggroup type')
-                Timinggroup = TiminggroupProperties(NoInput, FadingHolds, AngleX, AngleY, TiminggroupId, self)
-                self.TiminggroupProperties.append(Timinggroup)
-                self.Events.append(Timinggroup)
+            self.AudioOffset = 0
+        parser = {}
+        def GetCommandType(line: str):
+            if line.startswith('hold('):
+                return 'hold'
+            elif line.startswith('arc('):
+                return 'arc'
+            elif line.startswith('flick('):
+                return 'flick'
+            elif line.startswith('scenecontrol('):
+                return 'scenecontrol'
+            elif line.startswith('camera('):
+                return 'camera'
+            elif line.startswith('timinggroup('):
+                return 'timinggroup'
+            elif line.startswith('timing('):
+                return 'timing'
+            elif line.startswith('('):
+                return 'tap'
+            elif line.startswith('};'):
+                return 'timinggroupend'
+        for line in aff[1]:
+            line = line.strip() # Remove prefix-spaces from line
+            command = GetCommandType(line)
+            if command == 'timinggroupend':
+                pass
+            elif command == 'timinggroup':
+                pass
             else:
-                self.Events.append(self.proceed(i, TiminggroupId, len(aff[0]) + 1 + line))
-        try:
-            self.Events.remove(None)
-        except:
-            pass
-        self.Refresh()
-        self.IsLoaded = True
+                self.Events.append(parser[command](line))
 
-    def proceed(self, i, TiminggroupId: int, line: int):
-        i = i.strip().strip(';')
-        if i.strip() == '':
-            return None
-        elif i.startswith('timing') and not i.startswith('timinggroup'):
-            args = i.strip('timing')
-            args = formatAffCmd(args)
-            return Timing(args[0], args[1], args[2], TiminggroupId)
-        if i.startswith('arc'):
-            ArcCommand = re.match(r'arc\(.*?\)', i)
-            if ArcCommand == None: raise AffError('Arc regex not matched', line = line)
-            ArcCommand = ArcCommand.group()
-            ArcCommand = ArcCommand.strip('arc')
-            ArcArguments = formatAffCmd(ArcCommand)
-            ArctapArgs = []
-            Arctaps = []
-            if i.find('arctap') >= 0:
-                ArctapCommand = re.search(r'(arctap\([0-9]+\),)*arctap\([0-9]+\)', i)
-                if ArctapCommand == None: AffError('Arctap regex not matched', line = line)
-                ArctapCommand = ArctapCommand.group()
-                ArctapCommand = ArctapCommand.strip('[').strip(']')
-                ArctapCommand = ArctapCommand.split(',')
-                for c in ArctapCommand:
-                    ArctapArgs.append(int(c.strip('arctap(').strip(')')))
-                for n in ArctapArgs:
-                    Arctaps.append(Arctap(n))
-            arc = Arc(ArcArguments[0], ArcArguments[1], ArcArguments[2], ArcArguments[3], ArcArguments[4], ArcArguments[5], ArcArguments[6], ArcArguments[7], ArcArguments[8], ArcArguments[9], self.TimingPointDensityFactor, TiminggroupId, self.TiminggroupProperties[TiminggroupId])
-            for arctap in Arctaps:
-                arc.AddArcTap(arctap)
-            return arc
-        elif i.startswith('hold'):
-            args = formatAffCmd(i.strip('hold').strip(';'))
-            return Hold(args[0], args[1], args[2], self.TimingPointDensityFactor, TiminggroupId, self.TiminggroupProperties[TiminggroupId])
-        elif i.startswith('scenecontrol'):
-            args = formatAffCmd(i.strip('scenecontrol').strip(';'))
-            return SceneControl(args, TiminggroupId, self.TiminggroupProperties[TiminggroupId])
-        elif i.startswith('flick'):
-            args = formatAffCmd(i.strip('flick').strip(';'))
-            return Flick(args[0], args[1], args[2], args[3], args[4], TiminggroupId, self.TiminggroupProperties[TiminggroupId])
-        elif i.startswith('camera'):
-            args = formatAffCmd(i.strip('camera').strip(';'))
-            return Camera(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], TiminggroupId)
-        elif i[0] == '(' and i[-1:] == ')': #Tap
-            args = formatAffCmd(i.strip(';'))
-            return Tap(args[0], args[1], TiminggroupId, self.TiminggroupProperties[TiminggroupId])
-        else:
-            raise AffError('Unknow aff command', line=line)
 
     def CountNotes(self) -> list:
         tap = 0
@@ -1590,7 +1615,7 @@ def CheckUpdate(ResourcePath):
     ResourcePath = EnsurePath(ResourcePath)
     ArcaeaDownloadApi = r'https://webapi.lowiro.com/webapi/serve/static/bin/arcaea/apk'
     Request = requests.get(ArcaeaDownloadApi)
-    if Request.status_code != 200: raise RequestError(ArcaeaDownloadApi)
+    if Request.status_code != 200: raise Exception('Error while requesting update api')
     Content = json.loads(Request.content)
     try:
         Version = open(ResourcePath + 'version', 'r')

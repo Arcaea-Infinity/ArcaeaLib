@@ -331,7 +331,27 @@ class UnityPlayerPrefs:
         f.close()
 
 class PhigrosPlayerPrefsManager(UnityPlayerPrefs):
-    pass
+    def __init__(self) -> None:
+        pass
+
+    def Load(self, file):
+        super().Load(self, file)
+        self.phides = pyDes.des('P\0G\0R\0S\0', pyDes.CBC, 'P\0G\0R\0S\0', pad = None, padmode = pyDes.PAD_PKCS5)
+
+    def __DecryptRawDict(self):
+        pass
+
+    def DecryptPhiData(self, value: str):
+        return (self.phides.decrypt(base64.b64decode(self.DecryptXmlData(value)))).decode('utf-16-le')
+
+    def DecryptXmlData(self, value: str):
+        return urllib.parse.unquote(value)
+
+    def EncryptPhiData(self, value: str):
+        return self.EncryptXmlData((base64.b64encode((self.phides.encrypt(value.encode('utf-16-le'))))).decode())
+
+    def EncryptXmlData(self, value: str):
+        return urllib.parse.quote(value, safe = '')
 
 # class PhigrosPlayerPrefsManager:
 #     def __init__(self) -> None:
