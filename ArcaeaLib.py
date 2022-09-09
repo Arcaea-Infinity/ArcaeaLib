@@ -11,33 +11,21 @@
 '''
 TODO List:
 
-Rewrite ArcaeaSongs Lib									0%              # Highest priority
-Rewrite the Aff System									60%
 Arcaea Nickname System									5%
 Song Name Comparing System								50%
 Arc & Hold Note Count									95%
 Arc Coordinate Calc										30%
-RemoteDL Challenge Calc									0%
-Phigros Chart Reader									30%
-Phigros Renderer										0%
 Phigros Chart and Arcaea Chart Converter				0%
 '''
 
 '''
 Imports
 '''
-import _thread
 from io import TextIOWrapper
 import json
-import os
-import pprint
-import time
 import random
-import hashlib
 import math
 
-
-import requests
 
 from StringParser import StringParser
 
@@ -1104,7 +1092,6 @@ class Difficulties:
                 return i
         return None
 
-
 class Difficulty:
     def __init__(self) -> None:
         return None
@@ -1261,6 +1248,17 @@ class Condition:
         elif self.type == 103: # Character
             return '需使用 ' + Condition.Songs.CharactersDict.get(self.id) + ' 搭档解锁'
 
+
+class Character:
+    def __init__(self) -> None:
+        pass
+
+    def LoadFromCharacterDict(self, chardict: dict):
+        self.id = chardict['id']
+        self.name = chardict['name']
+        self.type = chardict['type']
+        self.skill = chardict['skill']
+
 global grade_dict
 global diff_dict
 grade_dict = {0: 'No Limit', 1: 'C', 2: 'B', 3: 'A', 4: 'AA', 5: 'EX', 6: 'EX+'}
@@ -1281,6 +1279,11 @@ class ArcaeaSongs:
             self.Songlist.append(song)
         # Parse Characters
         self.CharactersDict = json.load(open('characters.json', encoding='utf-8', mode='r'))
+        self.Characters = []
+        for chardict in self.CharactersDict:
+            char = Character()
+            char.LoadFromCharacterDict(chardict)
+            self.Characters.append(char)
         # Parse Packlist
         self.PacklistRaw = json.load(open(self.ResourcePath + 'songs\\packlist', mode='r', encoding='utf-8'))
         packs = []
