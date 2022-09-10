@@ -91,10 +91,12 @@ class TiminggroupProperties:
         return [i for i in self.__Chart.Events if (isinstance(i, Timing) and (i.TiminggroupId == self.TiminggroupId))]
 
     def GetBPMByTiming(self, Time: int) -> float:
-        for i in range(len(self.Timings)):
-            if self.Timings[i].StartTime == Time: return self.Timings[i].BPM
-            elif self.Timings[i].StartTime > Time: return self.Timings[i - 1].BPM
-        if self.Timings[-1:][0].StartTime <= Time: return self.Timings[-1:][0].BPM
+        Timings = self.Timings
+        for i in range(len(Timings)):
+            if Timings[i].StartTime == Time and Timings[i].BPM == 0: return Timings[i-1].BPM
+            elif Timings[i].StartTime == Time: return Timings[i].BPM
+            elif Timings[i].StartTime > Time: return Timings[i - 1].BPM
+        if Timings[-1:][0].StartTime <= Time: return Timings[-1:][0].BPM
         # for i in range(len(self.Timings)):
         #     if self.Timings[i].StartTime == Time and self.Timings[i].BPM != 0.0: return self.Timings[i].BPM
         #     elif self.Timings[i].StartTime > Time and self.Timings[i].BPM != 0.0: return self.Timings[i - 1].BPM
@@ -251,10 +253,7 @@ class Arc:
         BPM = abs(self.TiminggroupProperties.GetBPMByTiming(self.StartTime))
         if BPM >= 255.0: x = 1.0
         else: x = 2.0
-        try:
-            PartitionIndex = 60000.0 / BPM / x / self.TimingPointDensityFactor
-        except:
-            return None
+        PartitionIndex = 60000.0 / BPM / x / self.TimingPointDensityFactor
         Point = int((self.EndTime - self.StartTime) / PartitionIndex)
         if Head ^ 1 >= Point:
             self.JudgeTimings.append(self.StartTime)
@@ -1562,3 +1561,6 @@ class ArcaeaSongs:
 #                 2: ['FTR', ['ftr'], 'Future'],
 #                 3: ['BYD', ['byd', 'byn'], 'Beyond']}
 
+aff = Aff()
+aff.Load(r'songs\dl\pragmatism_3')
+print(aff.CountNotes())
