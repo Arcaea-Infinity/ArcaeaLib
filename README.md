@@ -17,6 +17,6 @@ import PhigrosLib
 ##### PhigrosLib.PhigrosPlayerPrefsManager: for parsing and modifying Phigros PlayerPrefs.
 ##### PhigrosLib.PhiChart: for parsing and modifying Phigros OfficialChartFormat.
 ## Open Source Support
-Thank JetBrains for providing me wonderful IDEs!
+Thank **JetBrains** for providing me wonderful IDEs!
 
 [<img src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg" width="200"/>](https://www.jetbrains.com/)
