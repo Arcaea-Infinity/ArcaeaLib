@@ -87,7 +87,7 @@ class TiminggroupProperties:
         self.__Chart = Chart
 
     @property
-    def Timings(self) -> None:
+    def Timings(self) -> list:
         return [i for i in self.__Chart.Events if (isinstance(i, Timing) and (i.TiminggroupId == self.TiminggroupId))]
 
     def GetBPMByTiming(self, Time: int) -> float:
@@ -756,7 +756,8 @@ class Aff:
             if SceneControlType != "trackhide" or SceneControlType != "trackshow":
                 ParamFloat = s.ReadFloat(",")
                 ParamInt = s.ReadInt(")")
-            return SceneControl([Time, SceneControlType, ParamFloat, ParamInt], Timinggroup)
+                return SceneControl([Time, SceneControlType, ParamFloat, ParamInt], Timinggroup)
+            return SceneControl([Time, SceneControlType], Timinggroup)
 
         def ParseTiminggroup(line: str, TiminggroupId: int, Chart: Aff):
             s = StringParser(line)
@@ -919,6 +920,7 @@ class Aff:
 		}
 	}
     '''
+
     def CalcArcRelationship(self) -> None:
         for i in self.Events:
             if isinstance(i, Arc):
@@ -1307,7 +1309,7 @@ class ArcaeaSongs:
         self.Packlist = []
         for pack in packs:
             if not pack.is_sub:
-                self.Packlist.append(i)
+                self.Packlist.append(pack)
         # Parse Unlocks
         UnlocksRaw = json.load(open(self.ResourcePath + 'songs\\unlocks', mode='r', encoding='utf-8'))
         self.Unlocks = []
@@ -1561,6 +1563,3 @@ class ArcaeaSongs:
 #                 2: ['FTR', ['ftr'], 'Future'],
 #                 3: ['BYD', ['byd', 'byn'], 'Beyond']}
 
-aff = Aff()
-aff.Load(r'songs\dl\pragmatism_3')
-print(aff.CountNotes())
