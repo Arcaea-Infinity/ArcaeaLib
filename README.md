@@ -20,3 +20,4 @@ import PhigrosLib
 Thank **JetBrains** for providing me wonderful IDEs!
 
 [<img src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg" width="200"/>](https://www.jetbrains.com/)
+[<img src="https://resources.jetbrains.com/storage/products/company/brand/logos/PyCharm_icon.svg" width="200"/>](https://www.jetbrains.com/)
