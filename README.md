@@ -11,11 +11,11 @@ or
 import PhigrosLib
 `. Remember to add this project name to your project.
 ## Usage
-#### ArcaeaLib.Aff: for parsing and modifying ArcaeaChartfile.
-#### ArcaeaLib.ArcaeaSongs: for parsing Arcaea Assets dir.
+#### `ArcaeaLib.Aff` for parsing and modifying ArcaeaChartfile.
+#### `ArcaeaLib.ArcaeaSongs` for parsing Arcaea Assets dir.
 👇(Outdated / Not in maintainance / Not completed)👇
-##### PhigrosLib.PhigrosPlayerPrefsManager: for parsing and modifying Phigros PlayerPrefs.
-##### PhigrosLib.PhiChart: for parsing and modifying Phigros OfficialChartFormat.
+##### `PhigrosLib.PhigrosPlayerPrefsManager` for parsing and modifying Phigros PlayerPrefs.
+##### `PhigrosLib.PhiChart` for parsing and modifying Phigros OfficialChartFormat.
 ## Open Source Support
 Thank **JetBrains** for providing me wonderful IDEs!
 
