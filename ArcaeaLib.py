@@ -474,7 +474,7 @@ class Flick:
         self.TiminggroupProperties = Timinggroup
 
     def __str__(self) -> str:
-        return 'flick(' + str(self.StartTime) + ',' + '%.2f'% self.X + ',' + '%.2f'% self.Y + ',' + '%.2f'% self.FX + ',' + '%.2f'% self.FY + ')' + ';'
+        return 'flick(' + str(self.StartTime) + ',' + '%.2f' % self.PosX + ',' + '%.2f' % self.PosY + ',' + '%.2f' % self.VecX + ',' + '%.2f' % self.VecY + ')' + ';'
 
     @property
     def NoInput(self) -> bool:
