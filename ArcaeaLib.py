@@ -806,9 +806,11 @@ class Aff:
                 return 'tap'
             elif line.startswith('};'):
                 return 'timinggroupend'
-            raise Exception('Unknow aff command')
+            raise Exception('Unknow aff command:' + line)
         for line in aff[1]:
             line = line.strip() # Remove prefix-spaces from line
+            if line == '':
+                continue
             command = GetCommandType(line)
             if command == 'timinggroupend':
                 CurrentTiminggroupId = 0
@@ -1543,16 +1545,16 @@ class ArcaeaSongs:
 #         json.dump({'nicknames': json_data}, f, ensure_ascii=False, indent = 4)
 #         f.close()
 
-#     def SongDetails(self, song_id):
-#         song = self.GetSongById(song_id)
-#         def Count(aff_path):
-#             aff = Aff()
-#             aff.Load(aff_path)
-#             return aff.CountNotes()
-#         def f(str1: str, str2: str):
-#             if str1 + str2 != str1 and str1 + str2 != str1: return str1 + str2
-#             return ''
-#         return [song.SongName['en'], BotRes(self.SongRes(song_id)[0][0], 'image')] + [ArcaeaSongs.diff_dict[i][0] + ': ' + song.DiffList[i] + '，共 ' + str(Count(self.SongRes(song_id)[2][i])[0]) + ' Notes' for i in range(song.Difficulties + 1)] + [x for x in [f(song.SongName['en'] + ' 「' + ArcaeaSongs.diff_dict.get(i)[0] + '」 的解锁条件：\n', self.FetchUnlocks(song_id, i)) for i in range(song.Difficulties + 1)] if x != '']
+    # def SongDetails(self, song_id):
+    #     song = self.GetSongById(song_id)
+    #     def Count(aff_path):
+    #         aff = Aff()
+    #         aff.Load(aff_path)
+    #         return aff.CountNotes()
+    #     def f(str1: str, str2: str):
+    #         if str1 + str2 != str1 and str1 + str2 != str1: return str1 + str2
+    #         return ''
+    #     return [song.SongName['en'], BotRes(self.SongRes(song_id)[0][0], 'image')] + [ArcaeaSongs.diff_dict[i][0] + ': ' + song.DiffList[i] + '，共 ' + str(Count(self.SongRes(song_id)[2][i])[0]) + ' Notes' for i in range(song.Difficulties + 1)] + [x for x in [f(song.SongName['en'] + ' 「' + ArcaeaSongs.diff_dict.get(i)[0] + '」 的解锁条件：\n', self.FetchUnlocks(song_id, i)) for i in range(song.Difficulties + 1)] if x != '']
 
 #     def InitRemoteDownloadFiles(self):
 #         Songs = s
@@ -1562,4 +1564,3 @@ class ArcaeaSongs:
 #                 1: ['PRS', ['prs', 'pre'], 'Present'],
 #                 2: ['FTR', ['ftr'], 'Future'],
 #                 3: ['BYD', ['byd', 'byn'], 'Beyond']}
-

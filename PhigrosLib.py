@@ -6,6 +6,7 @@
 # Prefs encrypting method by
 # @yuhao
 
+# Currently Out-of-date
 
 import base64
 import urllib
@@ -141,6 +142,7 @@ class JudgeLine:
     def NumOfNotes(self) -> int:
         return len(self.NotesAbove) + len(self.NotesBelow)
 
+
 class PhiChart:
     def __init__(self) -> None:
         self.IsLoaded = False
@@ -193,6 +195,7 @@ class PhiChart:
             Notes += i.NumOfNotes
         return Notes
 
+
 def RankDictToStr(d: dict) -> str:
     s = '{'
     for k, v in zip(d.keys(), d.values()):
@@ -200,6 +203,7 @@ def RankDictToStr(d: dict) -> str:
     s = s[0:-1] # Delete the last comma
     s += '}'
     return s
+
 
 def IsRankDict(d: dict) -> bool:
     try: k = d.keys()
@@ -217,6 +221,7 @@ def ToString(obj) -> str:
             return '%.1f'% obj
     return str(obj)
 
+
 def __indent(e, level=0):
     # tab = '\t
     tab = '    '
@@ -233,6 +238,7 @@ def __indent(e, level=0):
     else:
         if level and (not e.tail or not e.tail.strip()):
             e.tail = indent
+
 
 class UnityPlayerPrefs:
     def __init__(self) -> None:
@@ -329,6 +335,7 @@ class UnityPlayerPrefs:
         content[0] = "<?xml version='1.0' encoding='utf-8' standalone='yes' ?>"
         f.write('\n'.join(content))
         f.close()
+
 
 class PhigrosPlayerPrefsManager(UnityPlayerPrefs):
     def __init__(self) -> None:
