@@ -9,16 +9,6 @@
 # Open Source under MIT Lisence
 
 '''
-TODO List:
-
-Arcaea Nickname System									5%
-Song Name Comparing System								50%
-Arc & Hold Note Count									95%
-Arc Coordinate Calc										30%
-Phigros Chart and Arcaea Chart Converter				0%
-'''
-
-'''
 Imports
 '''
 from io import TextIOWrapper
